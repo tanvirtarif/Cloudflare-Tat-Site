@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tanvir Tarif | Portfolio</title>
+    <title>Tanvir Tarif</title>
     <style>
-        /* বেসিক রিসেট ও ফন্ট সেটআপ */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+Bengali:wght@300;400;600;800&display=swap');
+        /* ফন্ট ইমপোর্ট */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+Bengali:wght@400;500;700;800&display=swap');
 
+        /* বেসিক রিসেট */
         * {
             margin: 0;
             padding: 0;
@@ -16,8 +17,8 @@
 
         body {
             font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
-            background-color: #fcfcfc;
-            color: #111;
+            background-color: #FAFAFA; /* আলী আবদাল স্টাইল সফট ব্যাকগ্রাউন্ড */
+            color: #222;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
@@ -28,175 +29,217 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 5%;
         }
 
         /* ন্যাভিগেশন বার */
         header {
-            padding: 40px 0;
+            padding: 30px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
-            letter-spacing: -0.5px;
+            color: #111;
         }
 
         nav ul {
             list-style: none;
             display: flex;
-            gap: 40px;
+            gap: 30px;
         }
 
         nav a {
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 500;
             color: #555;
-            transition: color 0.3s ease;
+            transition: color 0.2s ease;
         }
 
         nav a:hover {
+            color: #000;
+        }
+
+        /* হিরো সেকশন (টু-কলাম লেআউট) */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            padding: 80px 0;
+            min-height: 75vh;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
             color: #111;
         }
 
-        /* হিরো সেকশন */
-        .hero {
-            min-height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding-bottom: 50px;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 5vw, 5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            margin-bottom: 20px;
-        }
-
-        .hero h2 {
-            font-size: clamp(1.2rem, 2vw, 1.5rem);
-            font-weight: 400;
-            color: #666;
+        .hero-text p {
+            font-size: 1.15rem;
+            color: #444;
             margin-bottom: 30px;
+            max-width: 500px;
         }
 
-        .hero p {
-            max-width: 600px;
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 40px;
-        }
-
-        /* বাটন স্টাইল */
-        .hero-buttons {
+        /* নিউজলেটার ফর্ম (আলী আবদাল সিগনেচার স্টাইল) */
+        .newsletter-form {
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            max-width: 450px;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 15px 35px;
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .newsletter-form input:focus {
+            border-color: #111;
+        }
+
+        .btn-primary {
+            padding: 15px 30px;
             background-color: #111;
             color: #fff;
-            border-radius: 50px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: 600;
-            border: 1px solid #111;
-            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            white-space: nowrap;
         }
 
-        .btn:hover {
+        .btn-primary:hover {
             background-color: #333;
-            border-color: #333;
             transform: translateY(-2px);
         }
 
-        /* নতুন আউটলাইন বাটন (ব্লগের জন্য) */
-        .btn-outline {
-            background-color: transparent;
+        /* হিরো ইমেজ */
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            object-fit: cover;
+        }
+
+        /* সেকশন টাইটেল */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 40px;
             color: #111;
         }
 
-        .btn-outline:hover {
-            background-color: #111;
-            color: #fff;
-        }
-
-        /* প্রজেক্ট ও কাজের সেকশন */
-        section {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 50px;
-            letter-spacing: -0.5px;
+        /* প্রজেক্টস / কোর্স সেকশন */
+        .initiatives {
+            padding: 60px 0;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
 
         .card {
             background: #fff;
-            padding: 40px;
+            padding: 35px;
             border-radius: 16px;
-            border: 1px solid #eaeaea;
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02), 0 10px 15px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #f0f0f0;
         }
 
         .card:hover {
-            border-color: #111;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
         }
 
         .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            font-weight: 600;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: #111;
         }
 
         .card p {
-            color: #666;
-            font-size: 1rem;
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .card-link {
+            font-weight: 600;
+            color: #111;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
         }
 
         /* ফুটার */
         footer {
-            padding: 50px 0;
             text-align: center;
-            border-top: 1px solid #eaeaea;
+            padding: 60px 0 40px;
             margin-top: 50px;
-            color: #888;
+            color: #777;
             font-size: 0.9rem;
+            border-top: 1px solid #eaeaea;
         }
 
         /* রেস্পন্সিভ ডিজাইন */
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-            }
+        @media (max-width: 850px) {
             .hero {
-                min-height: 60vh;
+                flex-direction: column-reverse;
                 text-align: center;
-                align-items: center;
+                padding: 40px 0;
             }
-            .hero p {
-                text-align: center;
+            .hero-text p {
+                margin: 0 auto 30px;
             }
-            .hero-buttons {
+            .newsletter-form {
+                margin: 20px auto 0;
+                flex-direction: column;
+            }
+            .btn-primary {
+                width: 100%;
+            }
+            .hero-image {
                 justify-content: center;
+            }
+            nav ul {
+                gap: 15px;
             }
         }
     </style>
@@ -210,52 +253,60 @@
             <nav>
                 <ul>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#projects">Initiatives</a></li>
-                    <li><a href="blog.html">Blog</a></li> <!-- ব্লগের মেনু লিংক -->
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="#initiatives">Initiatives</a></li>
                 </ul>
             </nav>
         </header>
 
         <!-- হিরো সেকশন -->
         <main class="hero">
-            <h1>হ্যালো, আমি <br>তানভীর তারিফ</h1>
-            <h2>এলএলবি (LL.B.) শিক্ষার্থী, ঢাকা বিশ্ববিদ্যালয় | ডিজিটাল এডুকেটর</h2>
-            <p>আইন অধ্যয়নের পাশাপাশি ডিজিটাল শিক্ষাদান এবং কন্টেন্ট ক্রিয়েশন নিয়ে কাজ করছি। অ্যাকাডেমিক মেন্টরশিপ ও ডিজিটাল স্ট্র্যাটেজির মাধ্যমে শিক্ষাকে আরও সহজলভ্য করাই আমার লক্ষ্য।</p>
+            <div class="hero-text">
+                <h1>হ্যালো, আমি তানভীর।</h1>
+                <p>আমি ঢাকা বিশ্ববিদ্যালয়ের আইন বিভাগের একজন শিক্ষার্থী, অ্যাকাডেমিক মেন্টর এবং কন্টেন্ট ক্রিয়েটর। আমি আইন, শিক্ষাদান কৌশল এবং প্রোডাক্টিভিটি নিয়ে কাজ করি।</p>
+                
+                <!-- নিউজলেটার সাইনআপ (আলী আবদাল ভাইব) -->
+                <p style="font-size: 0.9rem; font-weight: 600; margin-bottom: -10px; color: #111;">আমার সাপ্তাহিক ইনসাইটস পেতে যুক্ত হোন:</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="আপনার ইমেইল এড্রেস" required>
+                    <button type="submit" class="btn-primary">সাবস্ক্রাইব</button>
+                </form>
+            </div>
             
-            <div class="hero-buttons">
-                <a href="#contact" class="btn">যোগাযোগ করুন</a>
-                <a href="blog.html" class="btn btn-outline">আমার ব্লগ</a> <!-- ব্লগের নতুন বাটন -->
+            <div class="hero-image">
+                <!-- আপনার একটি সুন্দর পোর্ট্রেট ছবি এখানে যুক্ত করুন -->
+                <img src="https://via.placeholder.com/400x500/eeeeee/aaaaaa?text=Your+Portrait+Image" alt="Tanvir Tarif">
             </div>
         </main>
 
-        <!-- প্রজেক্ট সেকশন -->
-        <section id="projects">
+        <!-- প্রজেক্ট ও উদ্যোগ সেকশন -->
+        <section id="initiatives" class="initiatives">
             <h2 class="section-title">আমার উদ্যোগসমূহ</h2>
             <div class="grid">
                 
                 <div class="card">
                     <h3>Jawhar Academy</h3>
-                    <p>একটি অনলাইন এডুকেশনাল প্ল্যাটফর্ম, যার মাধ্যমে বিশ্ববিদ্যালয় ভর্তিচ্ছু ও অ্যাকাডেমিক শিক্ষার্থীদের জন্য মানসম্মত কোর্স এবং দিকনির্দেশনা প্রদান করা হয়।</p>
+                    <p>বিশ্ববিদ্যালয় ভর্তিচ্ছু ও অ্যাকাডেমিক শিক্ষার্থীদের জন্য একটি আধুনিক অনলাইন এডুকেশনাল প্ল্যাটফর্ম। এখানে মানসম্মত কোর্স এবং মেন্টরশিপ প্রদান করা হয়।</p>
+                    <a href="#" class="card-link">বিস্তারিত দেখুন &rarr;</a>
                 </div>
 
                 <div class="card">
                     <h3>Project Consistency</h3>
-                    <p>শিক্ষার্থীদের প্রস্তুতির ধারাবাহিকতা বজায় রাখার জন্য একটি ২০০ দিনের বিশেষ প্র্যাকটিস প্রোগ্রাম। এখানে নিয়মিত পড়াশোনা এবং মূল্যায়নের ব্যবস্থা রয়েছে।</p>
+                    <p>শিক্ষার্থীদের প্রস্তুতির ধারাবাহিকতা ধরে রাখার জন্য ডিজাইন করা একটি ২০০ দিনের লাগাতার প্র্যাকটিস প্রোগ্রাম এবং রুটিন-ভিত্তিক গাইডলাইন।</p>
+                    <a href="#" class="card-link">প্রোগ্রামে যুক্ত হোন &rarr;</a>
                 </div>
 
                 <div class="card">
-                    <h3>Digital Content & Strategy</h3>
-                    <p>ফেসবুক, ইন্সটাগ্রাম ও টেলিগ্রামে অর্গানিক গ্রোথ, সোশ্যাল মিডিয়া ম্যানেজমেন্ট এবং শিক্ষামূলক কন্টেন্ট তৈরির মাধ্যমে অডিয়েন্স এনগেজমেন্ট বৃদ্ধি করা।</p>
+                    <h3>Digital Strategy</h3>
+                    <p>সোশ্যাল মিডিয়া প্ল্যাটফর্মগুলোতে (ফেসবুক, ইন্সটাগ্রাম, টেলিগ্রাম) অর্গানিক গ্রোথ, কন্টেন্ট প্ল্যানিং এবং অডিয়েন্স এঙ্গেজমেন্ট নিয়ে কাজ ও পরামর্শ।</p>
+                    <a href="blog.html" class="card-link">আর্টিকেল পড়ুন &rarr;</a>
                 </div>
 
             </div>
         </section>
 
         <!-- ফুটার -->
-        <footer id="contact">
-            <p>নতুন কোনো প্রজেক্ট বা কোলাবোরেশনের জন্য ইমেইল করুন।</p>
-            <h3 style="color: #111; margin: 15px 0;">hello@example.com</h3>
+        <footer>
             <p>&copy; 2026 Tanvir Tarif. All rights reserved.</p>
         </footer>
     </div>
