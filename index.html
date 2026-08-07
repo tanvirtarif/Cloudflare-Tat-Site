@@ -95,6 +95,13 @@
             margin-bottom: 40px;
         }
 
+        /* বাটন স্টাইল */
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
         .btn {
             display: inline-block;
             padding: 15px 35px;
@@ -102,12 +109,25 @@
             color: #fff;
             border-radius: 50px;
             font-weight: 600;
-            transition: transform 0.3s ease, background-color 0.3s ease;
+            border: 1px solid #111;
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
         }
 
         .btn:hover {
             background-color: #333;
+            border-color: #333;
             transform: translateY(-2px);
+        }
+
+        /* নতুন আউটলাইন বাটন (ব্লগের জন্য) */
+        .btn-outline {
+            background-color: transparent;
+            color: #111;
+        }
+
+        .btn-outline:hover {
+            background-color: #111;
+            color: #fff;
         }
 
         /* প্রজেক্ট ও কাজের সেকশন */
@@ -165,7 +185,7 @@
         /* রেস্পন্সিভ ডিজাইন */
         @media (max-width: 768px) {
             nav ul {
-                display: none; /* মোবাইলে মেনু হাইড করা হয়েছে সিম্পল রাখার জন্য */
+                display: none;
             }
             .hero {
                 min-height: 60vh;
@@ -174,6 +194,9 @@
             }
             .hero p {
                 text-align: center;
+            }
+            .hero-buttons {
+                justify-content: center;
             }
         }
     </style>
@@ -188,6 +211,7 @@
                 <ul>
                     <li><a href="#about">About</a></li>
                     <li><a href="#projects">Initiatives</a></li>
+                    <li><a href="blog.html">Blog</a></li> <!-- ব্লগের মেনু লিংক -->
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -198,7 +222,11 @@
             <h1>হ্যালো, আমি <br>তানভীর তারিফ</h1>
             <h2>এলএলবি (LL.B.) শিক্ষার্থী, ঢাকা বিশ্ববিদ্যালয় | ডিজিটাল এডুকেটর</h2>
             <p>আইন অধ্যয়নের পাশাপাশি ডিজিটাল শিক্ষাদান এবং কন্টেন্ট ক্রিয়েশন নিয়ে কাজ করছি। অ্যাকাডেমিক মেন্টরশিপ ও ডিজিটাল স্ট্র্যাটেজির মাধ্যমে শিক্ষাকে আরও সহজলভ্য করাই আমার লক্ষ্য।</p>
-            <a href="#contact" class="btn">যোগাযোগ করুন</a>
+            
+            <div class="hero-buttons">
+                <a href="#contact" class="btn">যোগাযোগ করুন</a>
+                <a href="blog.html" class="btn btn-outline">আমার ব্লগ</a> <!-- ব্লগের নতুন বাটন -->
+            </div>
         </main>
 
         <!-- প্রজেক্ট সেকশন -->
