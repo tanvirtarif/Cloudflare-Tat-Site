@@ -3,40 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>হোম নয় আমার বাড়ি naki | আমার ওয়েবসাইটটি এখন চেক করা হচ্ছে কতটুকু কাজ করছে</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Tanvir Tarif | Portfolio</title>
+    <style>
+        /* বেসিক রিসেট ও ফন্ট সেটআপ */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+Bengali:wght@300;400;600;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
+            background-color: #fcfcfc;
+            color: #111;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        /* ন্যাভিগেশন বার */
+        header {
+            padding: 40px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 40px;
+        }
+
+        nav a {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #111;
+        }
+
+        /* হিরো সেকশন */
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-bottom: 50px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 5vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            font-weight: 400;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .hero p {
+            max-width: 600px;
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: #111;
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+        }
+
+        /* প্রজেক্ট ও কাজের সেকশন */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            letter-spacing: -0.5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid #eaeaea;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #111;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* ফুটার */
+        footer {
+            padding: 50px 0;
+            text-align: center;
+            border-top: 1px solid #eaeaea;
+            margin-top: 50px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* রেস্পন্সিভ ডিজাইন */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none; /* মোবাইলে মেনু হাইড করা হয়েছে সিম্পল রাখার জন্য */
+            }
+            .hero {
+                min-height: 60vh;
+                text-align: center;
+                align-items: center;
+            }
+            .hero p {
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header & Navigation -->
-    <header>
-        <div class="container header-container">
-            <h1 class="logo">আমার বিসমিল্লাহ আলহামদুলিল্লাহ আল্লাহু আকবার ইত্যাদি ব্র্যান্ড</h1>
+
+    <div class="container">
+        <!-- হেডার -->
+        <header>
+            <div class="logo">Tanvir.</div>
             <nav>
-                <ul class="nav-links">
-                    <li><a href="index.html" class="active">হোম</a></li>
-                    <li><a href="products.html">প্রোডাক্টস</a></li>
-                    <li><a href="blog.html">ব্লগ</a></li>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Initiatives</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
-        </div>
-    </header>
+        </header>
 
-    <!-- Hero Section -->
-    <main>
-        <section class="hero">
-            <div class="container hero-content">
-                <h2>আমার প্রফেশনাল ওয়েবসাইটে স্বাগতম!</h2>
-                <p>এখানে আপনি পাবেন সেরা মানের সার্ভিস এবং প্রোডাক্ট। আমাদের লক্ষ্য আপনাদের সর্বোচ্চ সেবা প্রদান করা।</p>
-                <a href="products.html" class="btn">প্রোডাক্ট দেখুন</a>
+        <!-- হিরো সেকশন -->
+        <main class="hero">
+            <h1>হ্যালো, আমি <br>তানভীর তারিফ</h1>
+            <h2>এলএলবি (LL.B.) শিক্ষার্থী, ঢাকা বিশ্ববিদ্যালয় | ডিজিটাল এডুকেটর</h2>
+            <p>আইন অধ্যয়নের পাশাপাশি ডিজিটাল শিক্ষাদান এবং কন্টেন্ট ক্রিয়েশন নিয়ে কাজ করছি। অ্যাকাডেমিক মেন্টরশিপ ও ডিজিটাল স্ট্র্যাটেজির মাধ্যমে শিক্ষাকে আরও সহজলভ্য করাই আমার লক্ষ্য।</p>
+            <a href="#contact" class="btn">যোগাযোগ করুন</a>
+        </main>
+
+        <!-- প্রজেক্ট সেকশন -->
+        <section id="projects">
+            <h2 class="section-title">আমার উদ্যোগসমূহ</h2>
+            <div class="grid">
+                
+                <div class="card">
+                    <h3>Jawhar Academy</h3>
+                    <p>একটি অনলাইন এডুকেশনাল প্ল্যাটফর্ম, যার মাধ্যমে বিশ্ববিদ্যালয় ভর্তিচ্ছু ও অ্যাকাডেমিক শিক্ষার্থীদের জন্য মানসম্মত কোর্স এবং দিকনির্দেশনা প্রদান করা হয়।</p>
+                </div>
+
+                <div class="card">
+                    <h3>Project Consistency</h3>
+                    <p>শিক্ষার্থীদের প্রস্তুতির ধারাবাহিকতা বজায় রাখার জন্য একটি ২০০ দিনের বিশেষ প্র্যাকটিস প্রোগ্রাম। এখানে নিয়মিত পড়াশোনা এবং মূল্যায়নের ব্যবস্থা রয়েছে।</p>
+                </div>
+
+                <div class="card">
+                    <h3>Digital Content & Strategy</h3>
+                    <p>ফেসবুক, ইন্সটাগ্রাম ও টেলিগ্রামে অর্গানিক গ্রোথ, সোশ্যাল মিডিয়া ম্যানেজমেন্ট এবং শিক্ষামূলক কন্টেন্ট তৈরির মাধ্যমে অডিয়েন্স এনগেজমেন্ট বৃদ্ধি করা।</p>
+                </div>
+
             </div>
         </section>
-    </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; ২০২৬ আমার ব্র্যান্ড। সর্বস্বত্ব সংরক্ষিত।</p>
-        </div>
-    </footer>
+        <!-- ফুটার -->
+        <footer id="contact">
+            <p>নতুন কোনো প্রজেক্ট বা কোলাবোরেশনের জন্য ইমেইল করুন।</p>
+            <h3 style="color: #111; margin: 15px 0;">hello@example.com</h3>
+            <p>&copy; 2026 Tanvir Tarif. All rights reserved.</p>
+        </footer>
+    </div>
+
 </body>
 </html>
