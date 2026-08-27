@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Consistency | HSC/Alim'26 Batch</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Bangla -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #f8fafc;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .pulse-soft {
+            animation: pulse-soft 2s infinite;
+        }
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        /* Linktree style button hover */
+        .link-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        /* Modal Scrollbar Styling */
+        .modal-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+            border-radius: 8px;
+        }
+        .modal-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 8px;
+        }
+        .modal-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 right-5 z-50 hidden bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl transition-all duration-500 transform translate-y-0 border-l-4 border-green-700">
+        <div class="flex items-center">
+            <i class="fa-solid fa-bell text-2xl mr-3 animate-bounce"></i>
+            <div>
+                <h4 class="font-bold text-lg" id="toast-title">নতুন ভর্তি সম্পন্ন!</h4>
+                <p class="text-sm" id="toast-msg">এইমাত্র একজন শিক্ষার্থী যুক্ত হয়েছে。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Details Modal -->
+    <div id="detailsModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 transition-opacity">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col relative transform transition-transform scale-100">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-2xl">
+                <h3 class="text-xl font-bold text-blue-900"><i class="fa-solid fa-circle-info mr-2"></i> কোর্সের বিস্তারিত তথ্য</h3>
+                <button onclick="toggleModal()" class="text-slate-400 hover:text-red-500 transition-colors focus:outline-none">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body (Scrollable) -->
+            <div class="px-6 py-5 overflow-y-auto modal-scrollbar text-slate-700 text-[15px] md:text-base leading-relaxed space-y-5">
+                
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 text-slate-800">
+                    <p class="mb-2">বিশ্ববিদ্যালয় ভর্তি পরীক্ষায় অধিকাংশ শিক্ষার্থী পিছিয়ে পড়ে রিটেন অংশে। কারণ, তারা রিটেনকে অন্যান্য বিষয়ের মতো জাস্ট ক্লাস করা আর পড়ার বিষয় মনে করে। সত্যি বলতে— শুধু ক্লাস করে হুট করে রিটেনে ওস্তাদ হয়ে যাওয়া সম্ভব নয়। রিটেনে শুধু পড়ে ভালো করা সম্ভব নয়, এটা লিখে লিখে শেখার বিষয়।</p>
+                    <p>রিটেনের ক্ষেত্রে সাধারণ ভর্তি কোচিংগুলোতে জাস্ট মার্কস দিয়ে দেওয়া হয়; যেহেতু অনেক বেশি স্টুডেন্ট থাকে, তাই আলাদাভাবে তেমন বিস্তারিত গাইডলাইনের সুযোগ থাকে না। এই সমস্যা সমাধানের জন্যই রিটেন নিয়ে পার্সোনালাইজড মেন্টরশিপের এই উদ্যোগ।</p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold text-blue-800 border-b-2 border-blue-200 inline-block mb-3">Project Consistency রিটেন প্রোগামের ফিচারস:</h4>
+                    <ul class="space-y-3">
+                        <li><i class="fa-regular fa-clock text-blue-500 mr-2 w-5"></i> <strong>সময়সীমা:</strong> ঢাকা বিশ্ববিদ্যালয়ের 'বি' ইউনিট ভর্তি পরীক্ষা পর্যন্ত।</li>
+                        <li><i class="fa-brands fa-telegram text-blue-500 mr-2 w-5"></i> <strong>প্ল্যাটফর্ম:</strong> Telegram সিক্রেট গ্রুপ এবং Google Meet/Classroom।</li>
+                        <li><i class="fa-solid fa-video text-blue-500 mr-2 w-5"></i> <strong>মোট ক্লাস (৩০+টি):</strong> বাংলা ক্লাস ১০টি, ইংরেজি ক্লাস ১০টি, স্পেশাল গাইডলাইন ক্লাস ১০টি।</li>
+                        <li><i class="fa-solid fa-pen-nib text-blue-500 mr-2 w-5"></i> <strong>ডেইলি প্র্যাকটিস হোমওয়ার্ক:</strong> ৯০+</li>
+                        <li><i class="fa-solid fa-file-lines text-blue-500 mr-2 w-5"></i> <strong>মডেল টেস্ট:</strong> উইকলি টপিকওয়াইজ মডেল টেস্ট (MCQ + Written) ১৫+ এবং ফাইনাল মডেল টেস্ট ১০+।</li>
+                        <li><i class="fa-solid fa-chalkboard-user text-blue-500 mr-2 w-5"></i> <strong>বেসিক টু এডভান্স:</strong> বাংলা ও ইংরেজি রিটেন অংশের একদম বেসিক থেকে শুরু করে এ-টু-জেড পূর্ণাঙ্গ গাইডলাইন ও হ্যাকস নিয়ে বিশেষ ক্লাস।</li>
+                        <li><i class="fa-solid fa-building-columns text-blue-500 mr-2 w-5"></i> <strong>বিশ্ববিদ্যালয়ের আদলে এক্সাম:</strong> ঢাকা বিশ্ববিদ্যালয়সহ অন্যান্য শীর্ষ বিশ্ববিদ্যালয়ের ভর্তি পরীক্ষার হুবহু আদলে নিয়মিত এক্সাম।</li>
+                        <li><i class="fa-solid fa-comments text-blue-500 mr-2 w-5"></i> <strong>সরাসরি গাইডলাইন:</strong> পড়াশোনা বা প্রস্তুতি নিয়ে যেকোনো ধরনের কনফিউশনে সরাসরি কথা বলে গাইডলাইন নেওয়ার সুযোগ।</li>
+                    </ul>
+                </div>
+
+                <div class="bg-red-50 p-4 rounded-xl border border-red-200">
+                    <h4 class="font-bold text-red-800 mb-2"><i class="fa-solid fa-triangle-exclamation mr-1"></i> বি.দ্র. অনুগ্রহপূর্বক যারা এই কোর্সে এনরোল করবেন না:</h4>
+                    <ul class="list-disc pl-5 space-y-1 text-sm text-slate-700">
+                        <li><strong>রেডিমেইড মানসিকতা থাকলে:</strong> অর্থাৎ যদি ভাবেন শুধু ক্লাস দেখে যাবেন, নিজে কোনো প্র্যাকটিস করবেন না—তবে এই কোর্স আপনার জন্য নয়।</li>
+                        <li><strong>কমনের পেছনে ছুটলে:</strong> আমি কোনো 'কমন পড়া' বা 'চান্স পাওয়া'-র ভুয়া গ্যারান্টি দেই না।</li>
+                    </ul>
+                    <p class="mt-3 text-sm font-semibold text-slate-800">তবে এইটুকু গ্যারান্টি দিতে পারি—সব দিকনির্দেশনা মেনে নিয়মিত প্র্যাকটিস করলে, ইনশাআল্লাহ ভর্তি পরীক্ষায় যেকোনো প্রশ্নের উত্তর কনফিডেন্টলি লিখে আসতে পারবেন।</p>
+                </div>
+
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 rounded-b-2xl flex justify-end">
+                <button onclick="toggleModal()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                    বন্ধ করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white py-16 px-4 rounded-b-[3rem] shadow-xl text-center relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <span class="bg-yellow-400 text-slate-900 text-sm font-bold px-4 py-1 rounded-full uppercase tracking-wide">
+                <i class="fa-solid fa-graduation-cap"></i> Project Consistency
+            </span>
+            <h1 class="text-3xl md:text-5xl font-bold mt-6 leading-tight">
+                ঢাবি বি ইউনিট পূর্ণাঙ্গ লিখিত প্রস্তুতি <br>
+                <span class="text-yellow-300 text-2xl md:text-4xl">HSC/Alim 2026 Batch</span>
+            </h1>
+            <p class="mt-4 mb-8 text-lg md:text-xl text-blue-100 font-light">
+                বাংলা লিখিত ও English Written এক্সামে মুখস্থ বা কমন নয়, ফ্রিহ্যান্ড রাইটিংয়ে দক্ষ হয়ে ওঠার পূর্ণাঙ্গ গাইডলাইন
+            </p>
+            
+            <!-- Course Details Button -->
+            <div class="mt-6">
+                <button onclick="toggleModal()" class="bg-white/20 hover:bg-white/30 border border-white/50 text-white font-bold py-3 px-8 rounded-full shadow-lg backdrop-blur-sm transition-all transform hover:-translate-y-1">
+                    <i class="fa-solid fa-file-alt mr-2"></i> বিস্তারিত জানতে এখানে ক্লিক করুন
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Self-Study Package -->
+    <section class="pb-16 pt-4 px-4 bg-gradient-to-b from-red-50 to-white">
+        <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl border border-blue-200 overflow-hidden relative transform transition-all hover:scale-[1.01]">
+            <div class="absolute top-0 right-0 bg-blue-600 text-white px-6 py-2 rounded-bl-2xl font-bold text-sm shadow">
+                ভর্তি চলছে
+            </div>
+            <div class="p-8 text-center border-b border-slate-100">
+                <h2 class="text-3xl font-bold text-blue-900 mb-3"><i class="fa-solid fa-book-open-reader text-blue-600 mr-2"></i>DU B Written Batch</h2>
+                <p class="text-slate-600 text-sm md:text-base px-4 mb-6">
+                    ৩০+ Written গাইডলাইন ক্লাস, ৯০+ হোমওয়ার্ক, ২৫+ পূর্ণাঙ্গ মডেল টেস্ট, ম্যাটেরিয়ালস সহ সকল সার্ভিসের এক্সেস পেতে যুক্ত হতে পারো।
+                </p>
+                
+                <ul class="text-left text-sm text-slate-700 bg-slate-50 p-6 rounded-xl inline-block mb-6 shadow-sm border border-slate-200">
+                     <li class="mb-3 font-semibold"><i class="fa-solid fa-check-circle text-green-500 mr-2"></i> বেসিক থেকে এডভান্স ফ্রিহ্যান্ড রাইটিং গাইডলাইন।</li>
+                    <li class="mb-3 font-semibold"><i class="fa-solid fa-check-circle text-green-500 mr-2"></i> সর্বমোট ৩৫+ টি লাইভ/রেকর্ডেড ক্লাসের এক্সেস</li>
+                    <li class="mb-3 font-semibold"><i class="fa-solid fa-check-circle text-green-500 mr-2"></i> ১০+ বাংলা লিখিত ক্লাস</li>
+                     <li class="mb-3 font-semibold"><i class="fa-solid fa-check-circle text-green-500 mr-2"></i> ১৫+ ইংরেজি ফ্রিহ্যান্ড রাইটিং ক্লাস</li>
+                     <li class="mb-3 font-semibold"><i class="fa-solid fa-check-circle text-green-500 mr-2"></i> ১০+ অ্যাডমিশন গাইডলাইন ক্লাস</li>
+                    <li class="mb-3 font-semibold"><i class="fa-solid fa-check-circle text-green-500 mr-2"></i> ৯০+ রিটেন প্র্যাক্টিস হোমওয়ার্ক </li>
+                    <li class="mb-3 font-semibold"><i class="fa-solid fa-check-circle text-green-500 mr-2"></i> ২৫+ মডেল টেস্ট</li>
+                    <li class="mb-3 font-semibold"><i class="fa-solid fa-check-circle text-green-500 mr-2"></i> এক্সক্লুসিভ ম্যাটেরিয়ালস</li>
+                    <li class="mb-3 font-semibold"><i class="fa-solid fa-check-circle text-green-500 mr-2"></i> স্পেশাল Google Classroom ও Telegram গ্রুপ সাপোর্ট</li>
+                </ul>
+
+                <!-- 50% Discount Badge -->
+                <div class="mb-4">
+                    <span class="bg-red-500 text-white px-5 py-2 rounded-full text-sm font-bold shadow-md animate-pulse">
+                        <i class="fa-solid fa-tags mr-1"></i> ৫০% বিশাল ছাড়!
+                    </span>
+                </div>
+
+                <!-- Pricing -->
+                <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-6 mt-4">
+                    <div class="text-slate-400 text-2xl line-through decoration-red-500 decoration-2 font-bold">
+                        ২০৪০ টাকা
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-blue-300 hidden md:block text-2xl"></i>
+                    <div class="bg-green-100 text-green-800 px-8 py-4 rounded-2xl text-4xl font-extrabold border-2 border-green-500 shadow-lg">
+                        ১০২০ <span class="text-2xl font-bold">টাকা</span>
+                    </div>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div class="bg-slate-900 text-white rounded-xl p-5 shadow-inner max-w-xl mx-auto border-2 border-slate-800">
+                    <p class="text-yellow-400 font-bold mb-3 text-lg"><i class="fa-solid fa-stopwatch animate-pulse mr-1"></i> ৫০% ডিসকাউন্ট অফারটি শেষ হবে:</p>
+                    <div class="flex justify-center gap-3 md:gap-6">
+                        <div class="bg-white/10 px-3 py-2 rounded-lg min-w-[70px]">
+                            <div id="cd-days" class="text-2xl md:text-3xl font-bold">০৪</div>
+                            <div class="text-xs text-slate-300">দিন</div>
+                        </div>
+                        <div class="text-2xl font-bold py-2">:</div>
+                        <div class="bg-white/10 px-3 py-2 rounded-lg min-w-[70px]">
+                            <div id="cd-hours" class="text-2xl md:text-3xl font-bold">১২</div>
+                            <div class="text-xs text-slate-300">ঘণ্টা</div>
+                        </div>
+                        <div class="text-2xl font-bold py-2">:</div>
+                        <div class="bg-white/10 px-3 py-2 rounded-lg min-w-[70px]">
+                            <div id="cd-minutes" class="text-2xl md:text-3xl font-bold">২০</div>
+                            <div class="text-xs text-slate-300">মিনিট</div>
+                        </div>
+                        <div class="text-2xl font-bold py-2">:</div>
+                        <div class="bg-white/10 px-3 py-2 rounded-lg min-w-[70px] border border-red-500/30">
+                            <div id="cd-seconds" class="text-2xl md:text-3xl font-bold text-red-400">১৩</div>
+                            <div class="text-xs text-slate-300">সেকেন্ড</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-blue-50 p-8 text-center border-t border-blue-100">
+                <h4 class="font-bold text-lg text-slate-800 mb-2">🚀 যেভাবে ভর্তি হবে:</h4>
+                <p class="text-sm text-slate-600 mb-3">নিচের Personal নম্বরে যে কোনো মাধ্যম থেকে Send Money করো (bKash/Nagad/Rocket/uPay/mCash/Cellfin/PahaoPay)। নাম্বারটি কপি করতে ট্যাপ করো:</p>
+                <div class="bg-white py-3 px-6 rounded-lg text-2xl font-bold tracking-widest text-blue-700 mb-4 border-2 border-dashed border-blue-400 text-center select-all cursor-pointer inline-block shadow-sm">
+                    01319493553
+                </div>
+                <p class="text-xs text-slate-500 text-center mb-6"> <b>Send Money সম্পন্ন করার পর স্ক্রিনশট বা শেষ চার ডিজিট এবং তোমার নাম ও কলেজের নাম নিচের Telegram ইনবক্সে জানাও </b>।</p>
+                
+                <a href="https://t.me/tanvirtarif1" class="block w-full md:w-3/4 mx-auto text-center bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-transform transform hover:scale-105">
+                    <i class="fa-brands fa-telegram text-xl mr-2"></i> পেমেন্ট সম্পন্ন করে ইনবক্সে জানাও
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section (Moved before Course Outline) -->
+    <section class="bg-slate-50 py-16 px-4 border-t border-slate-200">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 text-slate-800">শিক্ষার্থীদের মতামত</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-blue-50 absolute top-4 right-4"></i>
+                    <div class="flex text-yellow-400 text-sm mb-3">
+                         <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 italic">"ইংরেজি রিটেন নিয়ে অনেক ভয় ছিল। Project Consistency এর রেগুলার প্র্যাকটিস আর মডেল টেস্ট আমাকে অনেক কনফিডেন্ট করেছে।"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-200 rounded-full flex items-center justify-center text-green-700 font-bold">S</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">মৌমিতা ইশরাক</h4>
+                            <p class="text-xs text-slate-500">ঢাকা বিশ্ববিদ্যালয় (২০২৫-২৬ সেশন)</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Review 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-blue-50 absolute top-4 right-4"></i>
+                    <div class="flex text-yellow-400 text-sm mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 italic">"আলহামদুলিল্লাহ, লিখিত নিয়ে অনেক চিন্তা ছিল, কিন্তু কয়েকটি ক্লাস করার পরে বুঝতে পারছি যে আসলে প্র্যাকটিস টা কিভাবে করতে হয় এবং বিশেষ করে আপনার এত সুন্দর প্রতিনিয়ত পড়া দেওয়া এবং নেওয়া।"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-200 rounded-full flex items-center justify-center text-blue-700 font-bold">A</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">আরাফাত হামিম</h4>
+                            <p class="text-xs text-slate-500">এইচএসসি ২০২৬, চলমান ব্যাচের শিক্ষার্থী</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Review 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-blue-50 absolute top-4 right-4"></i>
+                    <div class="flex text-yellow-400 text-sm mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 italic">"রিটেন ব্যাচটাতে ঢাবির জন্য ভর্তি হলেও এমসিকিউতে খারাপ করায় দুর্ভাগ্যবশত ঢাবিতে চান্স হয়নি। তবে এই প্রস্তুতি দিয়েই খুলনা বিশ্ববিদ্যালয়ের রিটেনে ভালো করতে পেরেছিলাম। ভাইয়ার গাইডলাইন অনুযায়ী ফ্রিহ্যান্ড রাইটিং এভাবে হাতে কলমে শেখার ফলে সবখানেই এটা কাজে দিচ্ছে।"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-200 rounded-full flex items-center justify-center text-blue-700 font-bold">A</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">নূরে জান্নাত</h4>
+                            <p class="text-xs text-slate-500">খুলনা বিশ্ববিদ্যালয় (২০২৫-২৬ সেশন)</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Review 4 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-blue-50 absolute top-4 right-4"></i>
+                    <div class="flex text-yellow-400 text-sm mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 italic">"আগে ৩-৪ দিন পড়ার পর আবার কয়েকদিন আলসেমি করে কোনো পড়াই হতো না। Project Consistency ব্যাচে যুক্ত হওয়ার পর প্রতিদিনের ট্র্যাকারের কারণে পড়ার ট্র্যাক মিস হওয়ার সুযোগ নেই। এই জার্নি আমার রুটিন পুরোপুরি বদলে দিয়েছে।"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-200 rounded-full flex items-center justify-center text-blue-700 font-bold">A</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">রাশেদুল ইসলাম</h4>
+                            <p class="text-xs text-slate-500">এইচএসসি ২০২৬, চলমান ব্যাচের শিক্ষার্থী</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Review 5 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-blue-50 absolute top-4 right-4"></i>
+                    <div class="flex text-yellow-400 text-sm mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 italic">"মডেল টেস্ট প্রশ্নগুলোর স্ট্যান্ডার্ড অসাধার। তানভীর ভাইয়ার চমৎকার গাইডলাইন আর প্রতিদিনের এই রিটেন প্র্যাকটিস হ্যাবিটের কারণে রিটেন পরীক্ষার ভয় একেবারেই কেটে গেছিল।"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-200 rounded-full flex items-center justify-center text-blue-700 font-bold">A</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">নুসরাত জাহান</h4>
+                            <p class="text-xs text-slate-500">ঢাকা বিশ্ববিদ্যালয় (২০২৫-২৬ সেশন)</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Review 6 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-blue-50 absolute top-4 right-4"></i>
+                    <div class="flex text-yellow-400 text-sm mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 italic">"খাতা এতো ডিটেইলসে চেক করে দিবে আমি ভাবতেও পারিনি। প্রত্যেকটা ভুল পয়েন্ট আউট করে দিতো, যা অন্য কোথাও পাইনি।"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center text-purple-700 font-bold">J</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">Jubair Ahmad</h4>
+                            <p class="text-xs text-slate-500">রাজশাহী বিশ্ববিদ্যালয় (২০২৫-২৬ সেশন)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Outline PDF Preview -->
+    <section class="max-w-4xl mx-auto py-16 px-4">
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 p-6 md:p-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-4 text-slate-800">
+                <i class="fa-solid fa-file-pdf text-red-500 mr-2"></i> ভর্তি পরীক্ষা পর্যন্ত টানা চার মাসের বিস্তারিত আউটলাইন ও রুটিন
+            </h2>
+            <p class="text-center text-slate-600 mb-8 text-sm md:text-base">
+                নিচের পিডিএফ থেকে কোর্সের সম্পূর্ণ আউটলাইন এবং ক্লাস ও মডেল টেস্টের রুটিন বিস্তারিত দেখে নাও
+            </p>
+            
+            <!-- PDF Viewer Container -->
+            <div class="relative w-full rounded-xl overflow-hidden border-2 border-slate-200 bg-slate-100 h-[400px] md:h-[600px] shadow-inner">
+                <iframe src="https://drive.google.com/file/d/1LpK9rwBWZtAOyU7BOM9LRJ5JUoALInt8/preview" class="w-full h-full" frameborder="0" loading="lazy"></iframe>
+            </div>
+
+            <!-- Download Button -->
+            <div class="mt-8 text-center">
+                <a href="https://drive.google.com/file/d/1LpK9rwBWZtAOyU7BOM9LRJ5JUoALInt8/view" target="_blank" class="inline-flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-8 rounded-full transition-colors shadow-sm border border-slate-300">
+                    <i class="fa-solid fa-download mr-2"></i> আউটলাইনটি ডাউনলোড করো
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Weekly Routine PDF Preview (New Section) -->
+    <section class="max-w-4xl mx-auto pb-16 px-4">
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 p-6 md:p-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-4 text-slate-800">
+                <i class="fa-solid fa-calendar-days text-blue-500 mr-2"></i> সাপ্তাহিক রুটিন
+            </h2>
+            <p class="text-center text-slate-600 mb-8 text-sm md:text-base">
+                নিচের পিডিএফ থেকে সাপ্তাহিক প্র্যাক্টিস, ক্লাস ও মডেল টেস্টের রুটিন দেখে নাও।
+            </p>
+            
+            <!-- PDF Viewer Container -->
+            <div class="relative w-full rounded-xl overflow-hidden border-2 border-slate-200 bg-slate-100 h-[400px] md:h-[600px] shadow-inner">
+                <!-- Replace this link with your actual Weekly Routine PDF link -->
+                <iframe src="https://drive.google.com/file/d/1EKWfK63Sshu8iitHvjX7qhQVJE3_ESgn/preview" class="w-full h-full" frameborder="0" loading="lazy"></iframe>
+            </div>
+
+            <!-- Download Button -->
+            <div class="mt-8 text-center">
+                <a href="https://drive.google.com/file/d/1EKWfK63Sshu8iitHvjX7qhQVJE3_ESgn/view" target="_blank" class="inline-flex items-center justify-center bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold py-3 px-8 rounded-full transition-colors shadow-sm border border-blue-200">
+                    <i class="fa-solid fa-download mr-2"></i> সাপ্তাহিক রুটিনটি ডাউনলোড করো
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Linktree Style Links Hub -->
+    <section class="py-16 px-4 bg-slate-900 text-white rounded-t-[3rem]">
+        <div class="max-w-md mx-auto text-center">
+            <div class="w-20 h-20 bg-white rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
+                <i class="fa-solid fa-book-open-reader text-3xl text-blue-600"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Connect with Me</h2>
+            <p class="text-slate-400 text-sm mb-8">নিচের লিংকগুলো থেকে যুক্ত হও</p>
+            
+            <div class="flex flex-col gap-4">
+                <a href="https://www.facebook.com/tanvirtarif.learn" class="link-btn flex items-center p-4 bg-white/10 hover:bg-white/20 rounded-xl transition-all border border-white/10">
+                    <i class="fa-brands fa-facebook text-blue-500 text-2xl w-10"></i>
+                    <span class="font-semibold text-lg flex-1 text-left ml-2">Facebook পেইজ</span>
+                    <i class="fa-solid fa-ellipsis text-slate-400"></i>
+                </a>
+                 <a href="https://www.youtube.com/@withTanvirTarif" class="link-btn flex items-center p-4 bg-white/10 hover:bg-white/20 rounded-xl transition-all border border-white/10">
+                    <i class="fa-brands fa-youtube text-red-500 text-2xl w-10"></i>
+                    <span class="font-semibold text-lg flex-1 text-left ml-2">Youtube চ্যানেল</span>
+                    <i class="fa-solid fa-ellipsis text-slate-400"></i>
+                </a>
+                <a href="https://www.facebook.com/groups/projectconsistency" class="link-btn flex items-center p-4 bg-white/10 hover:bg-white/20 rounded-xl transition-all border border-white/10">
+                    <i class="fa-solid fa-users text-blue-400 text-2xl w-10"></i>
+                    <span class="font-semibold text-lg flex-1 text-left ml-2">Facebook গ্রুপ</span>
+                    <i class="fa-solid fa-ellipsis text-slate-400"></i>
+                </a>
+                <a href="https://t.me/proconsistency" class="link-btn flex items-center p-4 bg-white/10 hover:bg-white/20 rounded-xl transition-all border border-white/10">
+                    <i class="fa-brands fa-telegram text-blue-300 text-2xl w-10"></i>
+                    <span class="font-semibold text-lg flex-1 text-left ml-2">Telegram গ্রুপ</span>
+                    <i class="fa-solid fa-ellipsis text-slate-400"></i>
+                </a>
+                
+                <a href="#" class="link-btn flex items-center p-4 bg-white/10 hover:bg-white/20 rounded-xl transition-all border border-white/10">
+                    <i class="fa-brands fa-whatsapp text-green-500 text-2xl w-10"></i>
+                    <span class="font-semibold text-lg flex-1 text-left ml-2">WhatsApp চ্যানেল</span>
+                    <i class="fa-solid fa-ellipsis text-slate-400"></i>
+                </a>
+            </div>
+        </div>
+        <footer class="text-center mt-16 text-slate-500 text-sm">
+            <p>&copy; 2026 Project Consistency by TanvirTarif. All rights reserved.</p>
+        </footer>
+    </section>
+
+    <!-- JavaScript For Interactivity -->
+    <script>
+        // Modal Toggle Function
+        function toggleModal() {
+            const modal = document.getElementById('detailsModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        document.getElementById('detailsModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                toggleModal();
+            }
+        });
+
+        // Number Converter (English to Bengali)
+        const engToBn = { '0':'০', '1':'১', '2':'২', '3':'৩', '4':'৪', '5':'৫', '6':'৬', '7':'৭', '8':'৮', '9':'৯' };
+        function convertToBanglaNumber(num) {
+            return num.toString().replace(/[0-9]/g, x => engToBn[x]);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // ==========================================
+            // ১. পপ-আপ নোটিফিকেশন লজিক
+            // ==========================================
+            const toast = document.getElementById('toast');
+            const toastTitle = document.getElementById('toast-title');
+            const toastMsg = document.getElementById('toast-msg');
+
+            function triggerToast(titleText, msgText, colorClass = "bg-green-500", borderClass = "border-green-700") {
+                toastTitle.innerText = titleText;
+                toastMsg.innerText = msgText;
+                
+                // Reset colors
+                toast.className = `fixed top-5 right-5 z-50 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl transition-all duration-500 transform translate-y-0 border-l-4 border-green-700`;
+                toast.classList.replace("bg-green-500", colorClass);
+                toast.classList.replace("border-green-700", borderClass);
+                
+                toast.classList.remove('hidden');
+
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 4000);
+            }
+
+            // প্রথম নোটিফিকেশন: ৫ সেকেন্ড পর (নতুন ভর্তি)
+            setTimeout(() => {
+                triggerToast("নতুন ভর্তি সম্পন্ন!", "এইমাত্র একজন সেলফ-স্টাডি প্যাকেজে যুক্ত হয়েছে।");
+            }, 5000);
+
+            // দ্বিতীয় নোটিফিকেশন: ১৫ সেকেন্ড পর (ছাড় শেষ ওয়ার্নিং)
+            setTimeout(() => {
+                triggerToast("অ্যালার্ট!", "৫০% বিশাল ডিসকাউন্ট শীঘ্রই শেষ হতে চলেছে!", "bg-red-500", "border-red-700");
+            }, 15000);
+
+            // লুপ নোটিফিকেশন: প্রতি ৩৫ সেকেন্ড পর পর
+            setInterval(() => {
+                triggerToast("নতুন ভর্তি সম্পন্ন!", "আরেকজন শিক্ষার্থী এইমাত্র প্যাকেজে যুক্ত হয়েছে।");
+            }, 35000);
+
+
+            // ==========================================
+            // ২. কাউন্টডাউন টাইমার (৪দিন ১২ ঘণ্টা ২০ মিনিট ১৩ সেকেন্ড)
+            // ==========================================
+            let timeToAdd = (4 * 24 * 60 * 60 * 1000) + (12 * 60 * 60 * 1000) + (20 * 60 * 1000) + (13 * 1000);
+            let endTime = new Date().getTime() + timeToAdd;
+
+            let countdownTimer = setInterval(() => {
+                let now = new Date().getTime();
+                let distance = endTime - now;
+
+                if (distance < 0) {
+                    clearInterval(countdownTimer);
+                    return;
+                }
+
+                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                days = String(days).padStart(2, '0');
+                hours = String(hours).padStart(2, '0');
+                minutes = String(minutes).padStart(2, '0');
+                seconds = String(seconds).padStart(2, '0');
+
+                document.getElementById('cd-days').innerText = convertToBanglaNumber(days);
+                document.getElementById('cd-hours').innerText = convertToBanglaNumber(hours);
+                document.getElementById('cd-minutes').innerText = convertToBanglaNumber(minutes);
+                document.getElementById('cd-seconds').innerText = convertToBanglaNumber(seconds);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
