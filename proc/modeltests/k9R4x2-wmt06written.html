@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Consistency - Weekly Model Test</title>
+    <title>Project Consistency - Written Question Paper</title>
     
     <!-- Google Fonts: Noto Serif Bengali -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,8 @@
             --primary-hover: #1d4ed8;
             --secondary: #475569;
             --success: #10b981;
-            --danger: #ef4444;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
             --warning: #f59e0b;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
@@ -26,9 +27,7 @@
             --font-family: 'Noto Serif Bengali', serif;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: var(--font-family);
@@ -47,17 +46,12 @@
             padding: 15px;
         }
 
-        /* Utility */
-        .hidden { display: none !important; }
-        .text-center { text-align: center; }
-        .text-left { text-align: left; }
-        
         /* Cards */
         .card {
             background: var(--card-bg);
             border-radius: 16px;
             box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.06);
-            padding: 25px 20px;
+            padding: 24px 20px;
             margin-bottom: 20px;
             border: 1px solid var(--border-color);
         }
@@ -67,14 +61,14 @@
             .container { padding: 25px; }
         }
 
-        /* Banner & Typography */
+        /* Banner */
         .banner-img {
             width: 100%;
             height: auto;
             max-height: 180px;
             object-fit: cover;
             border-radius: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             background-color: #e2e8f0;
         }
 
@@ -82,22 +76,43 @@
             color: var(--primary);
             font-size: 24px;
             font-weight: 800;
-            margin: 0 0 6px 0;
+            margin: 0 0 4px 0;
             letter-spacing: 0.5px;
+            text-align: center;
         }
 
         .sub-title { 
             font-size: 19px; 
             font-weight: 700; 
-            margin: 0 0 15px 0; 
-            color: var(--text-main); 
+            margin: 0 0 14px 0; 
+            color: var(--text-main);
+            text-align: center;
         }
-        
-        /* Rules & Marks Box */
+
+        /* Meta Badges */
+        .meta-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .badge-pill {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 13.5px;
+            font-weight: 700;
+        }
+
+        /* Rules Box */
         .rules-box {
             background: #f8fafc;
             border: 1px solid #cbd5e1;
-            border-left: 5px solid var(--primary);
+            border-left: 5px solid var(--danger);
             padding: 18px;
             border-radius: 10px;
             font-size: 15px;
@@ -109,7 +124,7 @@
 
         .rules-box h3 {
             margin: 0 0 10px 0;
-            color: var(--primary);
+            color: var(--danger);
             font-size: 17px;
             font-weight: 700;
         }
@@ -123,414 +138,151 @@
             margin-bottom: 8px;
         }
 
-        .notice-badge {
+        /* Deadline Notice */
+        .deadline-badge {
             background: #fef2f2;
             border: 1px solid #fecaca;
-            color: #b91c1c;
+            color: #991b1b;
             padding: 12px 14px;
             border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            margin-top: 12px;
+            font-weight: 700;
+            font-size: 14.5px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* Form Inputs */
-        .form-grid {
+        /* Drive Viewer Frame */
+        .drive-preview-container {
+            width: 100%;
+            height: 540px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1.5px solid #cbd5e1;
+            background: #f1f5f9;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        @media (max-width: 600px) {
+            .drive-preview-container { height: 400px; }
+        }
+
+        .drive-preview-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Action Buttons Grid */
+        .btn-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 16px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 16px;
         }
 
         @media (min-width: 600px) {
-            .form-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .btn-grid { grid-template-columns: 1fr 1fr; }
         }
 
-        .form-group label {
-            display: block;
-            font-size: 14.5px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--secondary);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.25s ease;
-            font-family: inherit;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-        }
-
-        .consent-container {
-            display: flex;
-            align-items: flex-start;
-            margin: 22px 0;
-            padding: 15px;
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 10px;
-            cursor: pointer;
-            text-align: left;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        .consent-container input {
-            margin-right: 12px;
-            margin-top: 5px;
-            width: 19px;
-            height: 19px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        /* Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
-            color: white;
-            border: none;
-            padding: 14px 26px;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 10px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.2s;
-            font-family: inherit;
-            display: inline-block;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        .btn-primary:hover {
-            opacity: 0.95;
-            box-shadow: 0 6px 18px -3px rgba(37, 99, 235, 0.35);
-        }
-
-        .btn-secondary {
-            background: #e2e8f0;
-            color: var(--text-main);
-            border: none;
-            padding: 12px 20px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            font-family: inherit;
-        }
-
-        .btn-print {
-            background: linear-gradient(135deg, #059669, #047857);
-            color: white;
-            border: none;
-            padding: 15px 24px;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 10px;
-            cursor: pointer;
-            width: 100%;
-            margin: 18px 0 10px 0;
-            display: flex;
+        .btn-action {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            transition: all 0.2s;
+            gap: 8px;
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
             font-family: inherit;
-            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
-        }
-
-        .btn-print:hover {
-            background: linear-gradient(135deg, #047857, #065f46);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35);
-        }
-
-        .btn-small {
-            background: var(--danger);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
             cursor: pointer;
-            font-size: 14px;
-            font-family: inherit;
+            border: none;
         }
 
-        /* Written Section Notice Card */
-        .written-notice-card {
+        .btn-drive {
             background: #ffffff;
-            border: 2px dashed #3b82f6;
+            color: #1e293b;
+            border: 1.5px solid #cbd5e1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .btn-drive:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+            transform: translateY(-1px);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--danger), var(--danger-hover));
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25);
+        }
+
+        .btn-download:hover {
+            box-shadow: 0 6px 18px rgba(220, 38, 38, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* Classroom Submission Section */
+        .submission-card {
+            background: #ffffff;
+            border: 2px dashed #059669;
             border-radius: 14px;
-            margin: 28px 0;
             padding: 24px 20px;
             text-align: center;
-            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.08);
+            margin-top: 25px;
+            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.08);
         }
 
-        .written-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .written-header h3 {
-            margin: 0;
+        .submission-title {
+            color: #065f46;
             font-size: 20px;
             font-weight: 800;
-        }
-
-        .written-timer-badge {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            color: #1d4ed8;
-            padding: 6px 16px;
-            border-radius: 20px;
-            display: inline-block;
-            font-size: 13.5px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .written-info-box {
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            padding: 18px;
-            color: #1e293b;
-            font-size: 16.5px;
-            font-weight: 700;
+            margin: 0 0 6px 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        /* Top Bar */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(8px);
-            padding: 12px 18px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 10px;
-            z-index: 100;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-        }
-        
-        .student-info { font-size: 13.5px; line-height: 1.4; text-align: left; }
-        .timer-box {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--danger);
-            background: #fef2f2;
-            padding: 4px 14px;
-            border-radius: 8px;
-            border: 1px solid #fecaca;
-            font-variant-numeric: tabular-nums;
-        }
-
-        @media (max-width: 500px) {
-            .top-bar { padding: 10px 14px; }
-            .timer-box { font-size: 17px; }
-        }
-
-        .section-header {
-            background: var(--primary);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 10px;
-            margin: 25px 0 16px 0;
-            font-size: 17px;
-            font-weight: 700;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
-        }
-
-        .question-card {
-            background: var(--card-bg);
-            padding: 18px;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            margin-bottom: 16px;
-            transition: border-color 0.2s;
-        }
-
-        .question-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 14px;
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        .options-list { list-style: none; padding: 0; margin: 0; }
-        .options-list li { margin-bottom: 10px; }
-
-        .option-label {
-            display: flex;
-            align-items: center;
-            padding: 11px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 15px;
-            user-select: none;
-            line-height: 1.5;
-        }
-
-        .option-label:hover:not(.locked) { background: #f8fafc; border-color: #94a3b8; }
-        .option-label input { margin-right: 12px; transform: scale(1.15); flex-shrink: 0; }
-        .option-label.locked { cursor: not-allowed; }
-
-        .selected-active {
-            background-color: #fef9c3 !important;
-            border-color: #eab308 !important;
-            color: #854d0e !important;
-            font-weight: 600;
-        }
-
-        /* Result Screen */
-        .result-grid {
+        .classroom-btn-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 14px;
-            margin: 22px 0;
+            gap: 12px;
+            margin-top: 18px;
         }
-        
+
         @media (min-width: 600px) {
-            .result-grid { grid-template-columns: repeat(3, 1fr); }
+            .classroom-btn-grid { grid-template-columns: 1fr 1fr; }
         }
 
-        .result-box {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            padding: 18px;
-            border-radius: 12px;
-            text-align: left;
-        }
-        .result-box h3 { margin: 0 0 8px 0; font-size: 17px; font-weight: 700; color: var(--primary); text-align: center; }
-        .result-box .score { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; }
-        .result-box .details { font-size: 14px; color: var(--secondary); line-height: 1.7; border-top: 1px solid var(--border-color); padding-top: 10px; }
-        
-        .status-pass { color: var(--success); font-weight: 700; text-align: center; margin-bottom: 6px; font-size: 14.5px; }
-        .status-fail { color: var(--danger); font-weight: 700; text-align: center; margin-bottom: 6px; font-size: 14.5px; }
-
-        .total-details-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 14px;
-            padding-top: 14px;
-            border-top: 1px rgba(255, 255, 255, 0.2) solid;
-            font-size: 14px;
-            text-align: center;
+        .btn-classroom-web {
+            background: #047857;
+            color: white;
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);
         }
 
-        #print-evaluation-sheet { display: none; text-align: left; margin-top: 30px; }
-
-        .print-q-card {
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            padding: 14px;
-            margin-bottom: 12px;
-            page-break-inside: avoid;
+        .btn-classroom-web:hover {
+            background: #065f46;
+            transform: translateY(-1px);
         }
 
-        .print-q-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-            gap: 10px;
-        }
-
-        .print-badge {
-            font-size: 12px;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .badge-correct { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
-        .badge-wrong { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
-        .badge-unattempted { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
-
-        .print-options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px 14px;
-            margin: 10px 0;
-            background: #f8fafc;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #f1f5f9;
-        }
-
-        @media (max-width: 500px) {
-            .print-options-grid { grid-template-columns: 1fr; }
-        }
-
-        .print-opt-item {
-            font-size: 13.5px;
-            padding: 5px 8px;
-            border-radius: 5px;
-            line-height: 1.5;
-            color: #334155;
-            border: 1px solid transparent;
-        }
-
-        .print-opt-correct {
-            background-color: #dcfce7 !important;
-            border-color: #86efac !important;
-            color: #14532d !important;
-            font-weight: 700;
-        }
-
-        .print-opt-wrong {
-            background-color: #fee2e2 !important;
-            border-color: #fca5a5 !important;
-            color: #7f1d1d !important;
-            text-decoration: line-through;
-            font-weight: 600;
-        }
-
-        .print-exp-box {
+        .btn-classroom-app {
             background: #f0fdf4;
-            border-left: 3.5px solid #16a34a;
-            padding: 8px 12px;
-            font-size: 13px;
-            color: #1e293b;
-            margin-top: 8px;
-            border-radius: 4px;
-            line-height: 1.6;
+            color: #047857;
+            border: 1.5px solid #a7f3d0;
         }
 
+        .btn-classroom-app:hover {
+            background: #dcfce7;
+            transform: translateY(-1px);
+        }
+
+        /* Footer */
         .join-us-bar {
             margin: 25px 0 10px 0;
             padding: 14px 16px;
@@ -548,150 +300,86 @@
         .join-us-bar a { color: var(--secondary); text-decoration: none; font-weight: 700; }
         .join-us-bar a:hover { color: var(--primary); }
         .join-us-bar span.divider { color: #cbd5e1; }
-
-        @media print {
-            body { background: #ffffff !important; color: #000000 !important; font-size: 11pt; }
-            .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
-            .top-bar, .banner-img, .btn-primary, .btn-secondary, .btn-print, .btn-small, .written-notice-card, .join-us-bar, #step-1-screen, #step-2-screen, #exam-screen { display: none !important; }
-            .card { box-shadow: none !important; border: none !important; padding: 0 !important; margin-bottom: 15px !important; }
-            #result-summary-screen, #print-evaluation-sheet { display: block !important; }
-            .result-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 10px !important; page-break-inside: avoid; }
-            .result-box { border: 1px solid #94a3b8 !important; background: #ffffff !important; padding: 10px !important; }
-            .print-q-card { border: 1px solid #cbd5e1 !important; background: #ffffff !important; margin-bottom: 8px !important; padding: 10px !important; page-break-inside: avoid; }
-            .print-options-grid { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .print-opt-correct { background-color: #dcfce7 !important; border-color: #86efac !important; color: #14532d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .print-opt-wrong { background-color: #fee2e2 !important; border-color: #fca5a5 !important; color: #7f1d1d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .section-header { background: #0f172a !important; color: #ffffff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 8px 12px !important; margin: 15px 0 10px 0 !important; }
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     
-    <!-- STEP 1: INTRO & ENTRY FORM -->
-    <div id="step-1-screen" class="card text-center">
-        <img src="cover.png" alt="Project Consistency" class="banner-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'200\'><rect width=\'800\' height=\'200\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' font-size=\'22\' fill=\'%2364748b\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Project Consistency by Tanvir Tarif</text></svg>'">
+    <div class="card">
+        <!-- ব্যানার ছবি -->
+        <img src="../cover.png" alt="Project Consistency" class="banner-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'200\'><rect width=\'800\' height=\'200\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' font-size=\'22\' fill=\'%2364748b\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Project Consistency by Tanvir Tarif</text></svg>'">
         
+        <!-- টাইটেল ও সাব-টাইটেল -->
         <h1 class="main-title">Project Consistency</h1>
-        <h2 class="sub-title">Weekly Model Test 06</h2>
-        <p style="color: var(--secondary); font-size: 14.5px; margin-top: -8px;">Consistency is the Key to Success</p>
+        <h2 class="sub-title">DU 'B' Unit Weekly Model Test 06 (Written Part)</h2>
 
-        <form id="entry-form" onsubmit="event.preventDefault(); goToInstructions();">
-            <div class="form-grid text-left">
-                <div class="form-group">
-                    <label>Your Full Name (পূর্ণ নাম) *</label>
-                    <input type="text" id="stu-name" placeholder="যেমন: Abdullah Sakib" required>
-                </div>
-                <div class="form-group">
-                    <label>Your Code (রোল/কোড) *</label>
-                    <input type="text" id="stu-roll" placeholder="যেমন: 63 Sakib" required>
-                </div>
-                <div class="form-group" style="grid-column: 1 / -1;">
-                    <label>মোবাইল নাম্বারের শেষ ৪ ডিজিট *</label>
-                    <input type="text" id="stu-mobile" maxlength="4" pattern="[0-9]{4}" placeholder="যেমন: 4589" required>
-                </div>
-            </div>
+        <!-- মেটা ব্যাজ -->
+        <div class="meta-badges">
+            <span class="badge-pill">⏱️ পূর্ণ সময়: ৪০ মিনিট</span>
+            <span class="badge-pill">📊 পূর্ণমান: ৪০ নম্বর</span>
+            <span class="badge-pill">📑 বিষয়: বাংলা, English</span>
+        </div>
 
-            <button type="submit" class="btn-primary" style="margin-top: 22px;">পরবর্তী ধাপ: নিয়মাবলি ও নির্দেশিকা ➔</button>
-        </form>
-    </div>
-
-    <!-- STEP 2: RULES SCREEN -->
-    <div id="step-2-screen" class="card text-center hidden">
-        <h2 class="sub-title" style="color: var(--primary);">📋 পরীক্ষার নিয়মাবলী ও মানবণ্টন</h2>
-
+        <!-- নিয়মাবলি বক্স -->
         <div class="rules-box">
-            <h3>📌 অংশগ্রহণের জরুরি নিয়মাবলী:</h3>
+            <h3>📌 লিখিত পরীক্ষার জরুরি নিয়মাবলি:</h3>
             <ul>
-                <li>নিজ দায়িত্বে যথাযথ পরিবেশ তৈরি করে পূর্ণ সততার সাথে পরীক্ষা সম্পন্ন করতে হবে।</li>
-                <li>কোনো বই, নোট, ইন্টারনেট বা অন্য যে কোনো মাধ্যমের সাহায্য নেওয়া সম্পূর্ণ নিষিদ্ধ।</li>
-                <li>নির্ধারিত অংশে নাম, কোড সঠিকভাবে পূরণ করতে হবে।</li>
-                <li><strong>বিশেষ সতর্কবার্তা:</strong> MCQ অংশে <strong>একবার কোনো অপশন নির্বাচন করে ফেললে তা লক হয়ে যাবে</strong>; পরবর্তীতে তা পরিবর্তন করা যাবে না।</li>
-                <li>MCQ অংশ সাবমিট করার পর সামগ্রিক ফলাফল ও ব্যাখ্যাসহ উত্তর দেখা ও প্রিন্ট করা যাবে।</li>
+                <li>নিজ দায়িত্বে এফোর (A4) বা পরিষ্কার খাতায় মার্জিন টেনে পূর্ণ সততার সাথে পরীক্ষা সম্পন্ন করতে হবে।</li>
+                <li>প্রতিটি পৃষ্ঠার ওপরে নিজের <strong>নাম, রোল/কোড এবং পৃষ্ঠা নম্বর (যেমন: 1/4, 2/4)</strong> স্পষ্ট অক্ষরে লিখতে হবে।</li>
+                <li>কোনো বই, নোট, অভিধান বা ইন্টারনেটের সাহায্য নেওয়া সম্পূর্ণ নিষিদ্ধ।</li>
+                <li>নির্ধারিত সময়ের মধ্যে খাতার স্পষ্ট ছবি তুলে তা একটি <strong>PDF ফাইলে রূপান্তর</strong> করতে হবে। ফাইলের নাম হবে: <code>রোল_নাম_WMT06.pdf</code>।</li>
             </ul>
 
-            <h3>📊 MCQ অংশের বিষয় ও মানবণ্টন:</h3>
-            <ul>
-                <li><strong>বাংলা:</strong> ১ × ১৫ = ১৫ (পাস মার্ক: <strong>৫</strong>)</li>
-                <li><strong>English:</strong> 1 × 15 = 15 (Pass Mark: <strong>5</strong>)</li>
-                <li><strong>সাধারণ জ্ঞান:</strong> ১ × ৩০ = ৩০ (পাস মার্ক: <strong>১০</strong>)</li>
-                <li><strong>সর্বমোট:</strong> ১ × ৬০ = ৬০ (মোট পাস মার্ক: <strong>২৪</strong>)</li>
-                <li><strong>সময়:</strong> <strong>২৫ মিনিট</strong> | <strong>নেগেটিভ মার্কিং:</strong> প্রতি ভুল উত্তরের জন্য <strong>০.২৫</strong> নম্বর কাটা যাবে।</li>
-            </ul>
-
-            <div class="notice-badge">
-                ⚠️ একজন শিক্ষার্থী একবারই সাবমিট করতে পারবেন। নির্ধারিত ২৫ মিনিট পার হলে MCQ উত্তরপত্র স্বয়ংক্রিয়ভাবে জমা হয়ে যাবে।
+            <div class="deadline-badge">
+                <span>⏰</span>
+                <span><strong>খাতা জমা দেওয়ার শেষ সময়:</strong> আজ রাত ১০:৩০ মিনিট পর্যন্ত।</span>
             </div>
         </div>
 
-        <label class="consent-container">
-            <input type="checkbox" id="consent-check" required>
-            <span>আমি সকল নিয়ম ও মানবণ্টন মনোযোগ দিয়ে পড়েছি এবং সকল শর্তে সম্মত হয়ে পরীক্ষা শুরু করছি।</span>
-        </label>
+        <!-- ================= গুগল ড্রাইভ লাইভ প্রিভিউ ================= -->
+        <h3 style="margin: 25px 0 10px 0; color: #1e293b; font-size: 18px; text-align: left;">
+            📄 লিখিত প্রশ্নপত্র (লাইভ প্রিভিউ):
+        </h3>
 
-        <button type="button" class="btn-primary" onclick="startExam()">🚀 পরীক্ষা শুরু করুন (Start Exam)</button>
-        <button type="button" class="btn-secondary" onclick="backToEntry()">⬅️ তথ্য সংশোধন করুন</button>
-    </div>
+        <div class="drive-preview-container">
+            <!-- ড্রাইভ ফাইলের লাইভ প্রিভিউ ফ্রেম -->
+            <iframe id="pdf-preview-frame" src="https://drive.google.com/file/d/1hMy9GWtIxC6MygqiflGfr-1LZ6IQD2c4/preview" allow="autoplay"></iframe>
+        </div>
 
-    <!-- EXAM SCREEN -->
-    <div id="exam-screen" class="hidden exam-active">
-        <div class="top-bar">
-            <div class="student-info">
-                <strong><span id="display-name"></span></strong> (<span id="display-roll"></span>)<br>
-                <span style="color: var(--secondary); font-size: 12.5px;">Weekly Model Test 06</span>
+        <!-- ড্রাইভ রিডিরেক্ট ও ডাউনলোড বাটন -->
+        <div class="btn-grid">
+            <a id="btn-drive-view" href="https://drive.google.com/file/d/1hMy9GWtIxC6MygqiflGfr-1LZ6IQD2c4/view?usp=sharing" target="_blank" class="btn-action btn-drive">
+                <span>🔗</span> গুগল ড্রাইভে দেখুন (নতুন ট্যাব)
+            </a>
+            <a id="btn-drive-download" href="https://drive.google.com/uc?export=download&id=1hMy9GWtIxC6MygqiflGfr-1LZ6IQD2c4" class="btn-action btn-download">
+                <span>⬇️</span> প্রশ্নপত্র ডাউনলোড করুন (PDF)
+            </a>
+        </div>
+
+        <!-- ================= গুগল ক্লাসরুম সাবমিশন বক্স ================= -->
+        <div class="submission-card">
+            <div class="submission-title">
+                <span>📤</span> লিখিত খাতা জমা দেওয়ার নির্দেশনা
             </div>
-            <div class="timer-box" id="timer">25:00</div>
-            <div>
-                <button class="btn-small" onclick="checkAndSubmit()">সাবমিট করুন</button>
+            <p style="font-size: 14px; color: #475569; margin: 4px 0 16px 0;">
+                আপনার লিখিত খাতার পিডিএফ ফাইলটি তৈরি করে গুগল ক্লাসরুমের নির্ধারিত অ্যাসাইনমেন্টে <strong>'Turn In'</strong> করুন।
+            </p>
+
+            <div class="classroom-btn-grid">
+                <!-- ক্লাসরুম ওয়েব লিংক -->
+                <a href="https://classroom.google.com" target="_blank" class="btn-action btn-classroom-web">
+                    <span>🌐</span> গুগল ক্লাসরুম (ওয়েবসাইট)
+                </a>
+
+                <!-- মোবাইল অ্যাপ ওপেন করার ডিপ লিংক -->
+                <a href="intent://classroom.google.com/#Intent;package=com.google.android.apps.classroom;scheme=https;end;" class="btn-action btn-classroom-app">
+                    <span>📱</span> ক্লাসরুম অ্যাপ খুলুন (App)
+                </a>
             </div>
         </div>
 
-        <div id="questions-container"></div>
-
-        <button class="btn-primary" style="margin: 30px 0 60px 0;" onclick="checkAndSubmit()">সাবমিট করুন</button>
-    </div>
-
-    <!-- RESULT SCREEN -->
-    <div id="result-summary-screen" class="card text-center hidden">
-        <h2 style="color: var(--primary); margin-top: 0;">পরীক্ষার ফলাফল ও মূল্যায়ন পত্র</h2>
-        <h3 id="res-name" style="margin-bottom: 12px;"></h3>
-        
-        <div class="result-grid" id="section-results-container"></div>
-
-        <div class="card" style="background: var(--primary); color: white; padding: 22px; border: none; border-radius: 14px;">
-            <h3 style="margin: 0 0 6px 0; font-size: 18px; font-weight: 700;">সর্বমোট ফলাফল</h3>
-            <div style="font-size: 34px; font-weight: 800;" id="total-score-display">0.00</div>
-            <div style="font-size: 16px; margin-top: 6px; font-weight: 600;" id="total-status-display"></div>
-            
-            <div class="total-details-grid">
-                <div>✔️ সঠিক: <b id="total-correct-display">0</b></div>
-                <div>❌ ভুল: <b id="total-wrong-display">0</b></div>
-                <div>⚪ অনুত্তরিত: <b id="total-unattempted-display">0</b></div>
-            </div>
-        </div>
-
-        <button type="button" class="btn-print" onclick="printEvaluationReport()">
-            <span>🖨️</span> ব্যাখ্যাসহ MCQ উত্তরপত্র pdf ডাউনলোড বা প্রিন্ট করুন
-        </button>
-
-        <div class="written-notice-card">
-            <div class="written-header">
-                <span style="font-size: 24px;">📝</span>
-                <h3>লিখিত প্রশ্ন (Written Question)</h3>
-            </div>
-            <div class="written-timer-badge">⏳ লিখিত খাতা সাবমিট করার শেষ সময় রাত ১০:৩০ মিনিট</div>
-            <div class="written-info-box">
-                📌 লিখিত প্রশ্নের জন্য গুগল Classroom বা Telegram গ্রুপ চেক কর
-            </div>
-        </div>
-
-        <div id="print-evaluation-sheet">
-            <hr style="border: 0; border-top: 2px dashed #94a3b8; margin: 25px 0;">
-            <h3 style="color: var(--primary); text-align: center; margin-bottom: 16px;">📌 প্রশ্নভিত্তিক পূর্ণাঙ্গ মূল্যায়ন ও ৪টি অপশনসহ সমাধান</h3>
-            <div id="print-questions-list"></div>
-        </div>
-
+        <!-- Join Us সেকশন -->
         <div class="join-us-bar">
             <span style="color: var(--text-main); font-weight: 700;">Join Us:</span>
             <a href="https://www.facebook.com/tanvirtarif.learn" target="_blank"><b>Facebook Page</b></a>
@@ -704,439 +392,15 @@
 
 </div>
 
+<!-- ড্রাইভ ফাইল আইডি পরিবর্তনের স্ক্রিপ্ট -->
 <script>
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwkhIKxTnl9fyKJ71MIxSgg-s4ZBEVq3UzvhlsVoxtH-X4DsDKH7EbRn0JikZdfnuGqdA/exec";
-    const TEST_NAME = "DU B Weekly Model Test 06";
+    // 🔗 আপনার গুগল ড্রাইভ ফাইলের আইডি
+    const DRIVE_FILE_ID = "1hMy9GWtIxC6MygqiflGfr-1LZ6IQD2c4";
 
-    let userIP = "Unknown";
-    fetch('https://api.ipify.org?format=json')
-        .then(res => res.json())
-        .then(d => { userIP = d.ip; })
-        .catch(() => { userIP = "Unavailable"; });
-
-    // ⚡ সরাসরি আপনার শিটের ৬০টি প্রশ্ন (ইনস্ট্যান্ট লোডিং)
-    let examData = [
-        {
-            id: "bangla",
-            name: "বাংলা",
-            passMark: 5,
-            questions: [
-                { q: "শিক্ষাচিন্তা' প্রবন্ধে প্রাবন্ধিকের মতে প্রকৃত শিক্ষার প্রাথমিক লক্ষ্য কী হওয়া উচিত?", options: ["কেবল চাকরি লাভ", "মনুষ্যত্ববোধ ও চেতনার বিকাশ", "সামাজিক খ্যাতি অর্জন", "তোতাপাখির মতো মুখস্থ করা"], ans: 1, exp: "শিক্ষাচিন্তা' প্রবন্ধে শিক্ষার মূল উদ্দেশ্য হিসেবে জীব জীবিকা নয়, বরং মানুষের আত্মিক ও মানবিক বোধের বিকাশকে প্রাধান্য দেওয়া হয়েছে।" },
-                { q: "আহ্বান' গল্পে বিভূতিভূষণ বন্দ্যোপাধ্যায় কোন বিষয়টি সুন্দরভাবে ফুটিয়ে তুলেছেন?", options: ["শহরের যান্ত্রিকতা", "জমিদারদের শোষণ", "স্নেহার্দ্র মানবিক সম্পর্ক ও অসাম্প্রদায়িক চেতনা", "গ্রামীণ দলাদলি"], ans: 2, exp: "আহ্বান' গল্পে বুড়ি ও গোপালের মধ্যকার রক্তের সম্পর্কহীন এক গভীর মানবিক ও অসাম্প্রদায়িক স্নেহের সম্পর্ক চিত্রিত হয়েছে।" },
-                { q: "যৌবনের গান' প্রবন্ধে তারুণ্যকে কিসের প্রতীক হিসেবে অভিহিত করা হয়েছে?", options: ["অতীতমুখী চিন্তা", "অন্ধ আনুগত্য", "অলসতা ও উদাসীনতা", "গতিশীলতা ও অন্যায়ের বিরুদ্ধে বিদ্রোহ"], ans: 3, exp: "যৌবনের গান' প্রবন্ধে তারুণ্যকে গতি, সাম্য ও অনাচারের বিরুদ্ধে রুখে দাঁড়ানোর পরাক্রমশালী শক্তি বলা হয়েছে।" },
-                { q: "সাম্যবাদী' কবিতায় কবি নজরুল ইসলাম কোন স্থানটিকে সর্বশ্রেষ্ঠ তীর্থক্ষেত্র বলেছেন?", options: ["মানব হৃদয়", "মক্কা ও কাশী", "জেরুজালেম", "গয়া ও কাশী"], ans: 0, exp: "কবি মানব হৃদয়কে সকল উপাসনাপীঠ, মন্দির ও তীর্থক্ষেত্রের চেয়ে শ্রেষ্ঠ ও পবিত্র বলে ঘোষণা করেছেন।" },
-                { q: "আগে কী সুন্দর দিন কাটাইতাম' গানে বাউল শাহ আবদুল করিম কোন বেদনার কথা প্রকাশ করেছেন?", options: ["অর্থনৈতিক ক্ষতির বেদনা", "নগরজীবনের হতাশা", "আধুনিকতায় অতীতের সাম্প্রদায়িক প্রীতি ও সুহার্দ্য হারানোর বেদনা", "শিক্ষা ব্যবস্থার অভাব"], ans: 2, exp: "গানটিতে অতীতে গ্রামের হিন্দু-মুসলিম নির্বিশেষে যৌথ আনন্দ ও ভালোবাসার দিনগুলো হারিয়ে যাওয়ার আক্ষেপ প্রকাশ পেয়েছে।" },
-                { q: "সাধু ও চলিত ভাষারীতিতে কোন কোন পদের রূপের প্রধান তারতম্য ঘটে?", options: ["অনুসর্গ ও যোজক", "সর্বনাম ও ক্রিয়াপদ", "আবেগ ও ক্রিয়াবিশেষণ", "বিশেষ্য ও বিশেষণ"], ans: 1, exp: "সাধু ও চলিত ভাষার মধ্যে সর্বনাম এবং ক্রিয়াপদের রূপে সবচেয়ে বড় ও স্পষ্ট পার্থক্য দেখা যায়।" },
-                { q: "ণ-ত্ব বিধান' ব্যাকরণের কোন শ্রেণির শব্দের ক্ষেত্রে প্রযোজ্য?", options: ["বিদেশী শব্দের ক্ষেত্রে", "তদ্ভব শব্দের ক্ষেত্রে", "দেশি শব্দের ক্ষেত্রে", "কেবল তৎসম শব্দের ক্ষেত্রে"], ans: 3, exp: "ণ-ত্ব এবং ষ-ত্ব বিধানের নিয়মাবলী কেবল বাংলা ভাষায় ব্যবহৃত তৎসম বা সংস্কৃত শব্দের ক্ষেত্রে মানা হয়।" },
-                { q: "নিপাতনে সিদ্ধ' সন্ধির ক্ষেত্রে কোনটি সত্য?", options: ["যা স্বরসন্ধির নিয়ম মেনে চলে", "যা কেবল বিসর্গ সন্ধিতে হয়", "যা সমাসবদ্ধ পদে হয় না", "যা কোনো প্রচলিত সন্ধির নিয়ম মানে না"], ans: 3, exp: "যে সকল সন্ধি স্বর বা ব্যঞ্জন সন্ধির সাধারণ নিয়ম লঙ্ঘন করে সিদ্ধ হয়, সেগুলোকে নিপাতনে সিদ্ধ সন্ধি বলে।" },
-                { q: "গায়ক' শব্দটির সঠিক সন্ধিবিচ্ছেদ কোনটি?", options: ["গায় + ক", "গৈ + অক", "গা + অক", "গো + অক"], ans: 1, exp: "স্বরসন্ধির নিয়ম অনুযায়ী গৈ + অক = গায়ক।" },
-                { q: "পঙ্কজ' শব্দটি অর্থগত বিচারে কোন ধরণের শব্দ?", options: ["যোগরূঢ় শব্দ", "রূঢি় শব্দ", "মৌলিক শব্দ", "যৌগিক শব্দ"], ans: 0, exp: "পঙ্কে জন্মে যা তা রূপক অর্থে কেবল 'পদ্মফুল' নির্দেশ করায় এটি একটি যোগরূঢ় শব্দ।" },
-                { q: "বাংলা ব্যাকরণে 'পরাশ্রয়ী বর্ণ' কয়টি?", options: ["২টি", "৫টি", "৪টি", "৩টি"], ans: 3, exp: "অনুস্বার (ং), বিসর্গ (ঃ) এবং চন্দ্রবিন্দু (ঁ)— এই তিনটি বর্ণ অন্য বর্ণের আশ্রয় ছাড়া ব্যবহৃত হতে পারে না।" },
-                { q: "ধাতুর পর কোন প্রত্যয় যুক্ত হয়ে প্রাতিপদিক বা সাধিত শব্দ গঠিত হয়?", options: ["উপসর্গ", "কৃৎ প্রত্যয়", "বিভক্তি", "তদ্ধিত প্রত্যয়"], ans: 1, exp: "ধাতুর (ক্রিয়ামূলের) শেষে যে প্রত্যয় যুক্ত হয় তাকে কৃৎ প্রত্যয় বলে; গঠিত শব্দকে কৃদন্ত পদ বলে।" },
-                { q: "বিজ্ঞান' শব্দে 'বি' উপসর্গটি কী অর্থে ব্যবহৃত হয়েছে?", options: ["বিপরীত অর্থে", "অভাব অর্থে", "বিশেষ বা বিশিষ্ট অর্থে", "অপকর্ষ অর্থে"], ans: 2, exp: "বিজ্ঞান' শব্দে 'বি' উপসর্গটি 'বিশেষ জ্ঞান' অর্থে ব্যবহৃত হয়েছে।" },
-                { q: "কোনটি খাঁটি বাংলা উপসর্গের উদাহরণ?", options: ["অঘারাম (অঘা)", "সুসংবাদ (সু)", "প্রহার (প্র)", "অপমান (অপ)"], ans: 0, exp: "অঘা, অজ, অনা, আর ইত্যাদি খাঁটি বাংলা ২১টি উপসর্গের অন্তর্ভুক্ত।" },
-                { q: "হস্ত' শব্দটির তদ্ভব রূপ কোনটি?", options: ["হত্ত", "হস্তি", "হাত", "হাতি"], ans: 2, exp: "সংস্কৃত 'হস্ত' প্রাাকৃতের মাধ্যমে পরিবর্তিত হয়ে খাঁটি বাংলা বা তদ্ভব শব্দ 'হাত'-এ রূপ নিয়েছে।" }
-            ]
-        },
-        {
-            id: "english",
-            name: "English",
-            passMark: 5,
-            questions: [
-                { q: "Identify the sentence with correct Parallelism:", options: ["She likes swimming, danced, and sing.", "She likes swimming, dancing, and singing.", "She likes swimming, to dance, and singing.", "She likes to swim, dancing, and sings."], ans: 1, exp: "Parallel structure requires that elements in a list share the same grammatical form (all gerunds: swimming, dancing, singing)." },
-                { q: "Which sentence correctly avoids Redundancy?", options: ["He reverted back to his old habits.", "He returned back home at 5 PM.", "Repeat the answer again.", "He returned home at 5 PM."], ans: 3, exp: "Returned back', 'reverted back', and 'repeat again' are redundant because the prefixes already imply the repetition." },
-                { q: "Identify the sentence with correct Punctuation and Capitalization:", options: ["where are you going? asked john", "Where are you going? asked John.", "Where are you going? asked John", "Where are you going, asked John."], ans: 1, exp: "The direct speech begins with a capital letter, contains the question mark inside quotation marks, and proper noun John is capitalized." },
-                { q: "Identify the correct literary device in: 'The world is a stage.'", options: ["Hyperbole", "Personification", "Metaphor", "Simile"], ans: 2, exp: "A Metaphor directly compares two unlike things without using 'like' or 'as'." },
-                { q: "Her smile was as bright as the sun' is an example of:", options: ["Simile", "Metaphor", "Oxymoron", "Irony"], ans: 0, exp: "A Simile makes a explicit comparison between two different things using 'as' or 'like'." },
-                { q: "In the statement 'Deafening silence filled the room', the figure of speech used is:", options: ["Alliteration", "Personification", "Hyperbole", "Oxymoron"], ans: 3, exp: "An Oxymoron brings together two contradictory terms ('deafening' and 'silence')." },
-                { q: "Who wrote the famous epic poem 'Paradise Lost'?", options: ["John Keats", "John Milton", "Lord Byron", "Edmund Spenser"], ans: 1, exp: "Paradise Lost' is a celebrated 17th-century blank verse epic poem composed by John Milton." },
-                { q: "Identify the sentence free of Wordiness:", options: ["At this present point in time, she lives in Dhaka.", "She is currently living in Dhaka at the present moment.", "She lives in Dhaka now.", "Due to the fact that she lives in Dhaka, she stays there."], ans: 2, exp: "Option 2 states the fact concisely without unnecessary filler phrases." },
-                { q: "Complete the sentence using correct Parallelism: 'The manager requested a report that was concise, accurate, and _____ .'", options: ["with thoroughness", "thorough", "showing thoroughness", "written thoroughly"], ans: 1, exp: "The series requires parallel adjectives: 'concise, accurate, and thorough'." },
-                { q: "The literary device 'Alliteration' refers to:", options: ["Repetition of initial consonant sounds", "Exaggerated statement", "Opposite of expected meaning", "Repetition of vowel sounds inside words"], ans: 0, exp: "Alliteration is the repetition of the same initial consonant sound in a sequence of nearby words." },
-                { q: "Select the sentence with proper use of apostrophe:", options: ["The students book's are lost.", "The students's books are here.", "The student's books was all over.", "The students' books were left in the hall."], ans: 3, exp: "For plural nouns ending in 's', the possessive is formed by adding an apostrophe at the end (students')." },
-                { q: "In an admission test, to answer correctly is more important than ________.", options: ["to finish quickly", "finishing quickly", "you finish quickly", "quick finish"], ans: 0, exp: "Parallel structure with infinitive: 'to answer ... than to finish'." },
-                { q: "The boy used to like _____ and _____ model aeroplanes.", options: ["to making, to flying", "making, flying", "to make, to fly", "make, fly"], ans: 1, exp: "Both actions linked by 'and' must be parallel in gerund form (making, flying)." },
-                { q: "Which one is incorrect sentence?", options: ["We are united.", "He answerd my questions.", "He is appointed captain.", "We reached at home yesterday."], ans: 3, exp: "'Reach' is a transitive verb that directly takes an object without preposition 'at'." },
-                { q: "Choose the best answer: NASA is -", options: ["an abbreviation", "an acronym", "an initialism", "an antonym"], ans: 1, exp: "NASA is pronounced as a single word, so it is an acronym." }
-            ]
-        },
-        {
-            id: "gk",
-            name: "সাধারণ জ্ঞান",
-            passMark: 10,
-            questions: [
-                { q: "বাংলাদেশের জাতীয় প্রতীকে কতটি তারকা চিহ্নিত রয়েছে?", options: ["২টি (2 stars)", "৬টি (6 stars)", "৪টি (4 stars)", "৩টি (3 stars)"], ans: 2, exp: "বাংলাদেশের জাতীয় প্রতীকে উপরে দুটি করে মোট ৪টি তারকা রয়েছে যা সংবিধানের ৪টি মূলনীতিকে নির্দেশ করে।" },
-                { q: "বাংলাদেশের জাতীয় পতাকার দৈর্ঘ্য ও প্রস্থের অনুপাত কত?", options: ["২:১ (2:1)", "১০:৬ বা ৫:৩ (10:6 or 5:3)", "৪:৩ (4:3)", "৫:৪ (5:4)"], ans: 1, exp: "বাংলাদেশের জাতীয় পতাকার সরকারি দৈর্ঘ্য ও প্রস্থের অনুপাত হলো ১০:৬ (বা ৫:৩)।" },
-                { q: "জাতীয় পতাকার লাল বৃত্তের ব্যাসার্ধ পতাকার দৈর্ঘ্যের কত অংশ?", options: ["৩ ভাগের ১ ভাগ (1/3rd)", "৪ ভাগের ১ ভাগ (1/4th)", "৬ ভাগের ১ ভাগ (1/6th)", "৫ ভাগের ১ ভাগ (1/5th)"], ans: 3, exp: "লাল বৃত্তের ব্যাসার্ধ পতাকার সম্পূর্ণ দৈর্ঘ্যের এক-পঞ্চমাংশ (১/৫) বা ১০ ভাগের ২ ভাগ।" },
-                { q: "বাংলাদেশের জাতীয় সংগীত 'আমার সোনার বাংলা' রবীন্দ্রনাথ ঠাকুরের কোন কাব্যগ্রন্থ বা গান থেকে গৃহীত?", options: ["গীতবিতান / গীতিমাল্য", "বলাকা (Balaka)", "চিত্রা (Chitra)", "খেয়া (Kheya)"], ans: 0, exp: "জাতীয় সংগীতটি ১৯০৫ সালের বঙ্গভঙ্গ আন্দোলনের প্রেক্ষাপটে রবীন্দ্রনাথের রচিত বাউল সুরের গান থেকে গৃহীত।" },
-                { q: "জাতীয় সংগীতের কতটি চরণ আমাদের রাষ্ট্রীয় ও প্রাতিষ্ঠানিক অনুষ্ঠানে বাজানো হয়?", options: ["প্রথম ১০টি চরণ", "প্রথম ৪টি চরণ", "প্রথম ৬টি চরণ", "সম্পূর্ণ গানটি"], ans: 1, exp: "যে কোনো সরকারি বা প্রাতিষ্ঠানিক অনুষ্ঠানে জাতীয় সংগীতের প্রথম ৪টি চরণ বাদ্যযন্ত্রে বাজানো হয়।" },
-                { q: "১৯৭১ সালের কত তারিখে মুজিবনগরে স্বাধীন বাংলাদেশের প্রথম সরকার গঠিত হয়?", options: ["২৬ মার্চ ১৯৭১", "২৫ মার্চ ১৯৭১", "১০ এপ্রিল ১৯৭১", "১৭ এপ্রিল ১৯৭১"], ans: 2, exp: "১৯৭১ সালের ১০ এপ্রিল আনুষ্ঠানিকভাবে স্বাধীন বাংলাদেশের প্রথম সরকার (মুজিবনগর সরকার) গঠিত হয় এবং ১৭ এপ্রিল শপথ নেয়।" },
-                { q: "মুক্তিযুদ্ধে কতজন শহীদ বীর সন্তানকে 'বীরশ্রেষ্ঠ' উপাধিতে ভূষিত করা হয়েছে?", options: ["১৭৫ জন", "৬৮ জন", "৭ জন", "৪২৬ জন"], ans: 2, exp: "১৯৭১ সালের মুক্তিযুদ্ধে অসীম বীরত্ব ও আত্মদানের জন্য মোট ৭ জন শহীদকে বীরশ্রেষ্ঠ খেতাব দেওয়া হয়।" },
-                { q: "মুক্তিযুদ্ধে সর্বকনিষ্ঠ খেতাবপ্রাপ্ত বীর প্রতীক কে ছিলেন?", options: ["তারামন বিবি", "মতিউর রহমান", "সেতারা বেগম", "শহীদুল ইসলাম লালু"], ans: 3, exp: "মাত্র ১৩ বছর বয়সে সাহসিকতার সাথে যুদ্ধ করে খেতাব লাভ করা শহীদুল ইসলাম লালু ছিলেন সর্বকনিষ্ঠ বীর প্রতীক।" },
-                { q: "১৯৭১ সালের ১৪ ডিসেম্বর পাকিস্তানি বাহিনী কর্তৃক পরিকল্পিতভাবে হত্যা করা ব্যক্তিদের কী বলা হয়?", options: ["শহীদ বুদ্ধিজীবী", "বীরশ্রেষ্ঠ", "গণনায়ক", "সেক্টর কমান্ডার"], ans: 0, exp: "বিজয়ের প্রাক্কালে বাঙালি জাতিকে মেধা শূন্য করতে শিক্ষাবিদ, সাংবাদিক ও ডাক্তারদের হত্যা করা হয়; তাঁদের শহীদ বুদ্ধিজীবী বলা হয়।" },
-                { q: "অপরাজয় বাংলা' ভাস্কর্যটি কোথায় অবস্থিত?", options: ["কেন্দ্রীয় শহীদ মিনার", "ঢাকা বিশ্ববিদ্যালয় প্রাঙ্গণ", "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়", "রাজশাহী বিশ্ববিদ্যালয়"], ans: 1, exp: "সৈয়দ আবদুল্লাহ খালিদ নির্মিত প্রখ্যাত মুক্তিযুদ্ধভিত্তিক ভাস্কর্য 'অপরাজয় বাংলা' ঢাকা বিশ্ববিদ্যালয়ের কলাভবনের সামনে অবস্থিত।" },
-                { q: "সাভারে অবস্থিত 'জাতীয় স্মৃতিসৌধ' এর স্থপতি কে?", options: ["শামীম সিকদার", "সৈয়দ মাইনুল হোসেন", "এফ আর খান", "মেস্তফা মনোয়ার"], ans: 1, exp: "সাভারে অবস্থিত জাতীয় স্মৃতিসৌধের নকশা ও স্থপতি হলেন সৈয়দ মাইনুল হোসেন।" },
-                { q: "জাতীয় স্মৃতিসৌধে কতটি স্তম্ভ বা ফলক রয়েছে?", options: ["৫টি", "১১টি", "৯টি", "৭টি"], ans: 3, exp: "স্মৃতিসৌধটি বিভিন্ন ঐতিহাসিক আন্দোলনের প্রতীকী রূপ ধারণকারী ৭ জোড়া বা ৭টি ত্রিভুজাকার দেয়াল নিয়ে গঠিত।" },
-                { q: "মুক্তিযুদ্ধভিত্তিক বিখ্যাত চলচ্চিত্র 'স্টপ জেনোসাইড' (Stop Genocide) কার তৈরি?", options: ["চাষী নজরুল ইসলাম", "খান আতাউর রহমান", "জহির রায়হান", "তারেক মাসুদ"], ans: 2, exp: "১৯৭১ সালের পাকিস্তানি বাহিনীর গণহত্যার চিত্র তুলে ধরে জহির রায়হান প্রখ্যাত প্রামাণ্যচিত্র 'Stop Genocide' নির্মাণ করেন।" },
-                { q: "আগুনের পরশমণি' মুক্তিযুদ্ধভিত্তিক চলচ্চিত্রের পরিচালক কে?", options: ["হুমায়ূন আহমেদ", "সুভাষ দত্ত", "তারেক মাসুদ", "তানভীর মোকাম্মেল"], ans: 0, exp: "কথাশিল্পী ও চলচ্চিত্রকার হুমায়ূন আহমেদ তাঁর উপন্যাস অবলম্বনে কালজয়ী 'আগুনের পরশমণি' চলচ্চিত্রটি পরিচালনা করেন।" },
-                { q: "মুক্তিযুদ্ধ জাদুঘর' বাংলাদেশের কোথায় অবস্থিত?", options: ["ধানমণ্ডি, ঢাকা", "সাভার, ঢাকা", "আগারগাঁও, ঢাকা", "শাহবাগ, ঢাকা"], ans: 2, exp: "১৯৭১ সালের স্মৃতি বহনকারী মুক্তিযুদ্ধ জাদুঘরের বর্তমান নিজস্ব ভবন ঢাকার আগারগাঁওয়ে অবস্থিত।" },
-                { q: "১৯৯০ সালের স্বৈরাচারবিরোধী আন্দোলন ও গণঅভ্যুত্থানে কোন ছাত্রনেতার আত্মত্যাগ মাইলফলক ছিল?", options: ["শহীদ আসাদ", "শহীদ নূর হোসেন", "শহীদ জনী", "শহীদ ডা. মিলন"], ans: 1, exp: "১৯৯০ সালের ১০ নভেম্বর 'স্বৈরাচার নিপাত যাক, গণতন্ত্র মুক্তি পাক' বুকে-পিঠে লিখে আন্দোলন করতে গিয়ে নূর হোসেন শহীদ হন।" },
-                { q: "মজলুম জননেতা হিসেবে সমধিক পরিচিত ঐতিহাসিক নেতা কে?", options: ["নবাব সলিমুল্লাহ", "হোসেন শহীদ সোহরাওয়ার্দী", "শেরে বাংলা এ কে ফজলুল হক", "মাওলানা আবদুল হামিদ খান ভাসানী"], ans: 3, exp: "নিপীড়িত কৃষক-শ্রমিক ও সাধারণ মানুষের আজীবন অধিকারের জন্য লড়াই করায় মাওলানা ভাসানীকে 'মজলুম জননেতা' বলা হয়।" },
-                { q: "হোসেন শহীদ সোহরাওয়ার্দী' রাজনৈতিক ইতিহাসে কী হিসেবে খ্যাত ছিলেন?", options: ["দেশবন্ধু", "বঙ্গবন্ধু", "গণতন্ত্রের মানসপুত্র", "রূপকার"], ans: 2, exp: "অবিভক্ত বাংলার মুখ্যমন্ত্রী ও প্রখ্যাত এই জননেতাকে 'গণতন্ত্রের মানসপুত্র' আখ্যা দেওয়া হয়।" },
-                { q: "১৯৭১ সালে মুজিবনগর সরকারের প্রধানমন্ত্রীর দায়িত্ব কে পালন করেন?", options: ["তাজউদ্দীন আহমদ", "এ এইচ এম কামারুজ্জামান", "খন্দকার মোশতাক", "ক্যাপ্টেন এম মনসুর আলী"], ans: 0, exp: "তাজউদ্দীন আহমদ ১৯৭১ সালের মুক্তিযুদ্ধকালীন সময় সফলভাবে প্রধানমন্ত্রীর দায়িত্ব পালন করে মুক্তিযুদ্ধ পরিচালনা করেন।" },
-                { q: "ভাস্কর্য 'সংশপ্তক' কোন বিশ্ববিদ্যালয় প্রাঙ্গণে অবস্থিত?", options: ["চট্টগ্রাম বিশ্ববিদ্যালয়", "ঢাকা বিশ্ববিদ্যালয়", "রাজশাহী বিশ্ববিদ্যালয়", "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়"], ans: 3, exp: "শিল্পী হামিদুজ্জামান খান নির্মিত মুক্তিযুদ্ধভিত্তিক প্রখ্যাত ভাস্কর্য 'সংশপ্তক' জাহাঙ্গীরনগর বিশ্ববিদ্যালয়ে অবস্থিত।" },
-                { q: "সাবাশ বাংলাদেশ' ভাস্কর্যটি কোন বিশ্ববিদ্যালয়ে অবস্থিত?", options: ["ঢাকা বিশ্ববিদ্যালয়", "রাজশাহী বিশ্ববিদ্যালয়", "খুলনা বিশ্ববিদ্যালয়", "কুষ্টিয়া ইসলামী বিশ্ববিদ্যালয়"], ans: 1, exp: "শিল্পী নিতুন কুন্ডু নির্মিত ঐতিহাসিক 'সাবাশ বাংলাদেশ' ভাস্কর্যটি রাজশাহী বিশ্ববিদ্যালয়ে অবস্থিত।" },
-                { q: "বাংলাদেশের প্রথম জাতীয় সংসদের স্পিকার কে ছিলেন?", options: ["জমীর উদ্দিন সরকার", "হুমায়ূন রশীদ চৌধুরী", "মোহাম্মদুল্লাহ", "আব্দুল মালেক উকিল"], ans: 2, exp: "১৯৭৩ সালের ৭ এপ্রিল স্বাধীন বাংলাদেশের প্রথম জাতীয় সংসদ অধিবেশনে মোহাম্মদুল্লাহ স্পিকার নির্বাচিত হন।" },
-                { q: "মোদের গর্ব মোদের আশা, আ মরি বাংলা ভাষা' কালজয়ী গানটির রচয়িতা কে?", options: ["দ্বিজেন্দ্রলাল রায়", "অতুলপ্রসাদ সেন", "রজনীকান্ত সেন", "কাজী নজরুল ইসলাম"], ans: 1, exp: "ভাষা আন্দোলন ও স্বদেশী চেতনায় উদ্বুদ্ধ গানটির রচয়িতা ও সুরকার হলেন প্রখ্যাত গীতিকার অতুলপ্রসাদ সেন।" },
-                { q: "১৯৭১ সালের মুক্তিযুদ্ধে কতজন নারী বীর প্রতীক খেতাবে ভূষিত হন?", options: ["১ জন", "৩ জন", "৪ জন", "২ জন"], ans: 3, exp: "১৯৭১ সালের মুক্তিযুদ্ধে অসামান্য অবদানের জন্য ডা. সেতারা বেগম এবং তারামন বিবি— এই ২ জন বীর প্রতীক খেতাব পান।" },
-                { q: "মেহেরপুরের বৈদ্যনাথতলা গ্রামটির নাম পরবর্তীতে পরিবর্তন করে কী রাখা হয়?", options: ["মুজিবনগর", "স্বাধীননগর", "ঐতিহাসিকপুর", "আনন্দনগর"], ans: 0, exp: "১৯৭১ সালের ১৭ই এপ্রিল শপথ গ্রহণের দিন তাজউদ্দীন আহমদ স্থানটির নাম পরিবর্তন করে 'মুজিবনগর' রাখেন।" },
-                { q: "মুক্তিযুদ্ধের সময় কোন সেক্টরটি পুরোটাই জলপথ বা নৌ সীমানা কেন্দ্রিক ছিল?", options: ["৮ নম্বর সেক্টর", "৫ নম্বর সেক্টর", "১০ নম্বর সেক্টর", "২ নম্বর সেক্টর"], ans: 2, exp: "১০ নম্বর নৌ-কমান্ডো সেক্টরে কোনো নির্দিষ্ট ভৌগোলিক সীমানা বা নিয়মিত সেক্টর কমান্ডার ছিল না।" },
-                { q: "হাঙর নদী গ্রেনেড' মুক্তিযুদ্ধভিত্তিক বিখ্যাত উপন্যাসের রচয়িতা কে?", options: ["শওকত ওসমান", "সেলিনা হোসেন", "সৈয়দ শামসুল হক", "জাহানারা ইমাম"], ans: 1, exp: "কথাসাহিত্যিক সেলিনা হোসেন যশোর অঞ্চলের এক বীরমাতার ত্যাগকে কেন্দ্র করে 'হাঙর নদী গ্রেনেড' উপন্যাসটি লেখেন।" },
-                { q: "মোরা একটি ফুলকে বাঁচাবো বলে যুদ্ধ করি' কালজয়ী গানটির গীতিকার কে?", options: ["আলতাফ মাহমুদ", "আপেল মাহমুদ", "গোবিন্দ হালদার", "গাজী মাজহারুল আনোয়ার"], ans: 2, exp: "স্বাধীন বাংলা বেতার কেন্দ্র থেকে সম্প্রচারিত এই কালজয়ী উদ্দীপনামূলক গানের গীতিকার গোবিন্দ হালদার।" },
-                { q: "মুক্তিযুদ্ধের ঐতিহাসিক আত্মসমর্পণ দলিল কোথায় স্বাক্ষরিত হয়?", options: ["বঙ্গভবন", "শাহবাগ", "কার্জন হল", "রমনা রেসকোর্স ময়দান"], ans: 3, exp: "১৯৭১ সালের ১৬ ডিসেম্বর বিকেলে ঐতিহাসিক রমনা রেসকোর্স ময়দানে (বর্তমান সোহরাওয়ার্দী উদ্যান) আত্মসমর্পণের দলিল স্বাক্ষরিত হয়।" },
-                { q: "মুক্তিযুদ্ধের নৌ-অভিযান 'অপারেশন জ্যাকপট' কী ছিল?", options: ["মুক্তিবাহিনীর একটি ঐতিহাসিক নৌ-কমান্ডো অভিযান", "যৌথ বাহিনীর বিমান হামলা", "ঢাকা শহরে গেরিলা আক্রমণ", "আন্তর্জাতিক কূটনৈতিক প্রচারণা"], ans: 0, exp: "১৯৭১ সালের ১৫ আগস্ট পরিচালিত চট্টগ্রাম ও মংলা সমুদ্রবন্দরসহ নদী বন্দরগুলোতে নৌ-কমান্ডোদের একযোগে পরিচালিত সফল অপারেশন ছিল 'অপারেশন জ্যাকপট'।" }
-            ]
-        }
-    ];
-
-    let timerInterval;
-    let totalTime = 25 * 60; // ২৫ মিনিট
-    let hasSubmitted = false;
-    let studentData = {};
-    let sectionStats = {};
-    const optionLetters = ['A', 'B', 'C', 'D'];
-
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
-    function goToInstructions() {
-        const name = document.getElementById('stu-name').value.trim();
-        const roll = document.getElementById('stu-roll').value.trim();
-        const mobile = document.getElementById('stu-mobile').value.trim();
-
-        if (!name || !roll || !mobile || mobile.length !== 4) {
-            alert('দয়া করে সবগুলো তথ্য সঠিকভাবে পূরণ করুন (মোবাইলের ৪ ডিজিট আবশ্যক)।');
-            return;
-        }
-
-        studentData.name = name;
-        studentData.roll = roll;
-        studentData.mobile = mobile;
-
-        document.getElementById('step-1-screen').classList.add('hidden');
-        document.getElementById('step-2-screen').classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function backToEntry() {
-        document.getElementById('step-2-screen').classList.add('hidden');
-        document.getElementById('step-1-screen').classList.remove('hidden');
-    }
-
-    function startExam() {
-        const consent = document.getElementById('consent-check').checked;
-        if (!consent) {
-            alert('পরীক্ষা শুরু করার আগে নিয়মাবলিতে সম্মতি জানিয়ে চেকবক্সে টিক দিন।');
-            return;
-        }
-
-        document.getElementById('display-name').innerText = studentData.name;
-        document.getElementById('display-roll').innerText = studentData.roll;
-
-        document.getElementById('step-2-screen').classList.add('hidden');
-        document.getElementById('exam-screen').classList.remove('hidden');
-
-        examData.forEach(section => shuffleArray(section.questions));
-
-        renderQuestions();
-        startTimer();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function renderQuestions() {
-        const container = document.getElementById('questions-container');
-        let html = '';
-        let globalQIndex = 0;
-
-        examData.forEach(section => {
-            html += `<div class="section-header">${section.name} অংশ (প্রশ্ন: ${section.questions.length}টি, পাস মার্ক: ${section.passMark})</div>`;
-            
-            section.questions.forEach((q, i) => {
-                html += `
-                    <div class="question-card" id="q-card-${globalQIndex}">
-                        <div class="question-title">${i + 1}. ${q.q}</div>
-                        <ul class="options-list">
-                `;
-                
-                (q.options || []).forEach((opt, oIndex) => {
-                    html += `
-                        <li>
-                            <label class="option-label" id="label-${globalQIndex}-${oIndex}">
-                                <input type="radio" name="${section.id}_q${i}" value="${oIndex}" onchange="lockQuestionOption('${section.id}_q${i}', ${globalQIndex}, ${oIndex})">
-                                <strong style="margin-right:8px;">${optionLetters[oIndex] || ''}.</strong> ${opt}
-                            </label>
-                        </li>
-                    `;
-                });
-
-                html += `
-                        </ul>
-                    </div>
-                `;
-                globalQIndex++;
-            });
-        });
-
-        container.innerHTML = html;
-    }
-
-    function lockQuestionOption(name, globalIdx, selectedIdx) {
-        const radios = document.querySelectorAll(`input[name="${name}"]`);
-        Array.from(radios).forEach(radio => {
-            radio.disabled = true;
-            radio.closest('.option-label').classList.add('locked');
-        });
-
-        const selectedLabel = document.getElementById(`label-${globalIdx}-${selectedIdx}`);
-        if (selectedLabel) {
-            selectedLabel.classList.add('selected-active');
-        }
-    }
-
-    function startTimer() {
-        updateTimerDisplay();
-        timerInterval = setInterval(() => {
-            totalTime--;
-            updateTimerDisplay();
-
-            if (totalTime <= 0) {
-                clearInterval(timerInterval);
-                if (!hasSubmitted) {
-                    alert('সময় শেষ! আপনার উত্তরপত্র স্বয়ংক্রিয়ভাবে জমা নেওয়া হচ্ছে।');
-                    processSubmission();
-                }
-            }
-        }, 1000);
-    }
-
-    function updateTimerDisplay() {
-        const m = Math.floor(totalTime / 60).toString().padStart(2, '0');
-        const s = (totalTime % 60).toString().padStart(2, '0');
-        document.getElementById('timer').innerText = `${m}:${s}`;
-    }
-
-    function checkAndSubmit() {
-        if (hasSubmitted) return;
-        
-        let totalQ = 0;
-        examData.forEach(s => totalQ += s.questions.length);
-        const answered = document.querySelectorAll('input[type="radio"]:checked').length;
-        
-        let msg = `আপনি ${totalQ} টি প্রশ্নের মধ্যে ${answered} টির উত্তর দিয়েছেন।\n\nআপনি কি নিশ্চিতভাবে ফাইনাল সাবমিট করতে চান?`;
-
-        if (confirm(msg)) {
-            processSubmission();
-        }
-    }
-
-    function processSubmission() {
-        if (hasSubmitted) return;
-        hasSubmitted = true;
-        clearInterval(timerInterval);
-
-        let totalScoreAll = 0;
-        let grandCorrect = 0;
-        let grandWrong = 0;
-        let grandUnattempted = 0;
-
-        examData.forEach(section => {
-            let correctCount = 0;
-            let wrongCount = 0;
-            let unattemptedCount = 0;
-
-            section.questions.forEach((q, i) => {
-                const selected = document.querySelector(`input[name="${section.id}_q${i}"]:checked`);
-                const correctIdx = parseInt(q.ans);
-                
-                if (selected) {
-                    const selectedVal = parseInt(selected.value);
-                    if (selectedVal === correctIdx) {
-                        correctCount++;
-                    } else {
-                        wrongCount++;
-                    }
-                } else {
-                    unattemptedCount++;
-                }
-
-                document.querySelectorAll(`input[name="${section.id}_q${i}"]`).forEach(r => r.disabled = true);
-            });
-
-            const sectionScore = (correctCount * 1) - (wrongCount * 0.25);
-            
-            sectionStats[section.id] = {
-                name: section.name,
-                passMark: section.passMark,
-                score: sectionScore,
-                correct: correctCount,
-                wrong: wrongCount,
-                unattempted: unattemptedCount,
-                total: section.questions.length
-            };
-
-            totalScoreAll += sectionScore;
-            grandCorrect += correctCount;
-            grandWrong += wrongCount;
-            grandUnattempted += unattemptedCount;
-        });
-
-        // গুগল শিটে ডেটা পাঠানো
-        try {
-            if (GOOGLE_SCRIPT_URL) {
-                const ban = sectionStats['bangla'] || { correct: 0, wrong: 0, score: 0 };
-                const eng = sectionStats['english'] || { correct: 0, wrong: 0, score: 0 };
-                const gk = sectionStats['gk'] || { correct: 0, wrong: 0, score: 0 };
-
-                const sendUrl = `${GOOGLE_SCRIPT_URL}?testName=${encodeURIComponent(TEST_NAME)}&name=${encodeURIComponent(studentData.name)}&roll=${encodeURIComponent(studentData.roll)}&mobile=${encodeURIComponent(studentData.mobile)}&banRight=${ban.correct}&banWrong=${ban.wrong}&banScore=${ban.score.toFixed(2)}&engRight=${eng.correct}&engWrong=${eng.wrong}&engScore=${eng.score.toFixed(2)}&gkRight=${gk.correct}&gkWrong=${gk.wrong}&gkScore=${gk.score.toFixed(2)}&totalRight=${grandCorrect}&totalWrong=${grandWrong}&totalScore=${totalScoreAll.toFixed(2)}&ip=${encodeURIComponent(userIP)}`;
-
-                fetch(sendUrl, { method: 'POST', mode: 'no-cors' }).catch(() => {});
-            }
-        } catch(e) {}
-
-        generateResultSummary(totalScoreAll, grandCorrect, grandWrong, grandUnattempted);
-        buildPrintEvaluationList();
-    }
-
-    function generateResultSummary(totalScore, grandCorrect, grandWrong, grandUnattempted) {
-        document.getElementById('exam-screen').classList.add('hidden');
-        document.getElementById('result-summary-screen').classList.remove('hidden');
-
-        document.getElementById('res-name').innerText = `${studentData.name} (কোড: ${studentData.roll})`;
-
-        const container = document.getElementById('section-results-container');
-        let html = '';
-        let failedSubjects = [];
-
-        examData.forEach(section => {
-            const stat = sectionStats[section.id] || { score: 0, correct: 0, wrong: 0, unattempted: 0, total: 0, passMark: section.passMark };
-            const isPass = stat.score >= section.passMark;
-            if(!isPass) failedSubjects.push(section.name);
-
-            html += `
-                <div class="result-box">
-                    <h3>${section.name}</h3>
-                    <div class="score">${stat.score.toFixed(2)} / ${stat.total}</div>
-                    <div class="${isPass ? 'status-pass' : 'status-fail'}">
-                        ${isPass ? '✅ পাস করেছেন' : '❌ অনুত্তীর্ণ'} (পাস: ${section.passMark})
-                    </div>
-                    <div class="details">
-                        ✔️ সঠিক: <b>${stat.correct}</b> টি<br>
-                        ❌ ভুল: <b>${stat.wrong}</b> টি<br>
-                        ⚪ অনুত্তরিত: <b>${stat.unattempted}</b> টি
-                    </div>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-
-        document.getElementById('total-score-display').innerText = `${totalScore.toFixed(2)} / 60`;
-        document.getElementById('total-correct-display').innerText = grandCorrect;
-        document.getElementById('total-wrong-display').innerText = grandWrong;
-        document.getElementById('total-unattempted-display').innerText = grandUnattempted;
-
-        const totalStatus = document.getElementById('total-status-display');
-        const overallTotalPass = totalScore >= 24;
-
-        if (overallTotalPass && failedSubjects.length === 0) {
-            totalStatus.innerText = "🎉 অভিনন্দন! আপনি সবগুলো বিষয়ে ও সামগ্রিকভাবে পরীক্ষায় উত্তীর্ণ হয়েছেন।";
-            totalStatus.style.color = "#ffffff";
-        } else {
-            let failMsg = "⚠️ দুঃখিত! ";
-            if(failedSubjects.length > 0) {
-                failMsg += `আপনি ${failedSubjects.join(' এবং ')} বিষয়ে উত্তীর্ণ হতে পারেননি।`;
-            } else {
-                failMsg += "আপনি সর্বমোট পাশ মার্ক (২৪) অর্জন করতে পারেননি।";
-            }
-            totalStatus.innerText = failMsg;
-            totalStatus.style.color = "#fecaca";
-        }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function buildPrintEvaluationList() {
-        const listContainer = document.getElementById('print-questions-list');
-        let html = '';
-
-        examData.forEach(section => {
-            html += `<div class="section-header" style="margin-top:20px;">${section.name} অংশ</div>`;
-
-            section.questions.forEach((q, i) => {
-                const selected = document.querySelector(`input[name="${section.id}_q${i}"]:checked`);
-                const correctIdx = parseInt(q.ans);
-
-                let statusBadge = '';
-                let selectedIdx = null;
-
-                if (selected) {
-                    selectedIdx = parseInt(selected.value);
-                    if (selectedIdx === correctIdx) {
-                        statusBadge = `<span class="print-badge badge-correct">✔️ সঠিক হয়েছে</span>`;
-                    } else {
-                        statusBadge = `<span class="print-badge badge-wrong">❌ ভুল হয়েছে</span>`;
-                    }
-                } else {
-                    statusBadge = `<span class="print-badge badge-unattempted">⚪ উত্তর দেওয়া হয়নি</span>`;
-                }
-
-                html += `
-                    <div class="print-q-card">
-                        <div class="print-q-header">
-                            <strong style="font-size:15px; color:#0f172a;">${i + 1}. ${q.q}</strong>
-                            ${statusBadge}
-                        </div>
-                        <div class="print-options-grid">
-                `;
-
-                (q.options || []).forEach((opt, optIdx) => {
-                    let optClass = 'print-opt-item';
-                    let markBadge = '';
-
-                    if (optIdx === correctIdx) {
-                        optClass += ' print-opt-correct';
-                        markBadge = ' <b style="font-size:11.5px;">(সঠিক উত্তর)</b>';
-                    } else if (selectedIdx !== null && optIdx === selectedIdx) {
-                        optClass += ' print-opt-wrong';
-                        markBadge = ' <b style="font-size:11.5px;">(আপনার ভুল উত্তর)</b>';
-                    }
-
-                    html += `
-                        <div class="${optClass}">
-                            <strong>${optionLetters[optIdx]}.</strong> ${opt} ${markBadge}
-                        </div>
-                    `;
-                });
-
-                html += `
-                        </div>
-                        <div class="print-exp-box">
-                            <b>💡 ব্যাখ্যা:</b> ${q.exp || 'কোনো ব্যাখ্যা দেওয়া হয়নি।'}
-                        </div>
-                    </div>
-                `;
-            });
-        });
-
-        listContainer.innerHTML = html;
-    }
-
-    function printEvaluationReport() {
-        window.print();
-    }
+    // লিংকগুলো কনফিগার করা
+    document.getElementById('pdf-preview-frame').src = `https://drive.google.com/file/d/${DRIVE_FILE_ID}/preview`;
+    document.getElementById('btn-drive-view').href = `https://drive.google.com/file/d/${DRIVE_FILE_ID}/view?usp=sharing`;
+    document.getElementById('btn-drive-download').href = `https://drive.google.com/uc?export=download&id=${DRIVE_FILE_ID}`;
 </script>
 
 </body>
