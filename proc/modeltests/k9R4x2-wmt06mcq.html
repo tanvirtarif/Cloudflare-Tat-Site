@@ -589,7 +589,7 @@
                 </div>
                 <div class="form-group" style="grid-column: 1 / -1;">
                     <label>মোবাইল নাম্বারের শেষ ৪ ডিজিট *</label>
-                    <input type="text" id="stu-mobile" maxlength="4" pattern="[0-9]{4}" placeholder="যেমন: 4589" required>
+                    <input type="tel" id="stu-mobile" maxlength="4" placeholder="যেমন: 4589" required>
                 </div>
             </div>
 
@@ -714,7 +714,6 @@
         .then(d => { userIP = d.ip; })
         .catch(() => { userIP = "Unavailable"; });
 
-    // ⚡ সরাসরি আপনার শিটের ৬০টি প্রশ্ন (ইনস্ট্যান্ট লোডিং)
     let examData = [
         {
             id: "bangla",
@@ -980,7 +979,7 @@
 
         studentData.name = name;
         studentData.roll = roll;
-        studentData.mobile = mobile;
+        studentData.mobile = String(mobile); // স্ট্রিং হিসেবে লক করা হলো
 
         document.getElementById('step-1-screen').classList.add('hidden');
         document.getElementById('step-2-screen').classList.remove('hidden');
@@ -1155,8 +1154,9 @@
                 const ban = sectionStats['bangla'] || { correct: 0, wrong: 0, score: 0 };
                 const eng = sectionStats['english'] || { correct: 0, wrong: 0, score: 0 };
                 const gk = sectionStats['gk'] || { correct: 0, wrong: 0, score: 0 };
+                const cleanMobile = studentData.mobile ? String(studentData.mobile).trim() : '0000';
 
-                const sendUrl = `${GOOGLE_SCRIPT_URL}?testName=${encodeURIComponent(TEST_NAME)}&name=${encodeURIComponent(studentData.name)}&roll=${encodeURIComponent(studentData.roll)}&mobile=${encodeURIComponent(studentData.mobile)}&banRight=${ban.correct}&banWrong=${ban.wrong}&banScore=${ban.score.toFixed(2)}&engRight=${eng.correct}&engWrong=${eng.wrong}&engScore=${eng.score.toFixed(2)}&gkRight=${gk.correct}&gkWrong=${gk.wrong}&gkScore=${gk.score.toFixed(2)}&totalRight=${grandCorrect}&totalWrong=${grandWrong}&totalScore=${totalScoreAll.toFixed(2)}&ip=${encodeURIComponent(userIP)}`;
+                const sendUrl = `${GOOGLE_SCRIPT_URL}?testName=${encodeURIComponent(TEST_NAME)}&name=${encodeURIComponent(studentData.name)}&roll=${encodeURIComponent(studentData.roll)}&mobile=${encodeURIComponent(cleanMobile)}&banRight=${ban.correct}&banWrong=${ban.wrong}&banScore=${ban.score.toFixed(2)}&engRight=${eng.correct}&engWrong=${eng.wrong}&engScore=${eng.score.toFixed(2)}&gkRight=${gk.correct}&gkWrong=${gk.wrong}&gkScore=${gk.score.toFixed(2)}&totalRight=${grandCorrect}&totalWrong=${grandWrong}&totalScore=${totalScoreAll.toFixed(2)}&ip=${encodeURIComponent(userIP)}`;
 
                 fetch(sendUrl, { method: 'POST', mode: 'no-cors' }).catch(() => {});
             }
