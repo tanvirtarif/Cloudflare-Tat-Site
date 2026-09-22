@@ -729,7 +729,7 @@
     async function fetchQuestionsFromGoogleSheet() {
         const statusBar = document.getElementById('fetch-status-bar');
         if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("YOUR_GOOGLE")) {
-            statusBar.innerText = "⚠️ গুগল স্ক্রিপ্ট লিঙ্ক সেট করা নেই।";
+            statusBar.innerText = "অনুগ্রহপূর্বক অপেক্ষা করুন!";
             return;
         }
 
@@ -772,21 +772,21 @@
                     statusBar.style.color = "#16a34a";
                     statusBar.style.background = "#dcfce7";
                     statusBar.style.borderColor = "#86efac";
-                    statusBar.innerText = `✔️ গুগল শিট থেকে ${loadedCount}টি প্রশ্ন সফলভাবে লোড হয়েছে!`;
+                    statusBar.innerText = `অনুগ্রহপূর্বক অপেক্ষা করুন!`;
                 } else {
                     statusBar.style.color = "#dc2626";
-                    statusBar.innerText = "⚠️ প্রশ্ন পাওয়া গেছে, তবে সেকশন আইডি (bangla, english, gk) মেলেনি!";
+                    statusBar.innerText = "অনুগ্রহপূর্বক অপেক্ষা করুন!";
                 }
             } else {
                 statusBar.style.color = "#dc2626";
-                statusBar.innerText = "⚠️ শিটে কোনো প্রশ্ন পাওয়া যায়নি।";
+                statusBar.innerText = "❌ কিছু একটা সমস্যা হয়েছে, কিছুক্ষণ পর আবার চেষ্টা করুন।";
             }
         } catch (e) {
             console.error(e);
             statusBar.style.color = "#dc2626";
             statusBar.style.background = "#fee2e2";
             statusBar.style.borderColor = "#fca5a5";
-            statusBar.innerText = "❌ প্রশ্ন লোড করা যায়নি! গুগল অ্যাপস স্ক্রিপ্ট ডিপ্লয়মেন্ট চেক করুন।";
+            statusBar.innerText = "❌ কিছু একটা সমস্যা হয়েছে, কিছুক্ষণ পর আবার চেষ্টা করুন।";
         }
     }
 
@@ -798,7 +798,7 @@
         const mobile = document.getElementById('stu-mobile').value.trim();
 
         if (!name || !roll || !mobile || mobile.length !== 4) {
-            alert('দয়া করে সবগুলো তথ্য সঠিকভাবে পূরণ করুন (মোবাইলের ৪ ডিজিট আবশ্যক)।');
+            alert('সকল তথ্য সঠিকভাবে পূরণ করতে হবে (মোবাইলের ৪ ডিজিট আবশ্যক)।');
             return;
         }
 
@@ -806,7 +806,7 @@
         let totalQ = 0;
         examData.forEach(s => totalQ += s.questions.length);
         if (totalQ === 0) {
-            alert('প্রশ্নপত্র এখনো লোড হয়নি। দয়া করে ১-২ সেকেন্ড অপেক্ষা করে আবার চেষ্টা করুন।');
+            alert('অনুগ্রহপূর্বক অপেক্ষা করুন!');
             return;
         }
 
