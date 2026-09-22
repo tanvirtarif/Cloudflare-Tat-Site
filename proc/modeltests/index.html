@@ -1,1 +1,462 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Consistency - Model Tests Portal</title>
+    
+    <!-- Google Fonts: Noto Serif Bengali -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #475569;
+            --success: #10b981;
+            --danger: #dc2626;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --font-family: 'Noto Serif Bengali', serif;
+        }
 
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.75;
+            letter-spacing: 0.1px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.06);
+            padding: 25px 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        @media (min-width: 640px) {
+            .card { padding: 32px; }
+            .container { padding: 30px 20px; }
+        }
+
+        .banner-img {
+            width: 100%;
+            height: auto;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            background-color: #e2e8f0;
+        }
+
+        h1.main-title {
+            color: var(--primary);
+            font-size: 26px;
+            font-weight: 800;
+            margin: 0 0 6px 0;
+        }
+
+        .sub-title { 
+            font-size: 18px; 
+            font-weight: 700; 
+            margin: 0 0 10px 0; 
+            color: var(--text-main); 
+        }
+
+        p.desc {
+            color: var(--secondary);
+            font-size: 14.5px;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        /* Test Grid */
+        .tests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .test-box {
+            background: #ffffff;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 15px;
+            text-align: left;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .test-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+            border-color: #cbd5e1;
+        }
+
+        /* সচল টেস্টের বিশেষ ডিজাইন (WMT 06) */
+        .test-box.active {
+            border: 2px solid var(--primary);
+            background: #eff6ff;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
+        }
+
+        .test-box.active:hover {
+            border-color: var(--primary-hover);
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .test-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .badge-live {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+            animation: pulse 2s infinite;
+        }
+
+        .badge-locked {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .test-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 6px 0 14px 0;
+            line-height: 1.5;
+        }
+
+        .btn-test {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .btn-active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-active:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-locked {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-locked:hover {
+            background: #cbd5e1;
+        }
+
+        /* ================= MODAL STYLES ================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            padding: 15px;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            max-width: 440px;
+            width: 100%;
+            padding: 26px 22px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transform: scale(0.9);
+            transition: transform 0.25s ease;
+        }
+
+        .modal-overlay.open .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0 0 10px 0;
+        }
+
+        .modal-desc {
+            font-size: 14px;
+            color: var(--secondary);
+            margin: 0 0 20px 0;
+        }
+
+        .modal-action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn-choice {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 10px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.2s;
+            border: 1.5px solid transparent;
+        }
+
+        .btn-mcq-choice {
+            background: #eff6ff;
+            color: var(--primary);
+            border-color: #bfdbfe;
+        }
+
+        .btn-mcq-choice:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-written-choice {
+            background: #fef2f2;
+            color: var(--danger);
+            border-color: #fecaca;
+        }
+
+        .btn-written-choice:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-close-modal {
+            margin-top: 18px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-close-modal:hover {
+            color: var(--text-main);
+        }
+
+        /* Footer */
+        .join-us-bar {
+            margin: 30px 0 10px 0;
+            padding: 14px 16px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+
+        .join-us-bar a { color: var(--secondary); text-decoration: none; font-weight: 700; }
+        .join-us-bar a:hover { color: var(--primary); }
+        .join-us-bar span.divider { color: #cbd5e1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="card">
+        <!-- ব্যানার ছবি -->
+        <img src="../cover.png" alt="Project Consistency" class="banner-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'200\'><rect width=\'800\' height=\'200\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' font-size=\'22\' fill=\'%2364748b\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Project Consistency by Tanvir Tarif</text></svg>'">
+        
+        <h1 class="main-title">Project Consistency</h1>
+        <h2 class="sub-title">Weekly Model Test Archive (01 - 15)</h2>
+        <p class="desc">ধারাবাহিক অনুশীলনের মাধ্যমে নিজেকে সর্বোচ্চ প্রস্তুত রাখো। যে কোনো টেস্টে অংশগ্রহণ করতে নিচের বাটন ব্যবহার করো।</p>
+
+        <!-- মডেল টেস্ট গ্রিড -->
+        <div class="tests-grid" id="tests-container"></div>
+
+        <!-- Join Us সেকশন -->
+        <div class="join-us-bar">
+            <span style="color: var(--text-main); font-weight: 700;">Join Us:</span>
+            <a href="https://www.facebook.com/tanvirtarif.learn" target="_blank"><b>Facebook Page</b></a>
+            <span class="divider">•</span>
+            <a href="https://t.me/projectconsistency" target="_blank"><b>Telegram Group</b></a>
+            <span class="divider">•</span>
+            <a href="https://www.youtube.com/@withTanvirTarif" target="_blank"><b>YouTube</b></a>
+        </div>
+    </div>
+
+</div>
+
+<!-- ================= ১. WMT 06 সিলেকশন মডাল (MCQ vs Written) ================= -->
+<div class="modal-overlay" id="wmt06-modal">
+    <div class="modal-card">
+        <h3 class="modal-title">Weekly Model Test 06</h3>
+        <p class="modal-desc">তুমি কোন অংশের পরীক্ষায় অংশগ্রহণ করতে চাও?</p>
+        
+        <div class="modal-action-grid">
+            <!-- MCQ লিঙ্ক -->
+            <a href="https://tanvirtarif.com/proc/modeltests/k9R4x2-wmt06mcq" class="btn-choice btn-mcq-choice">
+                <span style="font-size: 24px; margin-bottom: 4px;">📝</span>
+                <span>MCQ এক্সাম</span>
+                <small style="font-size: 11px; font-weight: normal; margin-top: 3px;">পূর্ণমান: ৬০ | ২৫ মিনিট</small>
+            </a>
+
+            <!-- Written লিঙ্ক -->
+            <a href="https://tanvirtarif.com/proc/modeltests/k9R4x2-wmt06written" class="btn-choice btn-written-choice">
+                <span style="font-size: 24px; margin-bottom: 4px;">✍️</span>
+                <span>Written এক্সাম</span>
+                <small style="font-size: 11px; font-weight: normal; margin-top: 3px;">পূর্ণমান: ৪০ | ৪০ মিনিট</small>
+            </a>
+        </div>
+
+        <button class="btn-close-modal" onclick="closeModal('wmt06-modal')">✕ ফিরে যান</button>
+    </div>
+</div>
+
+<!-- ================= ২. CHECK LATER মডাল ================= -->
+<div class="modal-overlay" id="locked-modal">
+    <div class="modal-card">
+        <div style="font-size: 38px; margin-bottom: 8px;">⏳</div>
+        <h3 class="modal-title" id="locked-test-title">Weekly Model Test</h3>
+        <p class="modal-desc" style="margin-bottom: 12px; font-size: 15px; font-weight: 700; color: var(--danger);">
+            Check later
+        </p>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px;">
+            এই মডেল টেস্টটি এখনো সক্রিয় করা হয়নি অথবা সময়সীমা সমাপ্ত হয়েছে। পরবর্তী নির্দেশনার জন্য টেলিগ্রাম গ্রুপ ও ফেসবুক পেইজে নজর রাখুন।
+        </p>
+        <button class="btn-test btn-active" style="max-width: 140px; margin: 0 auto;" onclick="closeModal('locked-modal')">ঠিক আছে</button>
+    </div>
+</div>
+
+<script>
+    // ১ থেকে ১৫ পর্যন্ত মডেল টেস্ট তৈরি করা
+    const container = document.getElementById('tests-container');
+    let html = '';
+
+    for (let i = 1; i <= 15; i++) {
+        const testNum = i.toString().padStart(2, '0');
+        const isActive = (i === 6); // শুধুমাত্র ০৬ নম্বরটি অ্যাক্টিভ
+
+        html += `
+            <div class="test-box ${isActive ? 'active' : ''}" onclick="handleTestClick(${i})">
+                <div>
+                    <div class="test-header">
+                        <span class="test-title">WMT ${testNum}</span>
+                        <span class="badge ${isActive ? 'badge-live' : 'badge-locked'}">
+                            ${isActive ? '● Live Now' : 'Check later'}
+                        </span>
+                    </div>
+                    <div class="test-meta">
+                        ${isActive ? 'বাংলা, English, সাধারণ জ্ঞান ও লিখিত অংশ' : 'DU \'B\' Unit স্ট্যান্ডার্ড পূর্ণাঙ্গ মডেল টেস্ট'}
+                    </div>
+                </div>
+                <button class="btn-test ${isActive ? 'btn-active' : 'btn-locked'}">
+                    ${isActive ? 'অংশগ্রহণ করুন ➔' : 'Check later'}
+                </button>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
+
+    // টেস্টে ক্লিক করলে মডাল নিয়ন্ত্রণ
+    function handleTestClick(testNumber) {
+        if (testNumber === 6) {
+            document.getElementById('wmt06-modal').classList.add('open');
+        } else {
+            const formattedNum = testNumber.toString().padStart(2, '0');
+            document.getElementById('locked-test-title').innerText = `Weekly Model Test ${formattedNum}`;
+            document.getElementById('locked-modal').classList.add('open');
+        }
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('open');
+    }
+
+    // ব্যাকড্রপে ক্লিক করলে বন্ধ হওয়া
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+            event.target.classList.remove('open');
+        }
+    };
+</script>
+
+</body>
+</html>
