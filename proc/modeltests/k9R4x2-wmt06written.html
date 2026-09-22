@@ -1,1 +1,407 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Consistency - Written Question Paper</title>
+    
+    <!-- Google Fonts: Noto Serif Bengali -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #475569;
+            --success: #10b981;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+            --warning: #f59e0b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --font-family: 'Noto Serif Bengali', serif;
+        }
 
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.75;
+            letter-spacing: 0.1px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.06);
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        @media (min-width: 640px) {
+            .card { padding: 32px; }
+            .container { padding: 25px; }
+        }
+
+        /* Banner */
+        .banner-img {
+            width: 100%;
+            height: auto;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            background-color: #e2e8f0;
+        }
+
+        h1.main-title {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 4px 0;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .sub-title { 
+            font-size: 19px; 
+            font-weight: 700; 
+            margin: 0 0 14px 0; 
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        /* Meta Box */
+        .meta-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .badge-pill {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 13.5px;
+            font-weight: 700;
+        }
+
+        /* Rules Box */
+        .rules-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-left: 5px solid var(--danger);
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #334155;
+            margin: 18px 0;
+            text-align: left;
+            line-height: 1.8;
+        }
+
+        .rules-box h3 {
+            margin: 0 0 10px 0;
+            color: var(--danger);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .rules-box ul {
+            margin: 6px 0 12px 20px;
+            padding: 0;
+        }
+
+        .rules-box li {
+            margin-bottom: 8px;
+        }
+
+        /* Deadline Notice */
+        .deadline-badge {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14.5px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Drive Viewer Frame */
+        .drive-preview-container {
+            width: 100%;
+            height: 540px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1.5px solid #cbd5e1;
+            background: #f1f5f9;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        @media (max-width: 600px) {
+            .drive-preview-container { height: 400px; }
+        }
+
+        .drive-preview-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Action Buttons Grid */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        @media (min-width: 600px) {
+            .btn-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-drive {
+            background: #ffffff;
+            color: #1e293b;
+            border: 1.5px solid #cbd5e1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .btn-drive:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+            transform: translateY(-1px);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--danger), var(--danger-hover));
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25);
+        }
+
+        .btn-download:hover {
+            box-shadow: 0 6px 18px rgba(220, 38, 38, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* Classroom Submission Section */
+        .submission-card {
+            background: #ffffff;
+            border: 2px dashed #059669;
+            border-radius: 14px;
+            padding: 24px 20px;
+            text-align: center;
+            margin-top: 25px;
+            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.08);
+        }
+
+        .submission-title {
+            color: #065f46;
+            font-size: 20px;
+            font-weight: 800;
+            margin: 0 0 6px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .classroom-btn-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        @media (min-width: 600px) {
+            .classroom-btn-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .btn-classroom-web {
+            background: #047857;
+            color: white;
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);
+        }
+
+        .btn-classroom-web:hover {
+            background: #065f46;
+            transform: translateY(-1px);
+        }
+
+        .btn-classroom-app {
+            background: #f0fdf4;
+            color: #047857;
+            border: 1.5px solid #a7f3d0;
+        }
+
+        .btn-classroom-app:hover {
+            background: #dcfce7;
+            transform: translateY(-1px);
+        }
+
+        /* Footer */
+        .join-us-bar {
+            margin: 25px 0 10px 0;
+            padding: 14px 16px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+
+        .join-us-bar a { color: var(--secondary); text-decoration: none; font-weight: 700; }
+        .join-us-bar a:hover { color: var(--primary); }
+        .join-us-bar span.divider { color: #cbd5e1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="card">
+        <!-- ব্যানার ছবি -->
+        <img src="../cover.png" alt="Project Consistency" class="banner-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'200\'><rect width=\'800\' height=\'200\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' font-size=\'22\' fill=\'%2364748b\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Project Consistency by Tanvir Tarif</text></svg>'">
+        
+        <!-- টাইটেল ও সাব-টাইটেল -->
+        <h1 class="main-title">Project Consistency</h1>
+        <h2 class="sub-title">DU 'B' Unit Weekly Model Test 06 (Written Part)</h2>
+
+        <!-- মেটা ব্যাজ -->
+        <div class="meta-badges">
+            <span class="badge-pill">⏱️ পূর্ণ সময়: ৪০ মিনিট</span>
+            <span class="badge-pill">📊 পূর্ণমান: ৪০ নম্বর</span>
+            <span class="badge-pill">📑 বিষয়: বাংলা, English</span>
+        </div>
+
+        <!-- নিয়মাবলি বক্স -->
+        <div class="rules-box">
+            <h3>📌 লিখিত পরীক্ষার জরুরি নিয়মাবলি:</h3>
+            <ul>
+                <li>নিজ দায়িত্বে এফোর (A4) বা পরিষ্কার খাতায় মার্জিন টেনে পূর্ণ সততার সাথে পরীক্ষা সম্পন্ন করতে হবে।</li>
+                <li>প্রতিটি পৃষ্ঠার ওপরে নিজের <strong>নাম, রোল/কোড এবং পৃষ্ঠা নম্বর (যেমন: 1/4, 2/4)</strong> স্পষ্ট অক্ষরে লিখতে হবে।</li>
+                <li>কোনো বই, নোট, অভিধান বা ইন্টারনেটের সাহায্য নেওয়া সম্পূর্ণ নিষিদ্ধ।</li>
+                <li>নির্ধারিত সময়ের মধ্যে খাতার স্পষ্ট ছবি তুলে তা একটি <strong>PDF ফাইলে রূপান্তর</strong> করতে হবে। ফাইলের নাম হবে: <code>রোল_নাম_WMT06.pdf</code>।</li>
+            </ul>
+
+            <div class="deadline-badge">
+                <span>⏰</span>
+                <span><strong>খাতা জমা দেওয়ার শেষ সময়:</strong> আজ রাত ১০:৩০ মিনিট পর্যন্ত।</span>
+            </div>
+        </div>
+
+        <!-- ================= গুগল ড্রাইভ লাইভ প্রিভিউ ================= -->
+        <h3 style="margin: 25px 0 10px 0; color: #1e293b; font-size: 18px; text-align: left;">
+            📄 লিখিত প্রশ্নপত্র (লাইভ প্রিভিউ):
+        </h3>
+
+        <div class="drive-preview-container">
+            <!-- ড্রাইভ ফাইলের প্রিভিউ লিঙ্ক (প্রয়োজনে আইডি পরিবর্তন করবেন) -->
+            <iframe id="pdf-preview-frame" src="https://drive.google.com/file/d/1CRNRpOYqkA3KFBLHzDcnyeV3bTJIoG4p/preview" allow="autoplay"></iframe>
+        </div>
+
+        <!-- ড্রাইভ রিডিরেক্ট ও ডাউনলোড বাটন -->
+        <div class="btn-grid">
+            <a id="btn-drive-view" href="https://drive.google.com/file/d/1CRNRpOYqkA3KFBLHzDcnyeV3bTJIoG4p/view?usp=sharing" target="_blank" class="btn-action btn-drive">
+                <span>🔗</span> গুগল ড্রাইভে দেখুন (নতুন ট্যাব)
+            </a>
+            <a id="btn-drive-download" href="https://drive.google.com/uc?export=download&id=1CRNRpOYqkA3KFBLHzDcnyeV3bTJIoG4p" class="btn-action btn-download">
+                <span>⬇️</span> প্রশ্নপত্র ডাউনলোড করুন (PDF)
+            </a>
+        </div>
+
+        <!-- ================= গুগল ক্লাসরুম সাবমিশন বক্স ================= -->
+        <div class="submission-card">
+            <div class="submission-title">
+                <span>📤</span> লিখিত খাতা জমা দেওয়ার নির্দেশনা
+            </div>
+            <p style="font-size: 14px; color: #475569; margin: 4px 0 16px 0;">
+                আপনার লিখিত খাতার পিডিএফ ফাইলটি তৈরি করে গুগল ক্লাসরুমের নির্ধারিত অ্যাসাইনমেন্টে <strong>'Turn In'</strong> করুন।
+            </p>
+
+            <div class="classroom-btn-grid">
+                <!-- ক্লাসরুম ওয়েব লিংক -->
+                <a href="https://classroom.google.com" target="_blank" class="btn-action btn-classroom-web">
+                    <span>🌐</span> গুগল ক্লাসরুম (ওয়েবসাইট)
+                </a>
+
+                <!-- মোবাইল অ্যাপ ওপেন করার ডিপ লিংক (কাজ না করলে ওয়েব খুলবে) -->
+                <a href="intent://classroom.google.com/#Intent;package=com.google.android.apps.classroom;scheme=https;end;" class="btn-action btn-classroom-app">
+                    <span>📱</span> ক্লাসরুম অ্যাপ খুলুন (App)
+                </a>
+            </div>
+        </div>
+
+        <!-- Join Us সেকশন -->
+        <div class="join-us-bar">
+            <span style="color: var(--text-main); font-weight: 700;">Join Us:</span>
+            <a href="https://www.facebook.com/tanvirtarif.learn" target="_blank"><b>Facebook Page</b></a>
+            <span class="divider">•</span>
+            <a href="https://t.me/projectconsistency" target="_blank"><b>Telegram Group</b></a>
+            <span class="divider">•</span>
+            <a href="https://www.youtube.com/@withTanvirTarif" target="_blank"><b>YouTube</b></a>
+        </div>
+    </div>
+
+</div>
+
+<!-- ড্রাইভ ফাইল আইডি পরিবর্তনের সহজ জাভাস্ক্রিপ্ট কনফিগারেশন -->
+<script>
+    // 🔗 শুধু আপনার গুগল ড্রাইভ ফাইলের আইডিটি এখানে বসিয়ে দিন
+    const DRIVE_FILE_ID = "1CRNRpOYqkA3KFBLHzDcnyeV3bTJIoG4p";
+
+    // স্বয়ংক্রিয়ভাবে সব লিঙ্ক কনফিগার করা
+    document.getElementById('pdf-preview-frame').src = `https://drive.google.com/file/d/${DRIVE_FILE_ID}/preview`;
+    document.getElementById('btn-drive-view').href = `https://drive.google.com/file/d/${DRIVE_FILE_ID}/view?usp=sharing`;
+    document.getElementById('btn-drive-download').href = `https://drive.google.com/uc?export=download&id=${DRIVE_FILE_ID}`;
+</script>
+
+</body>
+</html>
