@@ -118,7 +118,7 @@
             border-color: #cbd5e1;
         }
 
-        /* সচল টেস্টের বিশেষ ডিজাইন (WMT 06) */
+        /* সচল টেস্টের বিশেষ ডিজাইন (WMT 07) */
         .test-box.active {
             border: 2px solid var(--primary);
             background: #eff6ff;
@@ -340,7 +340,7 @@
 <div class="container">
     
     <div class="card">
-        <!-- ব্যানার ছবি -->
+        <!-- ব্যানার ছবি (রুট ডিরেক্টরি থেকে লোড হবে) -->
         <img src="/cover.png" alt="Project Consistency" class="banner-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'200\'><rect width=\'800\' height=\'200\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' font-size=\'22\' fill=\'%2364748b\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Project Consistency by Tanvir Tarif</text></svg>'">
         
         <h1 class="main-title">Project Consistency</h1>
@@ -363,29 +363,29 @@
 
 </div>
 
-<!-- ================= ১. WMT 06 সিলেকশন মডাল (MCQ vs Written) ================= -->
-<div class="modal-overlay" id="wmt06-modal">
+<!-- ================= ১. WMT 07 সিলেকশন মডাল (MCQ vs Written) ================= -->
+<div class="modal-overlay" id="wmt07-modal">
     <div class="modal-card">
-        <h3 class="modal-title">Weekly Model Test 06</h3>
+        <h3 class="modal-title">Weekly Model Test 07</h3>
         <p class="modal-desc">তুমি কোন অংশের পরীক্ষায় অংশগ্রহণ করতে চাও?</p>
         
         <div class="modal-action-grid">
             <!-- MCQ লিঙ্ক -->
-            <a href="https://tanvirtarif.com/proc/modeltests/k9R4x2-wmt06mcq" class="btn-choice btn-mcq-choice">
+            <a href="https://tanvirtarif.com/proc/modeltests/wmt07mcq" class="btn-choice btn-mcq-choice">
                 <span style="font-size: 24px; margin-bottom: 4px;">📝</span>
                 <span>MCQ এক্সাম</span>
                 <small style="font-size: 11px; font-weight: normal; margin-top: 3px;">পূর্ণমান: ৬০ | ২৫ মিনিট</small>
             </a>
 
             <!-- Written লিঙ্ক -->
-            <a href="https://tanvirtarif.com/proc/modeltests/k9R4x2-wmt06written" class="btn-choice btn-written-choice">
+            <a href="https://tanvirtarif.com/proc/modeltests/wmt07written" class="btn-choice btn-written-choice">
                 <span style="font-size: 24px; margin-bottom: 4px;">✍️</span>
                 <span>Written এক্সাম</span>
                 <small style="font-size: 11px; font-weight: normal; margin-top: 3px;">পূর্ণমান: ৪০ | ৪০ মিনিট</small>
             </a>
         </div>
 
-        <button class="btn-close-modal" onclick="closeModal('wmt06-modal')">✕ ফিরে যান</button>
+        <button class="btn-close-modal" onclick="closeModal('wmt07-modal')">✕ ফিরে যান</button>
     </div>
 </div>
 
@@ -411,7 +411,7 @@
 
     for (let i = 1; i <= 15; i++) {
         const testNum = i.toString().padStart(2, '0');
-        const isActive = (i === 6); // শুধুমাত্র ০৬ নম্বরটি অ্যাক্টিভ
+        const isActive = (i === 7); // শুধুমাত্র ০৭ নম্বরটি অ্যাক্টিভ
 
         html += `
             <div class="test-box ${isActive ? 'active' : ''}" onclick="handleTestClick(${i})">
@@ -437,8 +437,8 @@
 
     // টেস্টে ক্লিক করলে মডাল নিয়ন্ত্রণ
     function handleTestClick(testNumber) {
-        if (testNumber === 6) {
-            document.getElementById('wmt06-modal').classList.add('open');
+        if (testNumber === 7) {
+            document.getElementById('wmt07-modal').classList.add('open');
         } else {
             const formattedNum = testNumber.toString().padStart(2, '0');
             document.getElementById('locked-test-title').innerText = `Weekly Model Test ${formattedNum}`;
