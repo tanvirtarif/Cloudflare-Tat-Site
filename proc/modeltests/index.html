@@ -8,20 +8,21 @@
     <!-- Google Fonts: Noto Serif Bengali -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
-            --secondary: #475569;
-            --success: #10b981;
+            --secondary: #334155;
+            --success: #15803d;
             --danger: #dc2626;
-            --bg-color: #f8fafc;
+            --bg-color: #f1f5f9;
             --card-bg: #ffffff;
-            --text-main: #0f172a;
+            --row-bg: #f8fafc; /* সব সারির জন্য একই হালকা ব্যাকগ্রাউন্ড */
+            --text-main: #090d16;
             --text-muted: #64748b;
-            --border-color: #e2e8f0;
+            --border-dark: #94a3b8; /* গাঢ় ও স্পষ্ট বর্ডার */
             --font-family: 'Noto Serif Bengali', serif;
         }
 
@@ -39,7 +40,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 850px;
             margin: 0 auto;
             padding: 20px 15px;
         }
@@ -47,10 +48,10 @@
         .card {
             background: var(--card-bg);
             border-radius: 16px;
-            box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 6px 20px -2px rgba(0, 0, 0, 0.08);
             padding: 25px 20px;
             margin-bottom: 20px;
-            border: 1px solid var(--border-color);
+            border: 1.5px solid var(--border-dark);
             text-align: center;
         }
 
@@ -67,6 +68,7 @@
             border-radius: 12px;
             margin-bottom: 16px;
             background-color: #e2e8f0;
+            border: 1px solid var(--border-dark);
         }
 
         h1.main-title {
@@ -77,142 +79,193 @@
         }
 
         .sub-title { 
-            font-size: 18px; 
-            font-weight: 700; 
+            font-size: 19px; 
+            font-weight: 800; 
             margin: 0 0 10px 0; 
             color: var(--text-main); 
         }
 
         p.desc {
             color: var(--secondary);
-            font-size: 14.5px;
+            font-size: 15px;
+            font-weight: 700;
             margin-top: 0;
             margin-bottom: 25px;
         }
 
-        /* Test Grid */
-        .tests-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 16px;
+        /* List Wrapper */
+        .test-list-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
             margin-top: 20px;
         }
 
-        .test-box {
-            background: #ffffff;
-            border: 1.5px solid var(--border-color);
+        /* Test Row Base */
+        .test-row {
+            background-color: var(--row-bg); /* সব সারিতে একই হালকা প্রিমিয়াম কালার */
+            border: 1.5px solid var(--border-dark);
             border-radius: 12px;
-            padding: 18px 15px;
-            text-align: left;
-            transition: all 0.25s ease;
-            cursor: pointer;
-            position: relative;
+            padding: 14px 18px;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .test-box:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.06);
-            border-color: #cbd5e1;
-        }
-
-        /* সচল টেস্টের বিশেষ ডিজাইন (WMT 07) */
-        .test-box.active {
-            border: 2px solid var(--primary);
-            background: #eff6ff;
-            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
-        }
-
-        .test-box.active:hover {
-            border-color: var(--primary-hover);
-        }
-
-        .test-header {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s ease;
         }
 
-        .test-title {
-            font-size: 16px;
+        .test-row:hover {
+            border-color: #475569;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+            background-color: #f1f5f9;
+        }
+
+        /* সচল টেস্টের বিশেষ হাইলাইট (WMT 07) */
+        .test-row.active {
+            border: 2.5px solid var(--primary) !important;
+            background: #eff6ff !important;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+        }
+
+        .test-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+        }
+
+        /* বুলেট আইকন স্টাইল */
+        .bullet-icon {
+            font-size: 18px;
+            line-height: 1;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+            flex-shrink: 0;
+        }
+
+        .test-name {
+            font-size: 16.5px;
             font-weight: 800;
             color: var(--text-main);
-        }
-
-        .badge {
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-weight: 700;
+            white-space: nowrap;
         }
 
         .badge-live {
             background: #dcfce7;
-            color: #166534;
-            border: 1px solid #86efac;
-            animation: pulse 2s infinite;
+            color: #15803d;
+            border: 1.5px solid #86efac;
+            font-size: 11px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
         }
 
-        .badge-locked {
-            background: #f1f5f9;
-            color: #64748b;
-            border: 1px solid #cbd5e1;
+        /* Action Buttons Area */
+        .test-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        .test-meta {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin: 6px 0 14px 0;
-            line-height: 1.5;
-        }
-
-        .btn-test {
-            width: 100%;
-            padding: 10px;
+        .btn-exam {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 16px;
             border-radius: 8px;
-            font-size: 13.5px;
-            font-weight: 700;
-            border: none;
+            font-size: 14px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.2s ease;
             cursor: pointer;
-            text-align: center;
+            min-width: 108px;
             font-family: inherit;
-            transition: all 0.2s;
         }
 
-        .btn-active {
-            background: var(--primary);
-            color: white;
+        /* ================= শেড ১: MCQ বাটন (রয়্যাল ডার্ক ব্লু শেড) ================= */
+        .btn-mcq-active {
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            color: #ffffff;
+            border: 1.5px solid #1e3a8a;
+            box-shadow: 0 3px 10px rgba(30, 64, 175, 0.25);
         }
 
-        .btn-active:hover {
-            background: var(--primary-hover);
+        .btn-mcq-active:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(30, 64, 175, 0.35);
         }
 
-        .btn-locked {
-            background: #e2e8f0;
-            color: #475569;
+        .btn-mcq-locked {
+            background: #e0e7ff;
+            color: #3730a3;
+            border: 1.5px solid #c7d2fe;
         }
 
-        .btn-locked:hover {
-            background: #cbd5e1;
+        .btn-mcq-locked:hover {
+            background: #c7d2fe;
+            color: #1e1b4b;
         }
 
-        /* ================= MODAL STYLES ================= */
+        /* ================= শেড ২: Written বাটন (ব্রাইট ওশিয়ান/স্কাই ব্লু শেড) ================= */
+        .btn-written-active {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: #ffffff;
+            border: 1.5px solid #0369a1;
+            box-shadow: 0 3px 10px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-written-active:hover {
+            background: linear-gradient(135deg, #0369a1, #075985);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(2, 132, 199, 0.35);
+        }
+
+        .btn-written-locked {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1.5px solid #bae6fd;
+        }
+
+        .btn-written-locked:hover {
+            background: #bae6fd;
+            color: #0c4a6e;
+        }
+
+        /* মোবাইল স্ক্রিনের রেসপনসিভ ভিউ */
+        @media (max-width: 540px) {
+            .test-row {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 12px;
+                padding: 14px;
+            }
+            .test-info {
+                justify-content: space-between;
+            }
+            .test-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .btn-exam {
+                width: 100%;
+                min-width: unset;
+                padding: 8px 10px;
+            }
+        }
+
+        /* Check Later মডাল */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(15, 23, 42, 0.65);
             backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
@@ -232,11 +285,12 @@
         .modal-card {
             background: #ffffff;
             border-radius: 16px;
-            max-width: 440px;
+            max-width: 400px;
             width: 100%;
-            padding: 26px 22px;
+            padding: 26px 20px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 1.5px solid var(--border-dark);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.18);
             transform: scale(0.9);
             transition: transform 0.25s ease;
         }
@@ -249,70 +303,20 @@
             font-size: 20px;
             font-weight: 800;
             color: var(--text-main);
-            margin: 0 0 10px 0;
-        }
-
-        .modal-desc {
-            font-size: 14px;
-            color: var(--secondary);
-            margin: 0 0 20px 0;
-        }
-
-        .modal-action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .btn-choice {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 14px 10px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 15px;
-            transition: all 0.2s;
-            border: 1.5px solid transparent;
-        }
-
-        .btn-mcq-choice {
-            background: #eff6ff;
-            color: var(--primary);
-            border-color: #bfdbfe;
-        }
-
-        .btn-mcq-choice:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-written-choice {
-            background: #fef2f2;
-            color: var(--danger);
-            border-color: #fecaca;
-        }
-
-        .btn-written-choice:hover {
-            background: var(--danger);
-            color: white;
+            margin: 0 0 8px 0;
         }
 
         .btn-close-modal {
-            margin-top: 18px;
-            background: none;
+            margin-top: 15px;
+            background: var(--primary);
+            color: white;
             border: none;
-            color: var(--text-muted);
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 800;
             font-size: 14px;
-            font-weight: 600;
             cursor: pointer;
             font-family: inherit;
-        }
-
-        .btn-close-modal:hover {
-            color: var(--text-main);
         }
 
         /* Footer */
@@ -321,18 +325,19 @@
             padding: 14px 16px;
             background: #ffffff;
             border-radius: 12px;
-            border: 1px solid var(--border-color);
+            border: 1.5px solid var(--border-dark);
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 12px;
             flex-wrap: wrap;
-            font-size: 14px;
+            font-size: 14.5px;
+            font-weight: 700;
         }
 
-        .join-us-bar a { color: var(--secondary); text-decoration: none; font-weight: 700; }
+        .join-us-bar a { color: var(--secondary); text-decoration: none; font-weight: 800; }
         .join-us-bar a:hover { color: var(--primary); }
-        .join-us-bar span.divider { color: #cbd5e1; }
+        .join-us-bar span.divider { color: #94a3b8; }
     </style>
 </head>
 <body>
@@ -340,19 +345,19 @@
 <div class="container">
     
     <div class="card">
-        <!-- ব্যানার ছবি (রুট ডিরেক্টরি থেকে লোড হবে) -->
-        <img src="/cover.png" alt="Project Consistency" class="banner-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'200\'><rect width=\'800\' height=\'200\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' font-size=\'22\' fill=\'%2364748b\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Project Consistency by Tanvir Tarif</text></svg>'">
+        <!-- ব্যানার ছবি -->
+        <img src="/cover.png" alt="Project Consistency" class="banner-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'200\'><rect width=\'800\' height=\'200\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' font-size=\'22\' fill=\'%2364748b\' font-weight=\'bold\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Project Consistency by Tanvir Tarif</text></svg>'">
         
         <h1 class="main-title">Project Consistency</h1>
-        <h2 class="sub-title">Weekly Model Test Archive (01 - 15)</h2>
-        <p class="desc">ধারাবাহিক অনুশীলনের মাধ্যমে নিজেকে সর্বোচ্চ প্রস্তুত রাখো। যে কোনো টেস্টে অংশগ্রহণ করতে নিচের বাটন ব্যবহার করো।</p>
+        <h2 class="sub-title">Weekly Model Test Archive</h2>
+        <p class="desc">পরীক্ষা দিতে সংশ্লিষ্ট মডেল টেস্টের পাশের MCQ অথবা Written বক্সে ক্লিক করুন।</p>
 
-        <!-- মডেল টেস্ট গ্রিড -->
-        <div class="tests-grid" id="tests-container"></div>
+        <!-- রো-বেসড মডেল টেস্ট তালিকা -->
+        <div class="test-list-wrapper" id="tests-list"></div>
 
         <!-- Join Us সেকশন -->
         <div class="join-us-bar">
-            <span style="color: var(--text-main); font-weight: 700;">Join Us:</span>
+            <span style="color: var(--text-main); font-weight: 800;">Join Us:</span>
             <a href="https://www.facebook.com/tanvirtarif.learn" target="_blank"><b>Facebook Page</b></a>
             <span class="divider">•</span>
             <a href="https://t.me/projectconsistency" target="_blank"><b>Telegram Group</b></a>
@@ -363,97 +368,81 @@
 
 </div>
 
-<!-- ================= ১. WMT 07 সিলেকশন মডাল (MCQ vs Written) ================= -->
-<div class="modal-overlay" id="wmt07-modal">
-    <div class="modal-card">
-        <h3 class="modal-title">Weekly Model Test 07</h3>
-        <p class="modal-desc">তুমি কোন অংশের পরীক্ষায় অংশগ্রহণ করতে চাও?</p>
-        
-        <div class="modal-action-grid">
-            <!-- MCQ লিঙ্ক -->
-            <a href="https://tanvirtarif.com/proc/modeltests/wmt07mcq" class="btn-choice btn-mcq-choice">
-                <span style="font-size: 24px; margin-bottom: 4px;">📝</span>
-                <span>MCQ এক্সাম</span>
-                <small style="font-size: 11px; font-weight: normal; margin-top: 3px;">পূর্ণমান: ৬০ | ২৫ মিনিট</small>
-            </a>
-
-            <!-- Written লিঙ্ক -->
-            <a href="https://tanvirtarif.com/proc/modeltests/wmt07written" class="btn-choice btn-written-choice">
-                <span style="font-size: 24px; margin-bottom: 4px;">✍️</span>
-                <span>Written এক্সাম</span>
-                <small style="font-size: 11px; font-weight: normal; margin-top: 3px;">পূর্ণমান: ৪০ | ৪০ মিনিট</small>
-            </a>
-        </div>
-
-        <button class="btn-close-modal" onclick="closeModal('wmt07-modal')">✕ ফিরে যান</button>
-    </div>
-</div>
-
-<!-- ================= ২. CHECK LATER মডাল ================= -->
+<!-- Check Later মডাল -->
 <div class="modal-overlay" id="locked-modal">
     <div class="modal-card">
-        <div style="font-size: 38px; margin-bottom: 8px;">⏳</div>
+        <div style="font-size: 36px; margin-bottom: 6px;">⏳</div>
         <h3 class="modal-title" id="locked-test-title">Weekly Model Test</h3>
-        <p class="modal-desc" style="margin-bottom: 12px; font-size: 15px; font-weight: 700; color: var(--danger);">
-            Check later
+        <p style="font-size: 16px; font-weight: 800; color: var(--danger); margin: 4px 0 10px 0;">Check later</p>
+        <p style="font-size: 14px; font-weight: 600; color: var(--text-muted); margin: 0 0 16px 0; line-height: 1.6;">
+            এই পরীক্ষাটি এখনো সক্রিয় করা হয়নি। পরবর্তী শিডিউলের জন্য টেলিগ্রাম গ্রুপ বা ফেসবুক পেইজ চেক করো।
         </p>
-        <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px;">
-            এই মডেল টেস্টটি এখনো সক্রিয় করা হয়নি অথবা সময়সীমা সমাপ্ত হয়েছে। পরবর্তী নির্দেশনার জন্য টেলিগ্রাম গ্রুপ ও ফেসবুক পেইজে নজর রাখুন।
-        </p>
-        <button class="btn-test btn-active" style="max-width: 140px; margin: 0 auto;" onclick="closeModal('locked-modal')">ঠিক আছে</button>
+        <button class="btn-close-modal" onclick="closeModal()">ঠিক আছে</button>
     </div>
 </div>
 
 <script>
-    // ১ থেকে ১৫ পর্যন্ত মডেল টেস্ট তৈরি করা
-    const container = document.getElementById('tests-container');
+    // 🔗 লিংক কনফিগারেশন: ভবিষ্যতে নতুন টেস্ট চালু করতে শুধু এখানে সংশ্লিষ্ট লিংক বসিয়ে দেবেন
+    const TEST_CONFIG = {
+        7: {
+            mcq: "https://tanvirtarif.com/proc/modeltests/wmt07mcq",
+            written: "https://tanvirtarif.com/proc/modeltests/wmt07written"
+        }
+    };
+
+    const container = document.getElementById('tests-list');
     let html = '';
 
     for (let i = 1; i <= 15; i++) {
         const testNum = i.toString().padStart(2, '0');
-        const isActive = (i === 7); // শুধুমাত্র ০৭ নম্বরটি অ্যাক্টিভ
+        const config = TEST_CONFIG[i];
+        const isLive = Boolean(config);
+
+        // MCQ বাটন (গাঢ় রয়্যাল ব্লু শেড ও 📝 আইকন)
+        let mcqBtn = '';
+        if (config && config.mcq) {
+            mcqBtn = `<a href="${config.mcq}" class="btn-exam btn-mcq-active"><span>📝</span> MCQ</a>`;
+        } else {
+            mcqBtn = `<button type="button" class="btn-exam btn-mcq-locked" onclick="showLocked('WMT ${testNum} (MCQ)')"><span>📝</span> MCQ</button>`;
+        }
+
+        // Written বাটন (ব্রাইট স্কাই ব্লু শেড ও ✍️ আইকন)
+        let writtenBtn = '';
+        if (config && config.written) {
+            writtenBtn = `<a href="${config.written}" class="btn-exam btn-written-active"><span>✍️</span> Written</a>`;
+        } else {
+            writtenBtn = `<button type="button" class="btn-exam btn-written-locked" onclick="showLocked('WMT ${testNum} (Written)')"><span>✍️</span> Written</button>`;
+        }
 
         html += `
-            <div class="test-box ${isActive ? 'active' : ''}" onclick="handleTestClick(${i})">
-                <div>
-                    <div class="test-header">
-                        <span class="test-title">WMT ${testNum}</span>
-                        <span class="badge ${isActive ? 'badge-live' : 'badge-locked'}">
-                            ${isActive ? '● Live Now' : 'Check later'}
-                        </span>
-                    </div>
-                    <div class="test-meta">
-                        ${isActive ? 'বাংলা, English, সাধারণ জ্ঞান ও লিখিত অংশ' : 'DU \'B\' Unit স্ট্যান্ডার্ড পূর্ণাঙ্গ মডেল টেস্ট'}
-                    </div>
+            <div class="test-row ${isLive ? 'active' : ''}">
+                <div class="test-info">
+                    <span class="bullet-icon">📘</span>
+                    <span class="test-name">Weekly Model Test ${testNum}</span>
+                    ${isLive ? '<span class="badge-live">● Live</span>' : ''}
                 </div>
-                <button class="btn-test ${isActive ? 'btn-active' : 'btn-locked'}">
-                    ${isActive ? 'অংশগ্রহণ করুন ➔' : 'Check later'}
-                </button>
+                <div class="test-actions">
+                    ${mcqBtn}
+                    ${writtenBtn}
+                </div>
             </div>
         `;
     }
 
     container.innerHTML = html;
 
-    // টেস্টে ক্লিক করলে মডাল নিয়ন্ত্রণ
-    function handleTestClick(testNumber) {
-        if (testNumber === 7) {
-            document.getElementById('wmt07-modal').classList.add('open');
-        } else {
-            const formattedNum = testNumber.toString().padStart(2, '0');
-            document.getElementById('locked-test-title').innerText = `Weekly Model Test ${formattedNum}`;
-            document.getElementById('locked-modal').classList.add('open');
-        }
+    function showLocked(testName) {
+        document.getElementById('locked-test-title').innerText = testName;
+        document.getElementById('locked-modal').classList.add('open');
     }
 
-    function closeModal(modalId) {
-        document.getElementById(modalId).classList.remove('open');
+    function closeModal() {
+        document.getElementById('locked-modal').classList.remove('open');
     }
 
-    // ব্যাকড্রপে ক্লিক করলে বন্ধ হওয়া
     window.onclick = function(event) {
         if (event.target.classList.contains('modal-overlay')) {
-            event.target.classList.remove('open');
+            closeModal();
         }
     };
 </script>
