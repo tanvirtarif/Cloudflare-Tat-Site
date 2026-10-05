@@ -234,7 +234,7 @@
             color: #0c4a6e;
         }
 
-        /* মোবাইল রেসপনসিভ ভিউ */
+        /* মোবাইল রেসপনসিভ ভিউ ফিক্স */
         @media (max-width: 540px) {
             .test-row {
                 flex-direction: column;
@@ -244,7 +244,8 @@
                 padding: 14px;
             }
             .test-info {
-                justify-content: space-between;
+                justify-content: center; /* আইকন ও লেখা সেন্টারে ফিক্স করা হলো */
+                gap: 8px;
             }
             .test-actions {
                 display: grid;
