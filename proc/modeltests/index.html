@@ -19,10 +19,10 @@
             --danger: #dc2626;
             --bg-color: #f1f5f9;
             --card-bg: #ffffff;
-            --row-bg: #f8fafc; /* সব সারির জন্য একই হালকা ব্যাকগ্রাউন্ড */
+            --row-bg: #f8fafc;
             --text-main: #090d16;
             --text-muted: #64748b;
-            --border-dark: #94a3b8; /* গাঢ় ও স্পষ্ট বর্ডার */
+            --border-dark: #94a3b8;
             --font-family: 'Noto Serif Bengali', serif;
         }
 
@@ -103,7 +103,7 @@
 
         /* Test Row Base */
         .test-row {
-            background-color: var(--row-bg); /* সব সারিতে একই হালকা প্রিমিয়াম কালার */
+            background-color: var(--row-bg);
             border: 1.5px solid var(--border-dark);
             border-radius: 12px;
             padding: 14px 18px;
@@ -121,7 +121,7 @@
             background-color: #f1f5f9;
         }
 
-        /* সচল টেস্টের বিশেষ হাইলাইট (WMT 07) */
+        /* সচল টেস্টের বিশেষ হাইলাইট (WMT 08) */
         .test-row.active {
             border: 2.5px solid var(--primary) !important;
             background: #eff6ff !important;
@@ -184,7 +184,7 @@
             font-family: inherit;
         }
 
-        /* ================= শেড ১: MCQ বাটন (রয়্যাল ডার্ক ব্লু শেড) ================= */
+        /* MCQ বাটন (রয়্যাল ডার্ক ব্লু শেড) */
         .btn-mcq-active {
             background: linear-gradient(135deg, #1e40af, #1e3a8a);
             color: #ffffff;
@@ -209,7 +209,7 @@
             color: #1e1b4b;
         }
 
-        /* ================= শেড ২: Written বাটন (ব্রাইট ওশিয়ান/স্কাই ব্লু শেড) ================= */
+        /* Written বাটন (ব্রাইট ওশিয়ান/স্কাই ব্লু শেড) */
         .btn-written-active {
             background: linear-gradient(135deg, #0284c7, #0369a1);
             color: #ffffff;
@@ -234,7 +234,7 @@
             color: #0c4a6e;
         }
 
-        /* মোবাইল স্ক্রিনের রেসপনসিভ ভিউ */
+        /* মোবাইল রেসপনসিভ ভিউ */
         @media (max-width: 540px) {
             .test-row {
                 flex-direction: column;
@@ -382,11 +382,11 @@
 </div>
 
 <script>
-    // 🔗 লিংক কনফিগারেশন: ভবিষ্যতে নতুন টেস্ট চালু করতে শুধু এখানে সংশ্লিষ্ট লিংক বসিয়ে দেবেন
+    // 🔗 কনফিগারেশন: শুধুমাত্র Weekly Model Test 08 অ্যাক্টিভ
     const TEST_CONFIG = {
-        7: {
-            mcq: "https://tanvirtarif.com/proc/modeltests/wmt07mcq",
-            written: "https://tanvirtarif.com/proc/modeltests/wmt07written"
+        8: {
+            mcq: "https://tanvirtarif.com/proc/modeltests/009xwmt08mcq",
+            written: "https://tanvirtarif.com/proc/modeltests/009xwmt08written"
         }
     };
 
@@ -398,7 +398,7 @@
         const config = TEST_CONFIG[i];
         const isLive = Boolean(config);
 
-        // MCQ বাটন (গাঢ় রয়্যাল ব্লু শেড ও 📝 আইকন)
+        // MCQ বাটন
         let mcqBtn = '';
         if (config && config.mcq) {
             mcqBtn = `<a href="${config.mcq}" class="btn-exam btn-mcq-active"><span>📝</span> MCQ</a>`;
@@ -406,7 +406,7 @@
             mcqBtn = `<button type="button" class="btn-exam btn-mcq-locked" onclick="showLocked('WMT ${testNum} (MCQ)')"><span>📝</span> MCQ</button>`;
         }
 
-        // Written বাটন (ব্রাইট স্কাই ব্লু শেড ও ✍️ আইকন)
+        // Written বাটন
         let writtenBtn = '';
         if (config && config.written) {
             writtenBtn = `<a href="${config.written}" class="btn-exam btn-written-active"><span>✍️</span> Written</a>`;
