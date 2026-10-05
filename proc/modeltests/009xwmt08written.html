@@ -321,14 +321,14 @@
             <span class="badge-pill">📑 বিষয়: বাংলা, English</span>
         </div>
 
-        <!-- নিয়মাবলি বক্স -->
+        <!-- নিয়মাবলি বক্স -->
         <div class="rules-box">
             <h3>📌 লিখিত পরীক্ষার জরুরি নিয়মাবলি:</h3>
             <ul>
                 <li>নিজ দায়িত্বে এফোর (A4) বা পরিষ্কার খাতায় মার্জিন টেনে পূর্ণ সততার সাথে পরীক্ষা সম্পন্ন করতে হবে।</li>
                 <li>প্রতিটি পৃষ্ঠার ওপরে নিজের <strong>নাম, রোল/কোড এবং পৃষ্ঠা নম্বর (যেমন: 1/4, 2/4)</strong> স্পষ্ট অক্ষরে লিখতে হবে।</li>
                 <li>কোনো বই, নোট, অভিধান বা ইন্টারনেটের সাহায্য নেওয়া সম্পূর্ণ নিষিদ্ধ।</li>
-                <li>নির্ধারিত সময়ের মধ্যে খাতার স্পষ্ট ছবি তুলে তা একটি <strong>PDF ফাইলে রূপান্তর</strong> করে সাবমিট করতে হবে।</li>
+                <li>নির্ধারিত সময়ের মধ্যে খাতার স্পষ্ট ছবি তুলে তা একটি <strong>PDF ফাইলে রূপান্তর</strong> করে সাবমিট করতে হবে। ফাইলের নাম হবে: <code>রোল_নাম_WMT08.pdf</code>।</li>
             </ul>
 
             <div class="deadline-badge">
@@ -360,14 +360,14 @@
         <!-- ================= গুগল ক্লাসরুম সাবমিশন বক্স ================= -->
         <div class="submission-card">
             <div class="submission-title">
-                <span>📤</span> লিখিত খাতা জমা দেওয়ার নির্দেশনা
+                <span>📤</span> লিখিত খাতা জমা দেওয়ার নির্দেশনা
             </div>
             <p style="font-size: 14px; color: #475569; margin: 4px 0 16px 0;">
                 আপনার লিখিত খাতার পিডিএফ ফাইলটি তৈরি করে গুগল ক্লাসরুমের নির্ধারিত অ্যাসাইনমেন্টে <strong>'Turn In'</strong> করুন।
             </p>
 
             <div class="classroom-btn-grid">
-                <!-- ক্লাসরুম ওয়েব লিংক -->
+                <!-- ক্লাসরুম ওয়েব লিংক -->
                 <a href="https://classroom.google.com" target="_blank" class="btn-action btn-classroom-web">
                     <span>🌐</span> গুগল ক্লাসরুম (ওয়েবসাইট)
                 </a>
@@ -394,7 +394,8 @@
 
 <!-- ড্রাইভ ফাইল আইডি কনফিগারেশন স্ক্রিপ্ট -->
 <script>
-    const DRIVE_FILE_ID = "1OTESr5pJt_Tu-0YvRi_HFEWPqcZTFK8T";
+    // 🔗 Weekly Model Test 08-এর জন্য ড্রাইভ ফাইল আইডি
+    const DRIVE_FILE_ID = "176dyg4RDnIErDXuOYNJ1Ff7CmVy8-ej-";
 
     document.getElementById('pdf-preview-frame').src = `https://drive.google.com/file/d/${DRIVE_FILE_ID}/preview`;
     document.getElementById('btn-drive-view').href = `https://drive.google.com/file/d/${DRIVE_FILE_ID}/view?usp=sharing`;
