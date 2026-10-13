@@ -121,7 +121,7 @@
             background-color: #f1f5f9;
         }
 
-        /* সচল টেস্টের বিশেষ হাইলাইট (WMT 08) */
+        /* সচল টেস্টের বিশেষ হাইলাইট (WMT 09) */
         .test-row.active {
             border: 2.5px solid var(--primary) !important;
             background: #eff6ff !important;
@@ -234,7 +234,7 @@
             color: #0c4a6e;
         }
 
-        /* মোবাইল রেসপনসিভ ভিউ ফিক্স */
+        /* মোবাইল রেসপনসিভ ভিউ ফিক্স (আইকন ও লেখা মাঝখানে বিন্যস্ত) */
         @media (max-width: 540px) {
             .test-row {
                 flex-direction: column;
@@ -244,7 +244,7 @@
                 padding: 14px;
             }
             .test-info {
-                justify-content: center; /* আইকন ও লেখা সেন্টারে ফিক্স করা হলো */
+                justify-content: center;
                 gap: 8px;
             }
             .test-actions {
@@ -383,11 +383,11 @@
 </div>
 
 <script>
-    // 🔗 কনফিগারেশন: শুধুমাত্র Weekly Model Test 08 অ্যাক্টিভ
+    // 🔗 কনফিগারেশন: শুধুমাত্র Weekly Model Test 09 অ্যাক্টিভ
     const TEST_CONFIG = {
-        8: {
-            mcq: "https://tanvirtarif.com/proc/modeltests/009xwmt08mcq",
-            written: "https://tanvirtarif.com/proc/modeltests/009xwmt08written"
+        9: {
+            mcq: "https://tanvirtarif.com/proc/modeltests/865xwmt09mcq",
+            written: "https://tanvirtarif.com/proc/modeltests/865xwmt09written"
         }
     };
 
