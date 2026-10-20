@@ -121,7 +121,7 @@
             background-color: #f1f5f9;
         }
 
-        /* সচল টেস্টের বিশেষ হাইলাইট (WMT 09) */
+        /* সচল টেস্টের বিশেষ হাইলাইট (WMT 10) */
         .test-row.active {
             border: 2.5px solid var(--primary) !important;
             background: #eff6ff !important;
@@ -199,14 +199,14 @@
         }
 
         .btn-mcq-locked {
-            background: #e0e7ff;
-            color: #3730a3;
-            border: 1.5px solid #c7d2fe;
+            background: #e2e8f0;
+            color: #64748b;
+            border: 1.5px solid #cbd5e1;
         }
 
         .btn-mcq-locked:hover {
-            background: #c7d2fe;
-            color: #1e1b4b;
+            background: #cbd5e1;
+            color: #475569;
         }
 
         /* Written বাটন (ব্রাইট ওশিয়ান/স্কাই ব্লু শেড) */
@@ -224,17 +224,17 @@
         }
 
         .btn-written-locked {
-            background: #e0f2fe;
-            color: #0369a1;
-            border: 1.5px solid #bae6fd;
+            background: #e2e8f0;
+            color: #64748b;
+            border: 1.5px solid #cbd5e1;
         }
 
         .btn-written-locked:hover {
-            background: #bae6fd;
-            color: #0c4a6e;
+            background: #cbd5e1;
+            color: #475569;
         }
 
-        /* মোবাইল রেসপনসিভ ভিউ ফিক্স (আইকন ও লেখা মাঝখানে বিন্যস্ত) */
+        /* মোবাইল রেসপনসিভ ভিউ (সেন্টার অ্যালাইনমেন্ট) */
         @media (max-width: 540px) {
             .test-row {
                 flex-direction: column;
@@ -383,11 +383,11 @@
 </div>
 
 <script>
-    // 🔗 কনফিগারেশন: শুধুমাত্র Weekly Model Test 09 অ্যাক্টিভ
+    // 🔗 কনফিগারেশন: শুধুমাত্র Weekly Model Test 10 অ্যাক্টিভ
     const TEST_CONFIG = {
-        9: {
-            mcq: "https://tanvirtarif.com/proc/modeltests/865xwmt09mcq",
-            written: "https://tanvirtarif.com/proc/modeltests/865xwmt09written"
+        10: {
+            mcq: "https://tanvirtarif.com/proc/modeltests/956mwmt10",
+            written: "https://tanvirtarif.com/proc/modeltests/956wwmt10"
         }
     };
 
@@ -450,3 +450,16 @@
 
 </body>
 </html>
+```<ElicitationsGroup>
+<Elicitation>
+<Query>হোমপেইজে কোনো টেস্ট সরাসরি খোলার আগে কাউন্টডাউন টাইমার যোগ করতে চান কি?</Query>
+</Elicitation>
+</ElicitationsGroup>
+<FollowUp>
+<Suggest>
+<Query>হোমপেইজে কোনো টেস্ট সরাসরি খোলার আগে কাউন্টডাউন টাইমার যোগ করতে চান কি?</Query>
+</Suggest>
+<Suggest>
+<Query>একসাথে পূর্ববর্তী টেস্টগুলোর (যেমন WMT 08 বা 09) রেজাল্ট/আর্কাইভ ভিউ চালু রাখবেন?</Query>
+</Suggest>
+</FollowUp>
