@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Consistency - Weekly Model Test 11</title>
+    
+    <!-- Google Fonts: Noto Serif Bengali -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #475569;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --font-family: 'Noto Serif Bengali', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.75;
+            letter-spacing: 0.1px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.06);
+            padding: 25px 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        @media (min-width: 640px) {
+            .card { padding: 32px; }
+            .container { padding: 25px; }
+        }
+
+        /* Banner & Typography */
+        .banner-img {
+            width: 100%;
+            height: auto;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background-color: #e2e8f0;
+        }
+
+        h1.main-title {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 6px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .sub-title { 
+            font-size: 19px; 
+            font-weight: 700; 
+            margin: 0 0 15px 0; 
+            color: var(--text-main); 
+        }
+        
+        /* Rules & Marks Box */
+        .rules-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-left: 5px solid var(--primary);
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #334155;
+            margin: 18px 0;
+            text-align: left;
+            line-height: 1.8;
+        }
+
+        .rules-box h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .rules-box ul {
+            margin: 6px 0 12px 20px;
+            padding: 0;
+        }
+
+        .rules-box li {
+            margin-bottom: 8px;
+        }
+
+        .notice-badge {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 12px;
+        }
+
+        /* Form Inputs */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14.5px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.25s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .consent-container {
+            display: flex;
+            align-items: flex-start;
+            margin: 22px 0;
+            padding: 15px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .consent-container input {
+            margin-right: 12px;
+            margin-top: 5px;
+            width: 19px;
+            height: 19px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            border: none;
+            padding: 14px 26px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.95;
+            box-shadow: 0 6px 18px -3px rgba(37, 99, 235, 0.35);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text-main);
+            border: none;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            font-family: inherit;
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            border: none;
+            padding: 15px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin: 18px 0 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+            font-family: inherit;
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
+        }
+
+        .btn-print:hover {
+            background: linear-gradient(135deg, #047857, #065f46);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35);
+        }
+
+        .btn-small {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        /* Written Section Notice Card */
+        .written-notice-card {
+            background: #ffffff;
+            border: 2px dashed #3b82f6;
+            border-radius: 14px;
+            margin: 28px 0;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.08);
+        }
+
+        .written-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .written-header h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .written-timer-badge {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 13.5px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .written-info-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 18px;
+            color: #1e293b;
+            font-size: 16.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(8px);
+            padding: 12px 18px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .student-info { font-size: 13.5px; line-height: 1.4; text-align: left; }
+        .timer-box {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--danger);
+            background: #fef2f2;
+            padding: 4px 14px;
+            border-radius: 8px;
+            border: 1px solid #fecaca;
+            font-variant-numeric: tabular-nums;
+        }
+
+        @media (max-width: 500px) {
+            .top-bar { padding: 10px 14px; }
+            .timer-box { font-size: 17px; }
+        }
+
+        .section-header {
+            background: var(--primary);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin: 25px 0 16px 0;
+            font-size: 17px;
+            font-weight: 700;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            padding: 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .question-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .options-list { list-style: none; padding: 0; margin: 0; }
+        .options-list li { margin-bottom: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 11px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 15px;
+            user-select: none;
+            line-height: 1.5;
+        }
+
+        .option-label:hover:not(.locked) { background: #f8fafc; border-color: #94a3b8; }
+        .option-label input { margin-right: 12px; transform: scale(1.15); flex-shrink: 0; }
+        .option-label.locked { cursor: not-allowed; }
+
+        .selected-active {
+            background-color: #fef9c3 !important;
+            border-color: #eab308 !important;
+            color: #854d0e !important;
+            font-weight: 600;
+        }
+
+        /* Result Screen */
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin: 22px 0;
+        }
+        
+        @media (min-width: 600px) {
+            .result-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .result-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: left;
+        }
+        .result-box h3 { margin: 0 0 8px 0; font-size: 17px; font-weight: 700; color: var(--primary); text-align: center; }
+        .result-box .score { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; }
+        .result-box .details { font-size: 14px; color: var(--secondary); line-height: 1.7; border-top: 1px solid var(--border-color); padding-top: 10px; }
+        
+        .status-pass { color: var(--success); font-weight: 700; text-align: center; margin-bottom: 6px; font-size: 14.5px; }
+        .status-fail { color: var(--danger); font-weight: 700; text-align: center; margin-bottom: 6px; font-size: 14.5px; }
+
+        .total-details-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px rgba(255, 255, 255, 0.2) solid;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        #print-evaluation-sheet { display: none; text-align: left; margin-top: 30px; }
+
+        .print-q-card {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+
+        .print-q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .print-badge {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-correct { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+        .badge-wrong { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+        .badge-unattempted { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+
+        .print-options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 14px;
+            margin: 10px 0;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #f1f5f9;
+        }
+
+        @media (max-width: 500px) {
+            .print-options-grid { grid-template-columns: 1fr; }
+        }
+
+        .print-opt-item {
+            font-size: 13.5px;
+            padding: 5px 8px;
+            border-radius: 5px;
+            line-height: 1.5;
+            color: #334155;
+            border: 1px solid transparent;
+        }
+
+        .print-opt-correct {
+            background-color: #dcfce7 !important;
+            border-color: #86efac !important;
+            color: #14532d !important;
+            font-weight: 700;
+        }
+
+        .print-opt-wrong {
+            background-color: #fee2e2 !important;
+            border-color: #fca5a5 !important;
+            color: #7f1d1d !important;
+            text-decoration: line-through;
+            font-weight: 600;
+        }
+
+        .print-exp-box {
+            background: #f0fdf4;
+            border-left: 3.5px solid #16a34a;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #1e293b;
+            margin-top: 8px;
+            border-radius: 4px;
+            line-height: 1.6;
+        }
+
+        .join-us-bar {
+            margin: 25px 0 10px 0;
+            padding: 14px 16px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+
+        .join-us-bar a { color: var(--secondary); text-decoration: none; font-weight: 700; }
+        .join-us-bar a:hover { color: var(--primary); }
+        .join-us-bar span.divider { color: #cbd5e1; }
+
+        @media print {
+            body { background: #ffffff !important; color: #000000 !important; font-size: 11pt; }
+            .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+            .top-bar, .banner-img, .btn-primary, .btn-secondary, .btn-print, .btn-small, .written-notice-card, .join-us-bar, #step-1-screen, #step-2-screen, #exam-screen { display: none !important; }
+            .card { box-shadow: none !important; border: none !important; padding: 0 !important; margin-bottom: 15px !important; }
+            #result-summary-screen, #print-evaluation-sheet { display: block !important; }
+            .result-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 10px !important; page-break-inside: avoid; }
+            .result-box { border: 1px solid #94a3b8 !important; background: #ffffff !important; padding: 10px !important; }
+            .print-q-card { border: 1px solid #cbd5e1 !important; background: #ffffff !important; margin-bottom: 8px !important; padding: 10px !important; page-break-inside: avoid; }
+            .print-options-grid { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .print-opt-correct { background-color: #dcfce7 !important; border-color: #86efac !important; color: #14532d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .print-opt-wrong { background-color: #fee2e2 !important; border-color: #fca5a5 !important; color: #7f1d1d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .section-header { background: #0f172a !important; color: #ffffff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 8px 12px !important; margin: 15px 0 10px 0 !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <!-- STEP 1: INTRO & ENTRY FORM -->
+    <div id="step-1-screen" class="card text-center">
+        <img src="/cover.png" alt="Project Consistency" class="banner-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'800\' height=\'200\'><rect width=\'800\' height=\'200\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' font-size=\'22\' fill=\'%2364748b\' text-anchor=\'middle\' dominant-baseline=\'middle\'>Project Consistency by Tanvir Tarif</text></svg>'">
+        
+        <h1 class="main-title">Project Consistency</h1>
+        <h2 class="sub-title">Weekly Model Test 11</h2>
+        <p style="color: var(--secondary); font-size: 14.5px; margin-top: -8px;">Consistency is the Key to Success</p>
+
+        <form id="entry-form" onsubmit="event.preventDefault(); goToInstructions();">
+            <div class="form-grid text-left">
+                <div class="form-group">
+                    <label>Your Full Name (পূর্ণ নাম) *</label>
+                    <input type="text" id="stu-name" placeholder="যেমন: Abdullah Sakib" required>
+                </div>
+                <div class="form-group">
+                    <label>Your Code (রোল/কোড) *</label>
+                    <input type="text" id="stu-roll" placeholder="যেমন: 63 Sakib" required>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>মোবাইল নাম্বারের শেষ ৪ ডিজিট *</label>
+                    <input type="tel" id="stu-mobile" maxlength="4" placeholder="যেমন: 4589" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top: 22px;">পরবর্তী ধাপ: নিয়মাবলি ও নির্দেশিকা ➔</button>
+        </form>
+    </div>
+
+    <!-- STEP 2: RULES SCREEN -->
+    <div id="step-2-screen" class="card text-center hidden">
+        <h2 class="sub-title" style="color: var(--primary);">📋 পরীক্ষার নিয়মাবলী ও মানবণ্টন</h2>
+
+        <div class="rules-box">
+            <h3>📌 অংশগ্রহণের জরুরি নিয়মাবলী:</h3>
+            <ul>
+                <li>নিজ দায়িত্বে যথাযথ পরিবেশ তৈরি করে পূর্ণ সততার সাথে পরীক্ষা সম্পন্ন করতে হবে।</li>
+                <li>কোনো বই, নোট, ইন্টারনেট বা অন্য যে কোনো মাধ্যমের সাহায্য নেওয়া সম্পূর্ণ নিষিদ্ধ।</li>
+                <li>নির্ধারিত অংশে নাম, কোড সঠিকভাবে পূরণ করতে হবে।</li>
+                <li><strong>বিশেষ সতর্কবার্তা:</strong> MCQ অংশে <strong>একবার কোনো অপশন নির্বাচন করে ফেললে তা লক হয়ে যাবে</strong>; পরবর্তীতে তা পরিবর্তন করা যাবে না।</li>
+                <li>MCQ অংশ সাবমিট করার পর সামগ্রিক ফলাফল ও ব্যাখ্যাসহ উত্তর দেখা ও প্রিন্ট করা যাবে।</li>
+            </ul>
+
+            <h3>📊 MCQ অংশের বিষয় ও মানবণ্টন:</h3>
+            <ul>
+                <li><strong>বাংলা:</strong> ১ × ১৫ = ১৫ (পাস মার্ক: <strong>৫</strong>)</li>
+                <li><strong>English:</strong> 1 × 15 = 15 (Pass Mark: <strong>5</strong>)</li>
+                <li><strong>সাধারণ জ্ঞান:</strong> ১ × ৩০ = ৩০ (পাস মার্ক: <strong>১০</strong>)</li>
+                <li><strong>সর্বমোট:</strong> ১ × ৬০ = ৬০ (মোট পাস মার্ক: <strong>২৪</strong>)</li>
+                <li><strong>সময়:</strong> <strong>২৫ মিনিট</strong> | <strong>নেগেটিভ মার্কিং:</strong> প্রতি ভুল উত্তরের জন্য <strong>০.২৫</strong> নম্বর কাটা যাবে।</li>
+            </ul>
+
+            <div class="notice-badge">
+                ⚠️ একজন শিক্ষার্থী একবারই সাবমিট করতে পারবেন। নির্ধারিত ২৫ মিনিট পার হলে MCQ উত্তরপত্র স্বয়ংক্রিয়ভাবে জমা হয়ে যাবে।
+            </div>
+        </div>
+
+        <label class="consent-container">
+            <input type="checkbox" id="consent-check" required>
+            <span>আমি সকল নিয়ম ও মানবণ্টন মনোযোগ দিয়ে পড়েছি এবং সকল শর্তে সম্মত হয়ে পরীক্ষা শুরু করছি।</span>
+        </label>
+
+        <button type="button" class="btn-primary" onclick="startExam()">🚀 পরীক্ষা শুরু করুন (Start Exam)</button>
+        <button type="button" class="btn-secondary" onclick="backToEntry()">⬅️ তথ্য সংশোধন করুন</button>
+    </div>
+
+    <!-- EXAM SCREEN -->
+    <div id="exam-screen" class="hidden exam-active">
+        <div class="top-bar">
+            <div class="student-info">
+                <strong><span id="display-name"></span></strong> (<span id="display-roll"></span>)<br>
+                <span style="color: var(--secondary); font-size: 12.5px;">Weekly Model Test 11</span>
+            </div>
+            <div class="timer-box" id="timer">25:00</div>
+            <div>
+                <button class="btn-small" onclick="checkAndSubmit()">সাবমিট করুন</button>
+            </div>
+        </div>
+
+        <div id="questions-container"></div>
+
+        <button class="btn-primary" style="margin: 30px 0 60px 0;" onclick="checkAndSubmit()">সাবমিট করুন</button>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-summary-screen" class="card text-center hidden">
+        <h2 style="color: var(--primary); margin-top: 0;">পরীক্ষার ফলাফল ও মূল্যায়ন পত্র</h2>
+        <h3 id="res-name" style="margin-bottom: 12px;"></h3>
+        
+        <div class="result-grid" id="section-results-container"></div>
+
+        <div class="card" style="background: var(--primary); color: white; padding: 22px; border: none; border-radius: 14px;">
+            <h3 style="margin: 0 0 6px 0; font-size: 18px; font-weight: 700;">সর্বমোট ফলাফল</h3>
+            <div style="font-size: 34px; font-weight: 800;" id="total-score-display">0.00</div>
+            <div style="font-size: 16px; margin-top: 6px; font-weight: 600;" id="total-status-display"></div>
+            
+            <div class="total-details-grid">
+                <div>✔️ সঠিক: <b id="total-correct-display">0</b></div>
+                <div>❌ ভুল: <b id="total-wrong-display">0</b></div>
+                <div>⚪ অনুত্তরিত: <b id="total-unattempted-display">0</b></div>
+            </div>
+        </div>
+
+        <button type="button" class="btn-print" onclick="printEvaluationReport()">
+            <span>🖨️</span> ব্যাখ্যাসহ MCQ উত্তরপত্র pdf ডাউনলোড বা প্রিন্ট করুন
+        </button>
+
+        <div class="written-notice-card">
+            <div class="written-header">
+                <span style="font-size: 24px;">📝</span>
+                <h3>লিখিত প্রশ্ন (Written Question)</h3>
+            </div>
+            <div class="written-timer-badge">⏳ লিখিত খাতা সাবমিট করার শেষ সময় রাত ১০:৩০ মিনিট</div>
+            <div class="written-info-box">
+                📌 লিখিত প্রশ্নের জন্য গুগল Classroom বা Telegram গ্রুপ চেক কর
+            </div>
+        </div>
+
+        <div id="print-evaluation-sheet">
+            <hr style="border: 0; border-top: 2px dashed #94a3b8; margin: 25px 0;">
+            <h3 style="color: var(--primary); text-align: center; margin-bottom: 16px;">📌 প্রশ্নভিত্তিক পূর্ণাঙ্গ মূল্যায়ন ও ৪টি অপশনসহ সমাধান</h3>
+            <div id="print-questions-list"></div>
+        </div>
+
+        <div class="join-us-bar">
+            <span style="color: var(--text-main); font-weight: 700;">Join Us:</span>
+            <a href="https://www.facebook.com/tanvirtarif.learn" target="_blank"><b>Facebook Page</b></a>
+            <span class="divider">•</span>
+            <a href="https://t.me/projectconsistency" target="_blank"><b>Telegram Group</b></a>
+            <span class="divider">•</span>
+            <a href="https://www.youtube.com/@withTanvirTarif" target="_blank"><b>YouTube</b></a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 🔗 গুগল শিটের Web App URL (নতুন শিট লিংক করতে চাইলে এটি প্রতিস্থাপন করুন)
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyv9TEiL3WjShN1da6YiZ6XcYwyY6SSaY_F1L8qrAjHrglTmjyhf8dJ5Ox03u1AA1iZ/exec";
+    const TEST_NAME = "DU B Weekly Model Test 11";
+
+    let userIP = "Unknown";
+    fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(d => { userIP = d.ip; })
+        .catch(() => { userIP = "Unavailable"; });
+
+    let examData = [
+        {
+            id: "bangla",
+            name: "বাংলা",
+            passMark: 5,
+            questions: [
+                { q: "মোতাহের হোসেন চৌধুরীর জীবন ও বৃক্ষ প্রবন্ধে বৃক্ষ কিসের প্রতীক হিসেবে চিত্রিত হয়েছে?", options: ["বৈষয়িক সমৃদ্ধি", "প্রাচীন আধ্যাত্মিক সাধনা", "আত্মোৎসর্গ, স্থৈর্য ও পূর্ণাঙ্গ মানববিকাশ", "রাষ্ট্রীয় কর্তৃত্ব"], ans: 2, exp: "জীবন ও বৃক্ষ প্রবন্ধে বৃক্ষকে আত্মদান, পরোপকার ও সার্থক জীবনের এক অনন্য প্রতীক হিসেবে উপস্থাপন করা হয়েছে।" },
+                { q: "তাহারেই পড়ে মনে কবিতায় বসন্ত ঋতু এলেও কবির মনে আনন্দ নেই কেন?", options: ["প্রিয়জন হারানোর তীব্র শোক ও বিষাদময় শূন্যতা", "যুদ্ধকালীন আতঙ্ক", "প্রকৃতিতে ফুলের অভাব", "লোকলজ্জার ভয়"], ans: 0, exp: "সুফিয়া কামালের তাহারেই পড়ে মনে কবিতায় স্বামী ও কাব্যপ্রেরণাদাতা সৈয়দ নেহাল হোসেনের আকস্মিক মৃত্যুতে কবির অন্তরে গভীর শোক বিরাজমান ছিল।" },
+                { q: "ফররুখ আহমদের পদ্মা কবিতায় পদ্মার কোন রূপটি প্রধান হয়ে উঠেছে?", options: ["শুষ্ক মরুময়তা", "কেবল শান্ত জলাধার", "হিমালয়ের নির্জনতা", "ভাঙাগড়ার চিরন্তন সংঘাত ও প্রাণপ্রাচুর্য"], ans: 3, exp: "পদ্মা কবিতায় নদীর ধ্বংস ও সৃষ্টির দ্বৈত রূপ এবং তার বুক চিরে বেঁচে থাকা সংগ্রামী মানুষের জীবনীশক্তি চিত্রিত হয়েছে।" },
+                { q: "রাশি রাশি ধান - এখানে দ্বিরুক্ত শব্দদ্বৈতটি কী অর্থে ব্যবহৃত হয়েছে?", options: ["পৌনঃপুনিকতা", "আধিক্য বা বহুত্ব", "তীব্রতা", "স্বল্পতা"], ans: 1, exp: "রাশি রাশি শব্দদ্বৈতটি একবচনের পুনরাবৃত্তি ঘটিয়ে বিশেষ্যের বহুত্ব বা প্রাচুর্য প্রকাশ করেছে।" },
+                { q: "পহেলা বৈশাখ - কোন ধরনের সংখ্যাবাচক শব্দের উদাহরণ?", options: ["তারিখবাচক", "পূরণবাচক", "পরিমাণবাচক", "গণনাবাচক"], ans: 0, exp: "বাংলা মাসের প্রথম থেকে একত্রিশ দিন পর্যন্ত গণনাকে তারিখবাচক সংখ্যা বলা হয় (যেমন: পহেলা, দোসরা)।" },
+                { q: "একখানা বই দাও - এখানে খানা পদাশ্রিত নির্দেশকটি কী নির্দেশ করছে?", options: ["অনির্দিষ্টতা", "সামগ্রিকতা", "কৃত্রিমতা", "নির্দিষ্টতা"], ans: 3, exp: "খানা বা খানি পদাশ্রিত নির্দেশক শব্দের পরে বা সংখ্যাবাচক শব্দের সাথে বসে বস্তুর নির্দিষ্টতা নির্দেশ করে।" },
+                { q: "বিদ্বান শব্দটির সঠিক স্ত্রীলিঙ্গ রূপ কোনটি?", options: ["বিদ্বানী", "বিদ্যাবতী", "বিদুষী", "বিদ্বানিনী"], ans: 2, exp: "তৎসম প্রত্যয়যোগে গঠিত বিদ্বান পুংলিঙ্গ শব্দের ব্যাকরণিক স্ত্রীলিঙ্গ রূপ হলো বিদুষী।" },
+                { q: "কেবল বিশেষ্য ও সর্বনাম পদের কোন ব্যাকরণিক ধর্ম থাকে?", options: ["বাচ্য", "বচন", "পুরুষ", "কাল"], ans: 1, exp: "বাংলা ব্যাকরণের নিয়ম অনুসারে বচন কেবল বিশেষ্য ও সর্বনাম পদের রূপভেদ নির্দেশ করে।" },
+                { q: "ব্যাকরণিক শব্দশ্রেণি অনুসারে \"শাবাশ, দারুণ খেলেছ!\" বাক্যে \"শাবাশ\" কোন শ্রেণির পদ?", options: ["যোজক", "ক্রিয়া বিশেষণ", "অনুসর্গ", "আবেগ শব্দ"], ans: 3, exp: "মনের আকস্মিক আনন্দ, প্রশংসা বা উচ্ছ্বাস প্রকাশ করায় শাবাশ হলো একটি আবেগ শব্দ (Interjection)।" },
+                { q: "পদ্মা কবিতায় কবি পদ্মাকে কার সাথে তুলনা করেছেন?", options: ["নির্জন হ্রদের সাথে", "বরফের সাগরের সাথে", "রূপসী ও সংহারিণী প্রমত্তা শক্তির সাথে", "শুকিয়ে যাওয়া খালের সাথে"], ans: 2, exp: "কবি পদ্মার প্রলয়ংকরী রূপ এবং একই সাথে জীবনদায়িনী আশীর্বাদকে মহিমান্বিত করেছেন।" },
+                { q: "ফেব্রুয়ারি ১৯৬৯ কবিতায় একুশের কৃষ্ণচূড়া কিসের রঙ হিসেবে বর্ণিত হয়েছে?", options: ["চেতনার রঙ", "প্রেমের রঙ", "নৈরাশ্যের রঙ", "রাজকীয় আভিজাত্যের রঙ"], ans: 0, exp: "কবি লিখেছেন: একুশের কৃষ্ণচূড়া আমাদের চেতনারই রঙ, যা প্রতিবাদ ও আত্মত্যাগের প্রতীক।" },
+                { q: "টাপুর-টুপুর কোন ধরনের দ্বিরুক্ত শব্দ?", options: ["নাম দ্বিরুক্ত", "অনুকার বা ধ্বন্যাত্মক দ্বিরুক্ত", "সমার্থক শব্দ", "যুগ্মরীতি"], ans: 1, exp: "বৃষ্টির কাল্পনিক বা অনুভূতির ধ্বনিকে ব্যঞ্জিত করায় টাপুর-টুপুর একটি অনুকার দ্বিরুক্ত।" },
+                { q: "উনিশ এর পূরণবাচক রূপ কোনটি?", options: ["একোন", "ঊনবিংশ", "ঊনবিংশতিতম", "দশম"], ans: 1, exp: "সংস্কৃত বা তৎসম পূরণবাচক নিয়ম অনুসারে উনিশ-এর রূপ হলো ঊনবিংশ।" },
+                { q: "গোটা দুই ফল নিয়ে এসো - বাক্যে গোটা পদাশ্রিত নির্দেশকটি কী অর্থে ব্যবহৃত হয়েছে?", options: ["অনির্দিষ্টতা বা আনুমানিকতা", "সমষ্টি", "খণ্ডতা", "নিশ্চিত নির্দিষ্টতা"], ans: 0, exp: "পদের পূর্বে গোটা যুক্ত হয়ে অনেক সময় সংখ্যাটির অনির্দিষ্ট বা আনুমানিক পরিমাণ নির্দেশ করে।" },
+                { q: "মেঘ দেখে কেউ করিস নে ভয়, আড়ালে তার সূর্য হাসে - বাক্যটি গঠনগত দিক থেকে কোন শ্রেণিভুক্ত?", options: ["আদেশসূচক বাক্য", "সরল বাক্য", "জটিল বা মিশ্র বাক্য", "যৌগিক বাক্য"], ans: 2, exp: "একটি প্রধান বাক্যাংশের সাথে খণ্ড বাক্যাংশের শর্তাধীন সম্পর্ক থাকায় এটি জটিল বা মিশ্র বাক্য।" }
+            ]
+        },
+        {
+            id: "english",
+            name: "English",
+            passMark: 5,
+            questions: [
+                { q: "Identify the bracketed clause: The student [who won the international debate] was awarded a gold medal.", options: ["Adverbial clause of condition", "Noun clause", "Coordinate clause", "Adjective clause"], ans: 3, exp: "The clause who won the international debate modifies the preceding noun student, functioning as an adjective clause." },
+                { q: "In the sentence \"[To run five miles every morning] is exhilarating\" - the bracketed infinitive phrase acts as:", options: ["Object of the verb", "Subject complement", "Adverbial modifier", "Subject of the sentence"], ans: 3, exp: "The infinitive phrase To run five miles every morning functions as the grammatical subject of the finite verb is." },
+                { q: "If the government ___ in renewable energy, carbon emissions will decline.", options: ["will invest", "invests", "invest", "invested"], ans: 1, exp: "First conditional uses If + Present Simple (invests for third person singular) followed by will + base verb in the main clause." },
+                { q: "If she had known about the schedule change, she ___ the morning flight.", options: ["would not have missed", "would not miss", "had not missed", "will not miss"], ans: 0, exp: "Third conditional takes If + Past Perfect in the conditional clause and would/could/might + have + past participle in the result clause." },
+                { q: "Convert into Indirect Speech: He asked me, \"Where did you purchase this antique timepiece?\"", options: ["He enquired me that where had I purchased that timepiece.", "He asked me where did I purchase that antique timepiece.", "He asked me where I had purchased that antique timepiece.", "He asked me where I purchased this antique timepiece."], ans: 2, exp: "Wh-interrogative in past simple shifts to assertive order in past perfect (where I had purchased) and this becomes that." },
+                { q: "Identify the Noun Phrase in the sentence: The old wooden bridge across the river collapsed suddenly.", options: ["The old wooden bridge across the river", "collapsed suddenly", "suddenly", "across the river collapsed"], ans: 0, exp: "The complete noun phrase functioning as the subject is The old wooden bridge across the river." },
+                { q: "Complete the sentence: Unless you abide by the code of conduct, you ___ disciplinary action.", options: ["faced", "would have faced", "will face", "would face"], ans: 2, exp: "Unless means if not and takes a present simple verb in the condition, followed by will + base verb in the main clause." },
+                { q: "In the Zero Conditional, which statement is scientifically accurate?", options: ["If you heat ice, it will have melted.", "If you heat ice, it would melt.", "If you heated ice, it melted.", "If you heat ice, it melts."], ans: 3, exp: "Zero conditional expresses universal scientific facts using Present Simple in both the condition and the result clause." },
+                { q: "What does the idiom \"A pipe dream\" mean in literary discourse?", options: ["A water pipeline leak", "An unrealistic or unattainable hope or fantasy", "An engineering blueprint", "A nightmare"], ans: 1, exp: "A pipe dream refers to an illusory, impossible, or fantastic scheme that is never likely to materialize." },
+                { q: "In the sentence She walked as if she ___ on air, the correct verb form is:", options: ["is", "were", "has been", "was"], ans: 1, exp: "Unreal comparison introduced by as if / as though in the present context requires the subjunctive were." },
+                { q: "Identify the Adverbial Clause of Concession:", options: ["He spoke so softly that no one could hear him.", "Since he was ill, he missed the lecture.", "If you work diligently, you will prosper.", "Although he encountered formidable obstacles, he persevered."], ans: 3, exp: "Although introduces an adverbial clause showing concession or contrast against expectations." },
+                { q: "Choose the correct sentence:", options: ["Scarcely had the train left when we arrived.", "Scarcely had the train left than we arrived.", "Scarcely the train had left when we arrived.", "Scarcely did the train left than we arrived."], ans: 0, exp: "Negative adverbial Scarcely at the beginning causes inversion (had + subject + V3) and correlates with when." },
+                { q: "The doctor advised that the athlete ___ his training regimen immediately.", options: ["resumed", "resumes", "resume", "must resume"], ans: 2, exp: "Mandative subjunctive following advise requires the base form of the verb (resume) in the that-clause." },
+                { q: "What is the antonym of the word \"Inalienable\" as applied to fundamental rights?", options: ["Sacred", "Inherent", "Transferable", "Indispensable"], ans: 2, exp: "Inalienable means unable to be taken away or transferred; its direct antonym is transferable or negotiable." },
+                { q: "In the sentence Had I possessed sufficient capital, I ___ a software incubator.", options: ["would have established", "will establish", "would establish", "established"], ans: 0, exp: "Inverted conditional starting with Had + subject + past participle acts as a third conditional, requiring would have established." }
+            ]
+        },
+        {
+            id: "gk",
+            name: "সাধারণ জ্ঞান",
+            passMark: 10,
+            questions: [
+                { q: "বাংলাদেশে প্রথম জাতীয় আদমশুমারি কত সালে অনুষ্ঠিত হয়েছিল? (In which year was the first National Population Census held in Bangladesh?)", options: ["১৯৯১ (1991)", "১৯৭৪ (1974)", "১৯৮১ (1981)", "১৯৭২ (1972)"], ans: 1, exp: "স্বাধীন বাংলাদেশে জাতির পিতা বঙ্গবন্ধু শেখ মুজিবুর রহমানের শাসনামলে ১৯৭৪ সালে প্রথম আদমশুমারি অনুষ্ঠিত হয়।" },
+                { q: "অর্থনৈতিক সমীক্ষা অনুযায়ী বাংলাদেশের অর্থনীতিতে জিডিপিতে সর্বাধিক অবদান কোন খাতের? (According to the Economic Review, which sector contributes most to Bangladesh's GDP?)", options: ["শিল্প খাত (Industrial Sector)", "কৃষি খাত (Agriculture)", "মৎস্য খাত (Fisheries)", "সেবা খাত (Service Sector)"], ans: 3, exp: "বাংলাদেশের মোট দেশজ উৎপাদনে (GDP) একক খাত হিসেবে সেবা খাতের (Service Sector) অবদান ৫০ শতাংশের বেশি।" },
+                { q: "জাতিসংঘ কর্তৃক মানব উন্নয়ন সূচক (HDI) পরিমাপে কোন সংস্থা প্রতিবেদন প্রকাশ করে? (Which organization publishes the Human Development Index report?)", options: ["World Bank", "IMF", "UNESCO", "UNDP"], ans: 3, exp: "জাতিসংঘ উন্নয়ন কর্মসূচি (ইউএনডিপি) ১৯৯০ সাল থেকে প্রতিবছর বিশ্বব্যাপী মানব উন্নয়ন প্রতিবেদন ও সূচক প্রকাশ করে আসছে।" },
+                { q: "ঢাকা মেট্রোরেলের (MRT Line-6) উত্তরা-মতিঝিল অংশ আনুষ্ঠানিকভাবে কোন মন্ত্রণালয় পরিচালনা করে? (Which ministry oversees the administrative operations of Dhaka Metro Rail MRT Line-6?)", options: ["রেলপথ মন্ত্রণালয় (Ministry of Railways)", "সড়ক পরিবহন ও সেতু মন্ত্রণালয় (Ministry of Road Transport and Bridges)", "স্বরাষ্ট্র মন্ত্রণালয় (Ministry of Home Affairs)", "গৃহায়ন ও গণপূর্ত মন্ত্রণালয় (Ministry of Housing)"], ans: 1, exp: "ঢাকা ম্যাস ট্রানজিট কোম্পানি লিমিটেড (DMTCL) সড়ক পরিবহন ও সেতু মন্ত্রণালয়ের অধীনে মেট্রোরেল পরিচালনা করে।" },
+                { q: "বাংলাদেশের প্রথম গভীর সমুদ্র বন্দর কোন স্থানে নির্মিত হচ্ছে? (Where is Bangladesh's first deep-sea port being constructed?)", options: ["পতেঙ্গা, চট্টগ্রাম (Patenga, Chattogram)", "পায়রা, পটুয়াখালী (Payra, Patuakhali)", "মাতারবাড়ী, কক্সবাজার (Matarbari, Cox's Bazar)", "মংলা, বাগেরহাট (Mongla, Bagerhat)"], ans: 2, exp: "জাপানের জাইকার (JICA) অর্থায়ন ও কারিগরি সহায়তায় কক্সবাজারের মহেশখালীর মাতারবাড়ীতে গভীর সমুদ্র বন্দর নির্মিত হচ্ছে।" },
+                { q: "রূপপুর পারমাণবিক বিদ্যুৎ কেন্দ্র কোন দেশের কারিগরি ও আর্থিক সহায়তায় নির্মিত হচ্ছে? (With the assistance of which country is the Rooppur Nuclear Power Plant being built?)", options: ["রাশিয়া (Russia)", "ফ্রান্স (France)", "চীন (China)", "ভারত (India)"], ans: 0, exp: "পাবনার ঈশ্বরদীতে রাশিয়ার রাষ্ট্রীয় পরমাণু শক্তি সংস্থা রোসাটম (Rosatom)-এর সহায়তায় রূপপুর এনপিপি নির্মিত হচ্ছে।" },
+                { q: "পার্বত্য চট্টগ্রাম শান্তি চুক্তি (Chittagong Hill Tracts Peace Accord) কত তারিখে স্বাক্ষরিত হয়েছিল? (On which date was the Chittagong Hill Tracts Peace Accord signed?)", options: ["২ ডিসেম্বর ১৯৯৭ (2 December 1997)", "১৫ আগস্ট ১৯৯৯ (15 August 1999)", "১০ জানুয়ারি ১৯৯৮ (10 January 1998)", "২৬ মার্চ ১৯৯৬ (26 March 1996)"], ans: 0, exp: "১৯৯৭ সালের ২ ডিসেম্বর বাংলাদেশ সরকার এবং পার্বত্য চট্টগ্রাম জনসংহতি সমিতি (পিসিজেএসএস)-এর মধ্যে শান্তি চুক্তি স্বাক্ষরিত হয়।" },
+                { q: "ভারতের সাথে বঙ্গোপসাগরের সমুদ্রসীমা বিরোধের স্থায়ী সালিসি আদালত (PCA)-এর রায় কত সালে প্রকাশিত হয়? (In which year was the PCA verdict on Bangladesh-India maritime border delivered?)", options: ["২০১৫ (2015)", "২০১৭ (2017)", "২০১৪ (2014)", "২০১১ (2011)"], ans: 2, exp: "২০১৪ সালের ৭ জুলাই নেদারল্যান্ডসের দ্য হেগে অবস্থিত স্থায়ী সালিসি আদালত ভারতের সাথে বিরোধ নিষ্পত্তির রায় প্রদান করে।" },
+                { q: "বাংলাদেশের বৃহত্তম ক্ষুদ্র নৃগোষ্ঠী কোনটি? (Which is the largest indigenous ethnic group in Bangladesh?)", options: ["গারো (Garo)", "চাকমা (Chakma)", "সাঁওতাল (Santhal)", "মারমা (Marma)"], ans: 1, exp: "জনসংখ্যা ও ভৌগোলিক বিস্তারের দিক থেকে পার্বত্য চট্টগ্রাম অঞ্চলের চাকমা জনগোষ্ঠী বাংলাদেশের বৃহত্তম ক্ষুদ্র নৃগোষ্ঠী।" },
+                { q: "মাতৃতান্ত্রিক পরিবার ব্যবস্থা বিদ্যমান রয়েছে কোন ক্ষুদ্র নৃগোষ্ঠীর মধ্যে? (Which ethnic group in Bangladesh follows a matriarchal family structure?)", options: ["ত্রিপুরা ও তঞ্চঙ্গ্যা (Tripura and Tanchangya)", "চাকমা ও মারমা (Chakma and Marma)", "সাঁওতাল ও ওঁরাও (Santhal and Oraon)", "গারো ও খাসিয়া (Garo and Khasi)"], ans: 3, exp: "গারো এবং খাসিয়া উপজাতির সমাজে পারিবারিক কর্তৃত্ব, উত্তরাধিকার ও বংশপরম্পরা মায়ের দিক থেকে নির্ধারিত হয়।" },
+                { q: "ওয়ানগালা (Wangala) কোন নৃগোষ্ঠীর প্রধান ধর্মীয় ও নবান্ন উৎসব? (Wangala is the primary post-harvest cultural festival of which ethnic group?)", options: ["মণিপ্রুরী (Manipuri)", "চাকমা (Chakma)", "গারো (Garo)", "মারমা (Marma)"], ans: 2, exp: "সূর্য দেবতা সালজং-এর প্রতি কৃতজ্ঞতা জানিয়ে গারো জনগোষ্ঠী প্রতি বছর নবান্ন উৎসব হিসেবে ওয়ানগালা উদযাপন করে।" },
+                { q: "সাংগ্রাই (Sangrai) কোন ক্ষুদ্র নৃগোষ্ঠীর ঐতিহ্যবাহী নববর্ষ উৎসব? (Sangrai is the traditional New Year festival of which indigenous community?)", options: ["মারমা (Marma)", "ত্রিপুরা (Tripura)", "চাকমা (Chakma)", "রাখাইন (Rakhine)"], ans: 0, exp: "মারমা সম্প্রদায়ের প্রধান সামাজিক ও নববর্ষ উৎসব হলো সাংগ্রাই, যেখানে ঐতিহ্যবাহী জলকেলি খেলা অনুষ্ঠিত হয়।" },
+                { q: "বিজু (Biju) কোন ক্ষুদ্র নৃগোষ্ঠীর প্রধান বর্ষবরণ উৎসব? (Biju is the major cultural festival of which ethnic group?)", options: ["খিয়াং (Khiyang)", "গারো (Garo)", "বম (Bawm)", "চাকমা (Chakma)"], ans: 3, exp: "বাংলা বর্ষ বিদায় ও বরণ উপলক্ষে চাকমারা তিন দিনব্যাপী ফুল বিজু, মূল বিজু ও গজ্জ্যাপজ্জ্যা পালন করে।" },
+                { q: "শীতকালীন ঐতিহ্যবাহী নবান্ন উৎসব মূলত কিসের সাথে সম্পর্কিত?", options: ["বসন্ত বরণ (Spring arrival)", "নতুন আমন ধান কাটা ও পিঠাপুলি (Aman rice harvest and rice cakes)", "চৈত্র সংক্রান্তি (Chaitra Sankranti)", "বর্ষা বরণ (Monsoon arrival)"], ans: 1, exp: "অগ্রহায়ণ মাসে নতুন আমন ধান ঘরে তোলার আনন্দে বাঙালি সমাজে আবহমানকাল থেকে নবান্ন উৎসব পালিত হয়ে আসছে।" },
+                { q: "জাতীয় স্মৃতিসৌধের (National Martyrs' Memorial) মূল স্থপতি কে? (Who is the chief architect of the National Martyrs' Memorial at Savar?)", options: ["শামীম শিকদার (Shamim Sikder)", "সৈয়দ মাইনুল হোসেন (Syed Mainul Hossain)", "হামিদুর রহমান (Hamidur Rahman)", "মাজহারুল ইসলাম (Mazharul Islam)"], ans: 1, exp: "সাভারে অবস্থিত জাতীয় স্মৃতিসৌধের নকশা ও স্থাপত্য পরিকল্পনা প্রণয়ন করেন স্থপতি সৈয়দ মাইনুল হোসেন।" },
+                { q: "ঢাকার কেন্দ্রীয় শহীদ মিনারের মূল নকশাকার ও শিল্পী কে ছিলেন? (Who was the primary designer and sculptor of the Central Shaheed Minar in Dhaka?)", options: ["নিতুন কুণ্ডু (Nitun Kundu)", "সৈয়দ মাইনুল হোসেন (Syed Mainul Hossain)", "আবদুর রাজ্জাক (Abdur Razzaque)", "নভেরা আহমেদ ও হামিদুর রহমান (Hamidur Rahman & Novera Ahmed)"], ans: 3, exp: "শিল্পী হামিদুর রহমান কেন্দ্রীয় শহীদ মিনারের মূল স্থাপত্য নকশা করেন এবং এতে ভাস্কর নভেরা আহমেদ সরাসরি ভূমিকা রাখেন।" },
+                { q: "ঐতিহাসিক পানাম নগর (Panam City) কোন উপজেলায় অবস্থিত? (In which upazila is the historical Panam City situated?)", options: ["সোনারগাঁ, নারায়ণগঞ্জ (Sonargaon, Narayanganj)", "রূপগঞ্জ (Rupganj)", "কেরানীগঞ্জ (Keraniganj)", "মুন্সীগঞ্জ সদর (Munshiganj Sadar)"], ans: 0, exp: "প্রাচীন বাংলার রাজধানী সোনারগাঁওয়ে উনিশ শতকের ঔপনিবেশিক স্থাপত্যরীতির বিখ্যাত পানাম নগরী অবস্থিত।" },
+                { q: "বাংলাদেশের দীর্ঘতম নদী কোনটি? (Which is the longest river in Bangladesh?)", options: ["পদ্মা (Padma)", "যমুনা (Jamuna)", "মেঘনা (Meghna)", "সুরমা (Surma)"], ans: 2, exp: "অভ্যন্তরীণ জলসীমা ও অববাহিকার দৈর্ঘ্য বিবেচনায় মেঘনা বাংলাদেশের দীর্ঘতম এবং প্রশস্ততম নদী।" },
+                { q: "মহাস্থানগড় কোন প্রাচীন জনপদের রাজধানী ছিল? (Mahasthangarh was the ancient capital of which janapada?)", options: ["হরিকেল (Harikela)", "সমতট (Samatata)", "বঙ্গ (Banga)", "পুণ্ড্রবর্ধন (Pundravardhana)"], ans: 3, exp: "করতোয়া নদীর তীরে বগুড়ায় অবস্থিত মহাস্থানগড় প্রাচীন পুণ্ড্র রাজ্যের রাজধানী পুণ্ড্রনগর নামে সুপরিচিত ছিল।" },
+                { q: "ষাট গম্বুজ মসজিদ কোন জেলায় অবস্থিত এবং এটি কে নির্মাণ করেন? (In which district is the Sixty Dome Mosque located, and who built it?)", options: ["বরিশাল; বাকের খাঁ (Barishal; Baker Khan)", "খুলনা; পীর খান জাহান আলী (Khulna; Khan Jahan Ali)", "বাগেরহাট; হযরত খান জাহান আলী (Bagerhat; Khan Jahan Ali)", "সাতক্ষীরা; প্রতাপাদিত্য (Satkhira; Pratapaditya)"], ans: 2, exp: "পঞ্চদশ শতকে সুফি সাধক ও প্রশাসক হযরত খান জাহান আলী বাগেরহাটে ইউনেস্কো স্বীকৃত ঐতিহাসিক ষাট গম্বুজ মসজিদ নির্মাণ করেন।" },
+                { q: "শালবন বিহার কোন প্রত্নতাত্ত্বিক অঞ্চলে অবস্থিত? (In which archaeological site is Shalban Vihara located?)", options: ["মহাস্থানগড়, বগুড়া (Mahasthangarh)", "ময়নামতী, কুমিল্লা (Mainamati, Cumilla)", "সোনারগাঁও, নারায়ণগঞ্জ (Sonargaon)", "পাহাড়পুর, নওগাঁ (Paharpur, Naogaon)"], ans: 1, exp: "কুমিল্লার ময়নামতীর লালমাই পাহাড় অঞ্চলে দেব রাজবংশের আমলে নির্মিত প্রাচীন শালবন বৌদ্ধ বিহার অবস্থিত।" },
+                { q: "আহসান মঞ্জিল কোন নদীর তীরে অবস্থিত? (On the banks of which river is the pink palace Ahsan Manzil located?)", options: ["বুড়িগঙ্গা (Buriganga)", "তুরাগ (Turag)", "ধলেশ্বরী (Dhaleshwari)", "শীতলক্ষ্যা (Shitalakshya)"], ans: 0, exp: "ঢাকার নওয়াবদের ঐতিহাসিক বাসভবন ও প্রাসাদ আহসান মঞ্জিল প্রাচীন বুড়িগঙ্গা নদীর তীরে ইসলামপুরে অবস্থিত।" },
+                { q: "বাংলাদেশের একমাত্র পাহাড়ি দ্বীপ কোনটি? (Which is the only hilly island of Bangladesh?)", options: ["মহেশখালী (Maheshkhali)", "সেন্ট মার্টিন (St. Martin)", "মনপুরা (Manpura)", "সন্দ্বীপ (Sandwip)"], ans: 0, exp: "কক্সবাজার জেলার মহেশখালী দ্বীপটি একমাত্র দ্বীপ যেখানে আদিনাথ মন্দিরসহ ছোট ছোট পাহাড় ও টিলা রয়েছে।" },
+                { q: "বাংলাদেশ জাতীয় জাদুঘর ঢাকার কোন এলাকায় অবস্থিত? (In which area of Dhaka is the Bangladesh National Museum located?)", options: ["পল্টন (Paltan)", "শাহবাগ (Shahbagh)", "ধানমন্ডি (Dhanmondi)", "আগারগাঁও (Agargaon)"], ans: 1, exp: "১৯১৩ সালে ঢাকা জাদুঘর হিসেবে প্রতিষ্ঠিত বর্তমান বাংলাদেশ জাতীয় জাদুঘর শাহবাগে অবস্থিত।" },
+                { q: "কক্সবাজারের টেকনাফে অবস্থিত সেন্ট মার্টিন দ্বীপের স্থানীয় প্রচলিত নাম কী?", options: ["ছেঁড়া দ্বীপ (Chera Dwip)", "কুয়াকাটা দ্বীপ (Kuakata Dwip)", "নারিকেল জিঞ্জিরা (Narikel Jinjira)", "সোনাদিয়া দ্বীপ (Sonadia Dwip)"], ans: 2, exp: "সেন্ট মার্টিন দ্বীপে প্রচুর নারিকেল গাছ থাকার কারণে স্থানীয়রা ঐতিহ্যগতভাবে একে নারিকেল জিঞ্জিরা বলে।" },
+                { q: "দিনাজপুরের রামসাগর মূলত কোন ধরনের ঐতিহাসিক জলাশয়?", options: ["নদীর মোহনা (Estuary)", "প্রাকৃতিক হ্রদ (Natural Lake)", "সমুদ্রের খাঁড়ি (Inlet)", "খননকৃত দিঘি (Man-made Reservoir)"], ans: 3, exp: "খরার সময় প্রজাদের জলের কষ্ট দূর করতে অষ্টাদশ শতকে রাজা রামনাথ রামসাগর দিঘিটি খনন করান।" },
+                { q: "বাংলা একাডেমি কোন ঐতিহাসিক ভবনে যাত্রা শুরু করেছিল?", options: ["কার্জন হল", "বঙ্গভবন", "বর্ধমান হাউস", "চামেলি হাউস"], ans: 2, exp: "ভাষা আন্দোলনের পটভূমিতে ১৯৫৫ সালের ৩ ডিসেম্বর ঐতিহাসিক বর্ধমান হাউসে বাংলা একাডেমি প্রতিষ্ঠিত হয়।" },
+                { q: "বলধা গার্ডেন কোন ধরণের স্থান?", options: ["চিড়িয়াখানা", "অভয়ারণ্য", "শিশু পার্ক", "উদ্ভিদ উদ্যান"], ans: 3, exp: "বলধা গার্ডেন হলো ঢাকার ওয়ারীতে অবস্থিত একটি ঐতিহাসিক ও সমৃদ্ধ উদ্ভিদ উদ্যান (Botanical Garden)।" },
+                { q: "বাংলাদেশের বৃহত্তম দ্বীপ কোনটি?", options: ["ভোলা (Bhola)", "সেন্ট মার্টিন (St. Martin)", "কক্সবাজার (Cox's Bazar)", "মহেশখালী (Moheshkhali)"], ans: 0, exp: "আয়তনের দিক থেকে ভোলা বাংলাদেশের সর্ববৃহৎ প্রাকৃতিক দ্বীপ জেলা।" },
+                { q: "বাংলাদেশে কয়টি আন্তর্জাতিক বিমানবন্দর রয়েছে?", options: ["২টি", "৩টি", "৪টি", "৫টি"], ans: 1, exp: "বাংলাদেশে বর্তমানে ৩টি আন্তর্জাতিক বিমানবন্দর রয়েছে: ১. হযরত শাহজালাল আন্তর্জাতিক বিমানবন্দর (ঢাকা), ২. শাহ আমানত আন্তর্জাতিক বিমানবন্দর (চট্টগ্রাম), ৩. ওসমানী আন্তর্জাতিক বিমানবন্দর (সিলেট)।" }
+            ]
+        }
+    ];
+
+    let timerInterval;
+    let totalTime = 25 * 60; // ২৫ মিনিট
+    let hasSubmitted = false;
+    let studentData = {};
+    let sectionStats = {};
+    const optionLetters = ['A', 'B', 'C', 'D'];
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function goToInstructions() {
+        const name = document.getElementById('stu-name').value.trim();
+        const roll = document.getElementById('stu-roll').value.trim();
+        const mobile = document.getElementById('stu-mobile').value.trim();
+
+        if (!name || !roll || !mobile || mobile.length !== 4) {
+            alert('দয়া করে সবগুলো তথ্য সঠিকভাবে পূরণ করুন (মোবাইলের ৪ ডিজিট আবশ্যক)।');
+            return;
+        }
+
+        studentData.name = name;
+        studentData.roll = roll;
+        studentData.mobile = String(mobile);
+
+        document.getElementById('step-1-screen').classList.add('hidden');
+        document.getElementById('step-2-screen').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function backToEntry() {
+        document.getElementById('step-2-screen').classList.add('hidden');
+        document.getElementById('step-1-screen').classList.remove('hidden');
+    }
+
+    function startExam() {
+        const consent = document.getElementById('consent-check').checked;
+        if (!consent) {
+            alert('পরীক্ষা শুরু করার আগে নিয়মাবলিতে সম্মতি জানিয়ে চেকবক্সে টিক দিন।');
+            return;
+        }
+
+        document.getElementById('display-name').innerText = studentData.name;
+        document.getElementById('display-roll').innerText = studentData.roll;
+
+        document.getElementById('step-2-screen').classList.add('hidden');
+        document.getElementById('exam-screen').classList.remove('hidden');
+
+        examData.forEach(section => shuffleArray(section.questions));
+
+        renderQuestions();
+        startTimer();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById('questions-container');
+        let html = '';
+        let globalQIndex = 0;
+
+        examData.forEach(section => {
+            html += `<div class="section-header">${section.name} অংশ (প্রশ্ন: ${section.questions.length}টি, পাস মার্ক: ${section.passMark})</div>`;
+            
+            section.questions.forEach((q, i) => {
+                html += `
+                    <div class="question-card" id="q-card-${globalQIndex}">
+                        <div class="question-title">${i + 1}. ${q.q}</div>
+                        <ul class="options-list">
+                `;
+                
+                (q.options || []).forEach((opt, oIndex) => {
+                    html += `
+                        <li>
+                            <label class="option-label" id="label-${globalQIndex}-${oIndex}">
+                                <input type="radio" name="${section.id}_q${i}" value="${oIndex}" onchange="lockQuestionOption('${section.id}_q${i}', ${globalQIndex}, ${oIndex})">
+                                <strong style="margin-right:8px;">${optionLetters[oIndex] || ''}.</strong> ${opt}
+                            </label>
+                        </li>
+                    `;
+                });
+
+                html += `
+                        </ul>
+                    </div>
+                `;
+                globalQIndex++;
+            });
+        });
+
+        container.innerHTML = html;
+    }
+
+    function lockQuestionOption(name, globalIdx, selectedIdx) {
+        const radios = document.querySelectorAll(`input[name="${name}"]`);
+        Array.from(radios).forEach(radio => {
+            radio.disabled = true;
+            radio.closest('.option-label').classList.add('locked');
+        });
+
+        const selectedLabel = document.getElementById(`label-${globalIdx}-${selectedIdx}`);
+        if (selectedLabel) {
+            selectedLabel.classList.add('selected-active');
+        }
+    }
+
+    function startTimer() {
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            totalTime--;
+            updateTimerDisplay();
+
+            if (totalTime <= 0) {
+                clearInterval(timerInterval);
+                if (!hasSubmitted) {
+                    alert('সময় শেষ! আপনার উত্তরপত্র স্বয়ংক্রিয়ভাবে জমা নেওয়া হচ্ছে।');
+                    processSubmission();
+                }
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const m = Math.floor(totalTime / 60).toString().padStart(2, '0');
+        const s = (totalTime % 60).toString().padStart(2, '0');
+        document.getElementById('timer').innerText = `${m}:${s}`;
+    }
+
+    function checkAndSubmit() {
+        if (hasSubmitted) return;
+        
+        let totalQ = 0;
+        examData.forEach(s => totalQ += s.questions.length);
+        const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+        
+        let msg = `আপনি ${totalQ} টি প্রশ্নের মধ্যে ${answered} টির উত্তর দিয়েছেন।\n\nআপনি কি নিশ্চিতভাবে ফাইনাল সাবমিট করতে চান?`;
+
+        if (confirm(msg)) {
+            processSubmission();
+        }
+    }
+
+    function processSubmission() {
+        if (hasSubmitted) return;
+        hasSubmitted = true;
+        clearInterval(timerInterval);
+
+        let totalScoreAll = 0;
+        let grandCorrect = 0;
+        let grandWrong = 0;
+        let grandUnattempted = 0;
+
+        examData.forEach(section => {
+            let correctCount = 0;
+            let wrongCount = 0;
+            let unattemptedCount = 0;
+
+            section.questions.forEach((q, i) => {
+                const selected = document.querySelector(`input[name="${section.id}_q${i}"]:checked`);
+                const correctIdx = parseInt(q.ans);
+                
+                if (selected) {
+                    const selectedVal = parseInt(selected.value);
+                    if (selectedVal === correctIdx) {
+                        correctCount++;
+                    } else {
+                        wrongCount++;
+                    }
+                } else {
+                    unattemptedCount++;
+                }
+
+                document.querySelectorAll(`input[name="${section.id}_q${i}"]`).forEach(r => r.disabled = true);
+            });
+
+            const sectionScore = (correctCount * 1) - (wrongCount * 0.25);
+            
+            sectionStats[section.id] = {
+                name: section.name,
+                passMark: section.passMark,
+                score: sectionScore,
+                correct: correctCount,
+                wrong: wrongCount,
+                unattempted: unattemptedCount,
+                total: section.questions.length
+            };
+
+            totalScoreAll += sectionScore;
+            grandCorrect += correctCount;
+            grandWrong += wrongCount;
+            grandUnattempted += unattemptedCount;
+        });
+
+        // গুগল শিটে ডেটা পাঠানো
+        try {
+            if (GOOGLE_SCRIPT_URL) {
+                const ban = sectionStats['bangla'] || { correct: 0, wrong: 0, score: 0 };
+                const eng = sectionStats['english'] || { correct: 0, wrong: 0, score: 0 };
+                const gk = sectionStats['gk'] || { correct: 0, wrong: 0, score: 0 };
+                const cleanMobile = studentData.mobile ? String(studentData.mobile).trim() : '0000';
+
+                const sendUrl = `${GOOGLE_SCRIPT_URL}?testName=${encodeURIComponent(TEST_NAME)}&name=${encodeURIComponent(studentData.name)}&roll=${encodeURIComponent(studentData.roll)}&mobile=${encodeURIComponent(cleanMobile)}&banRight=${ban.correct}&banWrong=${ban.wrong}&banScore=${ban.score.toFixed(2)}&engRight=${eng.correct}&engWrong=${eng.wrong}&engScore=${eng.score.toFixed(2)}&gkRight=${gk.correct}&gkWrong=${gk.wrong}&gkScore=${gk.score.toFixed(2)}&totalRight=${grandCorrect}&totalWrong=${grandWrong}&totalScore=${totalScoreAll.toFixed(2)}&ip=${encodeURIComponent(userIP)}`;
+
+                fetch(sendUrl, { method: 'POST', mode: 'no-cors' }).catch(() => {});
+            }
+        } catch(e) {}
+
+        generateResultSummary(totalScoreAll, grandCorrect, grandWrong, grandUnattempted);
+        buildPrintEvaluationList();
+    }
+
+    function generateResultSummary(totalScore, grandCorrect, grandWrong, grandUnattempted) {
+        document.getElementById('exam-screen').classList.add('hidden');
+        document.getElementById('result-summary-screen').classList.remove('hidden');
+
+        document.getElementById('res-name').innerText = `${studentData.name} (কোড: ${studentData.roll})`;
+
+        const container = document.getElementById('section-results-container');
+        let html = '';
+        let failedSubjects = [];
+
+        examData.forEach(section => {
+            const stat = sectionStats[section.id] || { score: 0, correct: 0, wrong: 0, unattempted: 0, total: 0, passMark: section.passMark };
+            const isPass = stat.score >= section.passMark;
+            if(!isPass) failedSubjects.push(section.name);
+
+            html += `
+                <div class="result-box">
+                    <h3>${section.name}</h3>
+                    <div class="score">${stat.score.toFixed(2)} / ${stat.total}</div>
+                    <div class="${isPass ? 'status-pass' : 'status-fail'}">
+                        ${isPass ? '✅ পাস করেছেন' : '❌ অনুত্তীর্ণ'} (পাস: ${section.passMark})
+                    </div>
+                    <div class="details">
+                        ✔️ সঠিক: <b>${stat.correct}</b> টি<br>
+                        ❌ ভুল: <b>${stat.wrong}</b> টি<br>
+                        ⚪ অনুত্তরিত: <b>${stat.unattempted}</b> টি
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+
+        document.getElementById('total-score-display').innerText = `${totalScore.toFixed(2)} / 60`;
+        document.getElementById('total-correct-display').innerText = grandCorrect;
+        document.getElementById('total-wrong-display').innerText = grandWrong;
+        document.getElementById('total-unattempted-display').innerText = grandUnattempted;
+
+        const totalStatus = document.getElementById('total-status-display');
+        const overallTotalPass = totalScore >= 24;
+
+        if (overallTotalPass && failedSubjects.length === 0) {
+            totalStatus.innerText = "🎉 অভিনন্দন! আপনি সবগুলো বিষয়ে ও সামগ্রিকভাবে পরীক্ষায় উত্তীর্ণ হয়েছেন।";
+            totalStatus.style.color = "#ffffff";
+        } else {
+            let failMsg = "⚠️ দুঃখিত! ";
+            if(failedSubjects.length > 0) {
+                failMsg += `আপনি ${failedSubjects.join(' এবং ')} বিষয়ে উত্তীর্ণ হতে পারেননি।`;
+            } else {
+                failMsg += "আপনি সর্বমোট পাশ মার্ক (২৪) অর্জন করতে পারেননি।";
+            }
+            totalStatus.innerText = failMsg;
+            totalStatus.style.color = "#fecaca";
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function buildPrintEvaluationList() {
+        const listContainer = document.getElementById('print-questions-list');
+        let html = '';
+
+        examData.forEach(section => {
+            html += `<div class="section-header" style="margin-top:20px;">${section.name} অংশ</div>`;
+
+            section.questions.forEach((q, i) => {
+                const selected = document.querySelector(`input[name="${section.id}_q${i}"]:checked`);
+                const correctIdx = parseInt(q.ans);
+
+                let statusBadge = '';
+                let selectedIdx = null;
+
+                if (selected) {
+                    selectedIdx = parseInt(selected.value);
+                    if (selectedIdx === correctIdx) {
+                        statusBadge = `<span class="print-badge badge-correct">✔️ সঠিক হয়েছে</span>`;
+                    } else {
+                        statusBadge = `<span class="print-badge badge-wrong">❌ ভুল হয়েছে</span>`;
+                    }
+                } else {
+                    statusBadge = `<span class="print-badge badge-unattempted">⚪ উত্তর দেওয়া হয়নি</span>`;
+                }
+
+                html += `
+                    <div class="print-q-card">
+                        <div class="print-q-header">
+                            <strong style="font-size:15px; color:#0f172a;">${i + 1}. ${q.q}</strong>
+                            ${statusBadge}
+                        </div>
+                        <div class="print-options-grid">
+                `;
+
+                (q.options || []).forEach((opt, optIdx) => {
+                    let optClass = 'print-opt-item';
+                    let markBadge = '';
+
+                    if (optIdx === correctIdx) {
+                        optClass += ' print-opt-correct';
+                        markBadge = ' <b style="font-size:11.5px;">(সঠিক উত্তর)</b>';
+                    } else if (selectedIdx !== null && optIdx === selectedIdx) {
+                        optClass += ' print-opt-wrong';
+                        markBadge = ' <b style="font-size:11.5px;">(আপনার ভুল উত্তর)</b>';
+                    }
+
+                    html += `
+                        <div class="${optClass}">
+                            <strong>${optionLetters[optIdx]}.</strong> ${opt} ${markBadge}
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <div class="print-exp-box">
+                            <b>💡 ব্যাখ্যা:</b> ${q.exp || 'কোনো ব্যাখ্যা দেওয়া হয়নি।'}
+                        </div>
+                    </div>
+                `;
+            });
+        });
+
+        listContainer.innerHTML = html;
+    }
+
+    function printEvaluationReport() {
+        window.print();
+    }
+</script>
+
+</body>
+</html>
