@@ -705,7 +705,7 @@
 </div>
 
 <script>
-    // 🔗 গুগল শিটের Web App URL (নতুন শিট লিংক করতে চাইলে এটি প্রতিস্থাপন করুন)
+    // 🔗 গুগল শিটের Web App URL
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbya0p3WZ7YKAEWUCWTDSK2nNZ256H5IBjoP4cJqSBDIP2jDnoG2YEzRK7CmyRenK5v9/exec";
     const TEST_NAME = "DU B Weekly Model Test 13";
 
@@ -903,3 +903,242 @@
 
         const selectedLabel = document.getElementById(`label-${globalIdx}-${selectedIdx}`);
         if (selectedLabel) {
+            selectedLabel.classList.add('selected-active');
+        }
+    }
+
+    function startTimer() {
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            totalTime--;
+            updateTimerDisplay();
+
+            if (totalTime <= 0) {
+                clearInterval(timerInterval);
+                if (!hasSubmitted) {
+                    alert('সময় শেষ! আপনার উত্তরপত্র স্বয়ংক্রিয়ভাবে জমা নেওয়া হচ্ছে।');
+                    processSubmission();
+                }
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const m = Math.floor(totalTime / 60).toString().padStart(2, '0');
+        const s = (totalTime % 60).toString().padStart(2, '0');
+        document.getElementById('timer').innerText = `${m}:${s}`;
+    }
+
+    function checkAndSubmit() {
+        if (hasSubmitted) return;
+        
+        let totalQ = 0;
+        examData.forEach(s => totalQ += s.questions.length);
+        const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+        
+        let msg = `আপনি ${totalQ} টি প্রশ্নের মধ্যে ${answered} টির উত্তর দিয়েছেন।\n\nআপনি কি নিশ্চিতভাবে ফাইনাল সাবমিট করতে চান?`;
+
+        if (confirm(msg)) {
+            processSubmission();
+        }
+    }
+
+    function processSubmission() {
+        if (hasSubmitted) return;
+        hasSubmitted = true;
+        clearInterval(timerInterval);
+
+        let totalScoreAll = 0;
+        let grandCorrect = 0;
+        let grandWrong = 0;
+        let grandUnattempted = 0;
+
+        examData.forEach(section => {
+            let correctCount = 0;
+            let wrongCount = 0;
+            let unattemptedCount = 0;
+
+            section.questions.forEach((q, i) => {
+                const selected = document.querySelector(`input[name="${section.id}_q${i}"]:checked`);
+                const correctIdx = parseInt(q.ans);
+                
+                if (selected) {
+                    const selectedVal = parseInt(selected.value);
+                    if (selectedVal === correctIdx) {
+                        correctCount++;
+                    } else {
+                        wrongCount++;
+                    }
+                } else {
+                    unattemptedCount++;
+                }
+
+                document.querySelectorAll(`input[name="${section.id}_q${i}"]`).forEach(r => r.disabled = true);
+            });
+
+            const sectionScore = (correctCount * 1) - (wrongCount * 0.25);
+            
+            sectionStats[section.id] = {
+                name: section.name,
+                passMark: section.passMark,
+                score: sectionScore,
+                correct: correctCount,
+                wrong: wrongCount,
+                unattempted: unattemptedCount,
+                total: section.questions.length
+            };
+
+            totalScoreAll += sectionScore;
+            grandCorrect += correctCount;
+            grandWrong += wrongCount;
+            grandUnattempted += unattemptedCount;
+        });
+
+        // গুগল শিটে ডেটা পাঠানো
+        try {
+            if (GOOGLE_SCRIPT_URL) {
+                const ban = sectionStats['bangla'] || { correct: 0, wrong: 0, score: 0 };
+                const eng = sectionStats['english'] || { correct: 0, wrong: 0, score: 0 };
+                const gk = sectionStats['gk'] || { correct: 0, wrong: 0, score: 0 };
+                const cleanMobile = studentData.mobile ? String(studentData.mobile).trim() : '0000';
+
+                const sendUrl = `${GOOGLE_SCRIPT_URL}?testName=${encodeURIComponent(TEST_NAME)}&name=${encodeURIComponent(studentData.name)}&roll=${encodeURIComponent(studentData.roll)}&mobile=${encodeURIComponent(cleanMobile)}&banRight=${ban.correct}&banWrong=${ban.wrong}&banScore=${ban.score.toFixed(2)}&engRight=${eng.correct}&engWrong=${eng.wrong}&engScore=${eng.score.toFixed(2)}&gkRight=${gk.correct}&gkWrong=${gk.wrong}&gkScore=${gk.score.toFixed(2)}&totalRight=${grandCorrect}&totalWrong=${grandWrong}&totalScore=${totalScoreAll.toFixed(2)}&ip=${encodeURIComponent(userIP)}`;
+
+                fetch(sendUrl, { method: 'POST', mode: 'no-cors' }).catch(() => {});
+            }
+        } catch(e) {}
+
+        generateResultSummary(totalScoreAll, grandCorrect, grandWrong, grandUnattempted);
+        buildPrintEvaluationList();
+    }
+
+    function generateResultSummary(totalScore, grandCorrect, grandWrong, grandUnattempted) {
+        document.getElementById('exam-screen').classList.add('hidden');
+        document.getElementById('result-summary-screen').classList.remove('hidden');
+
+        document.getElementById('res-name').innerText = `${studentData.name} (কোড: ${studentData.roll})`;
+
+        const container = document.getElementById('section-results-container');
+        let html = '';
+        let failedSubjects = [];
+
+        examData.forEach(section => {
+            const stat = sectionStats[section.id] || { score: 0, correct: 0, wrong: 0, unattempted: 0, total: 0, passMark: section.passMark };
+            const isPass = stat.score >= section.passMark;
+            if(!isPass) failedSubjects.push(section.name);
+
+            html += `
+                <div class="result-box">
+                    <h3>${section.name}</h3>
+                    <div class="score">${stat.score.toFixed(2)} / ${stat.total}</div>
+                    <div class="${isPass ? 'status-pass' : 'status-fail'}">
+                        ${isPass ? '✅ পাস করেছেন' : '❌ অনুত্তীর্ণ'} (পাস: ${section.passMark})
+                    </div>
+                    <div class="details">
+                        ✔️ সঠিক: <b>${stat.correct}</b> টি<br>
+                        ❌ ভুল: <b>${stat.wrong}</b> টি<br>
+                        ⚪ অনুত্তরিত: <b>${stat.unattempted}</b> টি
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+
+        document.getElementById('total-score-display').innerText = `${totalScore.toFixed(2)} / 60`;
+        document.getElementById('total-correct-display').innerText = grandCorrect;
+        document.getElementById('total-wrong-display').innerText = grandWrong;
+        document.getElementById('total-unattempted-display').innerText = grandUnattempted;
+
+        const totalStatus = document.getElementById('total-status-display');
+        const overallTotalPass = totalScore >= 24;
+
+        if (overallTotalPass && failedSubjects.length === 0) {
+            totalStatus.innerText = "🎉 অভিনন্দন! আপনি সবগুলো বিষয়ে ও সামগ্রিকভাবে পরীক্ষায় উত্তীর্ণ হয়েছেন।";
+            totalStatus.style.color = "#ffffff";
+        } else {
+            let failMsg = "⚠️ দুঃখিত! ";
+            if(failedSubjects.length > 0) {
+                failMsg += `আপনি ${failedSubjects.join(' এবং ')} বিষয়ে উত্তীর্ণ হতে পারেননি।`;
+            } else {
+                failMsg += "আপনি সর্বমোট পাশ মার্ক (২৪) অর্জন করতে পারেননি।";
+            }
+            totalStatus.innerText = failMsg;
+            totalStatus.style.color = "#fecaca";
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function buildPrintEvaluationList() {
+        const listContainer = document.getElementById('print-questions-list');
+        let html = '';
+
+        examData.forEach(section => {
+            html += `<div class="section-header" style="margin-top:20px;">${section.name} অংশ</div>`;
+
+            section.questions.forEach((q, i) => {
+                const selected = document.querySelector(`input[name="${section.id}_q${i}"]:checked`);
+                const correctIdx = parseInt(q.ans);
+
+                let statusBadge = '';
+                let selectedIdx = null;
+
+                if (selected) {
+                    selectedIdx = parseInt(selected.value);
+                    if (selectedIdx === correctIdx) {
+                        statusBadge = `<span class="print-badge badge-correct">✔️ সঠিক হয়েছে</span>`;
+                    } else {
+                        statusBadge = `<span class="print-badge badge-wrong">❌ ভুল হয়েছে</span>`;
+                    }
+                } else {
+                    statusBadge = `<span class="print-badge badge-unattempted">⚪ উত্তর দেওয়া হয়নি</span>`;
+                }
+
+                html += `
+                    <div class="print-q-card">
+                        <div class="print-q-header">
+                            <strong style="font-size:15px; color:#0f172a;">${i + 1}. ${q.q}</strong>
+                            ${statusBadge}
+                        </div>
+                        <div class="print-options-grid">
+                `;
+
+                (q.options || []).forEach((opt, optIdx) => {
+                    let optClass = 'print-opt-item';
+                    let markBadge = '';
+
+                    if (optIdx === correctIdx) {
+                        optClass += ' print-opt-correct';
+                        markBadge = ' <b style="font-size:11.5px;">(সঠিক উত্তর)</b>';
+                    } else if (selectedIdx !== null && optIdx === selectedIdx) {
+                        optClass += ' print-opt-wrong';
+                        markBadge = ' <b style="font-size:11.5px;">(আপনার ভুল উত্তর)</b>';
+                    }
+
+                    html += `
+                        <div class="${optClass}">
+                            <strong>${optionLetters[optIdx]}.</strong> ${opt} ${markBadge}
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <div class="print-exp-box">
+                            <b>💡 ব্যাখ্যা:</b> ${q.exp || 'কোনো ব্যাখ্যা দেওয়া হয়নি।'}
+                        </div>
+                    </div>
+                `;
+            });
+        });
+
+        listContainer.innerHTML = html;
+    }
+
+    function printEvaluationReport() {
+        window.print();
+    }
+</script>
+
+</body>
+</html>
