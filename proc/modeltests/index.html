@@ -121,7 +121,7 @@
             background-color: #f1f5f9;
         }
 
-        /* সচল টেস্টের বিশেষ হাইলাইট (WMT 12) */
+        /* সচল টেস্টের বিশেষ হাইলাইট (WMT 13) */
         .test-row.active {
             border: 2.5px solid var(--primary) !important;
             background: #eff6ff !important;
@@ -383,11 +383,29 @@
 </div>
 
 <script>
-    // 🔗 কনফিগারেশন: শুধুমাত্র Weekly Model Test 12 অ্যাক্টিভ
+    // 🔗 কনফিগারেশন: WMT 13 লাইভ, পূর্ববর্তী WMT 09-12 এভেইলেবল এবং বাকিগুলো ইনঅ্যাক্টিভ
+    const CURRENT_LIVE_TEST = 13;
+
     const TEST_CONFIG = {
+        9: {
+            mcq: "https://tanvirtarif.com/proc/modeltests/865xwmt09mcq",
+            written: "https://tanvirtarif.com/proc/modeltests/865xwmt09written"
+        },
+        10: {
+            mcq: "https://tanvirtarif.com/proc/modeltests/956mwmt10",
+            written: "https://tanvirtarif.com/proc/modeltests/956wwmt10"
+        },
+        11: {
+            mcq: "https://tanvirtarif.com/proc/modeltests/798mwmt11",
+            written: "https://tanvirtarif.com/proc/modeltests/798wwmt11"
+        },
         12: {
             mcq: "https://tanvirtarif.com/proc/modeltests/433Mwmt12",
             written: "https://tanvirtarif.com/proc/modeltests/433Wwmt12"
+        },
+        13: {
+            mcq: "https://tanvirtarif.com/proc/modeltests/13wmtW423",
+            written: "https://tanvirtarif.com/proc/modeltests/13wmtM423"
         }
     };
 
@@ -397,7 +415,7 @@
     for (let i = 1; i <= 15; i++) {
         const testNum = i.toString().padStart(2, '0');
         const config = TEST_CONFIG[i];
-        const isLive = Boolean(config);
+        const isLive = (i === CURRENT_LIVE_TEST);
 
         // MCQ বাটন
         let mcqBtn = '';
