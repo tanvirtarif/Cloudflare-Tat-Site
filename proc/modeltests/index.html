@@ -121,7 +121,7 @@
             background-color: #f1f5f9;
         }
 
-        /* সচল টেস্টের বিশেষ হাইলাইট (WMT 13) */
+        /* সচল লাইভ টেস্টের বিশেষ হাইলাইট (WMT 13) */
         .test-row.active {
             border: 2.5px solid var(--primary) !important;
             background: #eff6ff !important;
@@ -135,7 +135,6 @@
             text-align: left;
         }
 
-        /* বুলেট আইকন স্টাইল */
         .bullet-icon {
             font-size: 18px;
             line-height: 1;
@@ -158,6 +157,17 @@
             padding: 3px 9px;
             border-radius: 20px;
             font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        .badge-archive {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            font-size: 11px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-weight: 700;
             letter-spacing: 0.2px;
         }
 
@@ -184,7 +194,7 @@
             font-family: inherit;
         }
 
-        /* MCQ বাটন (রয়্যাল ডার্ক ব্লু শেড) */
+        /* MCQ বাটন (সচল) */
         .btn-mcq-active {
             background: linear-gradient(135deg, #1e40af, #1e3a8a);
             color: #ffffff;
@@ -209,7 +219,7 @@
             color: #475569;
         }
 
-        /* Written বাটন (ব্রাইট ওশিয়ান/স্কাই ব্লু শেড) */
+        /* Written বাটন (সচল) */
         .btn-written-active {
             background: linear-gradient(135deg, #0284c7, #0369a1);
             color: #ffffff;
@@ -234,7 +244,7 @@
             color: #475569;
         }
 
-        /* মোবাইল রেসপনসিভ ভিউ (সেন্টার অ্যালাইনমেন্ট) */
+        /* মোবাইল রেসপনসিভ ভিউ */
         @media (max-width: 540px) {
             .test-row {
                 flex-direction: column;
@@ -383,7 +393,7 @@
 </div>
 
 <script>
-    // 🔗 কনফিগারেশন: WMT 13 লাইভ, পূর্ববর্তী WMT 09-12 এভেইলেবল এবং বাকিগুলো ইনঅ্যাক্টিভ
+    // 🔗 কনফিগারেশন: WMT 13 লাইভ এবং পূর্ববর্তী WMT 09, 10, 11, 12 সচল আর্কাইভ
     const CURRENT_LIVE_TEST = 13;
 
     const TEST_CONFIG = {
@@ -404,8 +414,8 @@
             written: "https://tanvirtarif.com/proc/modeltests/433Wwmt12"
         },
         13: {
-            mcq: "https://tanvirtarif.com/proc/modeltests/13wmtW423",
-            written: "https://tanvirtarif.com/proc/modeltests/13wmtM423"
+            mcq: "https://tanvirtarif.com/proc/modeltests/13wmtM423",
+            written: "https://tanvirtarif.com/proc/modeltests/13wmtW423"
         }
     };
 
@@ -416,6 +426,15 @@
         const testNum = i.toString().padStart(2, '0');
         const config = TEST_CONFIG[i];
         const isLive = (i === CURRENT_LIVE_TEST);
+        const hasLinks = Boolean(config);
+
+        // ব্যাজ নির্ধারণ
+        let badgeHtml = '';
+        if (isLive) {
+            badgeHtml = '<span class="badge-live">● Live</span>';
+        } else if (hasLinks) {
+            badgeHtml = '<span class="badge-archive">Archive</span>';
+        }
 
         // MCQ বাটন
         let mcqBtn = '';
@@ -436,9 +455,9 @@
         html += `
             <div class="test-row ${isLive ? 'active' : ''}">
                 <div class="test-info">
-                    <span class="bullet-icon">📘</span>
+                    <span class="bullet-icon">${isLive ? '🔥' : '📘'}</span>
                     <span class="test-name">Weekly Model Test ${testNum}</span>
-                    ${isLive ? '<span class="badge-live">● Live</span>' : ''}
+                    ${badgeHtml}
                 </div>
                 <div class="test-actions">
                     ${mcqBtn}
