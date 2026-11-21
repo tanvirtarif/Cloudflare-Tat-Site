@@ -1,1 +1,615 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestMission — ঢাবি 'খ' ইউনিট মডেল টেস্ট</title>
 
+    <!-- Google Fonts: Noto Serif Bengali & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        bengali: ['"Noto Serif Bengali"', '"Plus Jakarta Sans"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', '"Noto Serif Bengali"', 'sans-serif'],
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: 'Noto Serif Bengali', 'Plus Jakarta Sans', serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .academic-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-view {
+            animation: fadeSlideIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-amber-200 selection:text-slate-900">
+
+    <!-- ===================================================================== -->
+    <!-- STICKY TOP NAVBAR                                                     -->
+    <!-- ===================================================================== -->
+    <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-13 py-2.5 flex items-center justify-between gap-3">
+            <!-- Left Portal Title -->
+            <div class="flex items-center gap-2 text-slate-900 font-sans font-bold text-xs sm:text-sm tracking-tight">
+                <span class="w-7 h-7 rounded-lg bg-slate-900 text-amber-400 flex items-center justify-center shadow-xs shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                    </svg>
+                </span>
+                <span>B Unit Model Test Portal</span>
+            </div>
+
+            <!-- Right Telegram Channel Link -->
+            <a id="top-telegram-link" href="https://t.me/testmission247" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-sky-700 hover:text-white bg-sky-50 hover:bg-sky-600 border border-sky-200 hover:border-sky-600 px-3 py-1.5 rounded-full transition-all duration-200 shadow-2xs">
+                <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+                <span>TestMission Channel</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ===================================================================== -->
+    <!-- COMPACT HERO HEADER BANNER                                            -->
+    <!-- ===================================================================== -->
+    <header class="relative w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden shadow-md">
+        <!-- Optional Backend Cover Image (Set via SITE_CONFIG.coverImageUrl) -->
+        <div id="cover-image-layer" class="absolute inset-0 z-0 opacity-25 bg-cover bg-center"></div>
+        <!-- Subtle Academic Pattern Overlay -->
+        <div class="absolute inset-0 z-0 academic-pattern"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-7 sm:py-9 text-center">
+            <h1 class="tracking-tight">
+                <span class="block font-sans text-2xl sm:text-3xl md:text-4xl font-extrabold text-amber-400 tracking-wide">
+                    TestMission
+                </span>
+                <span class="block mt-1.5 text-xl sm:text-2xl md:text-3xl font-bold text-white leading-snug">
+                    ঢাবি 'খ' ইউনিট মডেল টেস্ট
+                </span>
+                <span class="block mt-1 text-xs sm:text-sm md:text-base font-medium text-slate-300">
+                    (কলা, আইন ও সামাজিক বিজ্ঞান ইউনিট)
+                </span>
+            </h1>
+
+            <p class="mt-3 font-sans text-xs sm:text-sm font-semibold text-amber-300/95 tracking-wide">
+                (ProjectConsistency X Finishers)
+            </p>
+            <p class="mt-0.5 font-sans text-[11px] sm:text-xs text-slate-400 font-medium tracking-wider">
+                ©TanvirTarif
+            </p>
+        </div>
+
+        <!-- Bottom Gold Accent Line -->
+        <div class="relative z-10 h-1 w-full bg-gradient-to-r from-slate-900 via-amber-400 to-slate-900"></div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- MAIN CONTENT AREA                                                     -->
+    <!-- ===================================================================== -->
+    <main class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 py-7 sm:py-10">
+
+        <!-- ================================================================= -->
+        <!-- VIEW 1: LOGIN & SAMPLE MODEL TEST VIEW                            -->
+        <!-- ================================================================= -->
+        <section id="login-view" class="max-w-md mx-auto animate-view">
+            <div class="bg-white rounded-2xl shadow-lg shadow-slate-200/70 border border-slate-200/80 p-6 sm:p-8">
+                <div class="text-center mb-6">
+                    <div class="w-11 h-11 mx-auto mb-3 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center shadow-sm">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900">পরীক্ষার্থী লগইন</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">
+                        মডেল টেস্ট প্যানেলে প্রবেশ করতে আপনার আইডি ও পাসওয়ার্ড দিন
+                    </p>
+                </div>
+
+                <!-- Error Alert Box -->
+                <div id="login-error-box" class="hidden mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm flex items-start gap-2">
+                    <svg class="w-4 h-4 text-rose-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span id="login-error-text">ভুল ইউজারনেইম অথবা পাসওয়ার্ড।</span>
+                </div>
+
+                <!-- Demo Mode Notice (Shown only until Google Sheet URL is configured) -->
+                <div id="demo-mode-notice" class="hidden mb-4 p-2.5 rounded-xl bg-amber-50/90 border border-amber-200/90 text-amber-900 text-[11px] sm:text-xs text-center">
+                    <span class="font-semibold">ডেমো মোড চালু আছে:</span> গুগল শিট লিংক যুক্ত না করা পর্যন্ত <code class="font-sans font-bold bg-amber-100 px-1.5 py-0.5 rounded">Admin1409</code> দিয়ে টেস্ট করতে পারবেন।
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="space-y-4" novalidate>
+                    <div>
+                        <label for="username" class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
+                            ইউজারনেইম (Username)
+                        </label>
+                        <input type="text" id="username" name="username" autocomplete="username" placeholder="আপনার ইউজারনেইম লিখুন" required
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white text-slate-900 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/15 focus:border-slate-900 transition">
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
+                            পাসওয়ার্ড (Password)
+                        </label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password" autocomplete="current-password" placeholder="আপনার পাসওয়ার্ড লিখুন" required
+                                   class="w-full px-3.5 py-2.5 pr-10 rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white text-slate-900 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/15 focus:border-slate-900 transition">
+                            <button type="button" id="toggle-password-btn" aria-label="Show or hide password"
+                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 transition">
+                                <svg id="eye-icon-open" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                <svg id="eye-icon-closed" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="login-submit-btn"
+                            class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.99] text-white font-semibold text-sm sm:text-base shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <span>লগইন করুন</span>
+                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="relative my-5">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-slate-200"></div>
+                    </div>
+                    <div class="relative flex justify-center text-xs">
+                        <span class="px-2.5 bg-white text-slate-400">অথবা ফ্রি যাচাই করুন</span>
+                    </div>
+                </div>
+
+                <!-- Sample Model Test Button -->
+                <button type="button" id="sample-test-btn" onclick="handleSampleTestClick()"
+                        class="w-full py-2.5 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300/90 text-amber-950 font-semibold text-sm sm:text-base transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>নমুনা মডেল টেস্ট</span>
+                </button>
+            </div>
+        </section>
+
+        // =================================================================
+        // VIEW 2: AUTHENTICATED MODEL TEST DASHBOARD VIEW                   
+        // =================================================================
+        <section id="dashboard-view" class="hidden max-w-md mx-auto animate-view">
+            <!-- Welcome Header Card -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/90 p-5 mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold mb-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>পরীক্ষার্থী প্যানেল সক্রিয়</span>
+                    </div>
+                    <h2 class="text-sm sm:text-base font-medium text-slate-600">
+                        স্বাগতম, <span id="student-short-name" class="font-sans text-sm sm:text-base font-bold text-slate-900 underline decoration-emerald-500 decoration-2 underline-offset-4">Noushin Tabassum</span>
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">
+                        নিচের যেকোনো বিষয়ের ওপর ক্লিক করে মডেল টেস্ট শুরু করুন
+                    </p>
+                </div>
+
+                <button type="button" onclick="handleLogout()"
+                        class="self-start sm:self-center inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-200 hover:border-rose-200 text-xs font-semibold transition cursor-pointer shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <span>লগআউট</span>
+                </button>
+            </div>
+
+            <!-- Centered Single-Column Subject List -->
+            <div id="subjects-list" class="space-y-2.5">
+                <!-- Subject rows injected cleanly via JavaScript -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- MINIMAL ACADEMIC FOOTER                                               -->
+    <!-- ===================================================================== -->
+    <footer class="bg-white border-t border-slate-200/90 mt-auto">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div>
+                <p class="text-xs sm:text-sm font-semibold text-slate-800">
+                    TestMission — ঢাবি 'খ' ইউনিট ভর্তি প্রস্তুতি
+                </p>
+                <p class="font-sans text-[11px] text-slate-500 mt-0.5">
+                    ©TanvirTarif | ProjectConsistency X Finishers
+                </p>
+            </div>
+
+            <a id="footer-contact-link" href="https://t.me/tanvirtarif1" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-2xs transition">
+                <svg class="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+                <span>যোগাযোগ (Telegram)</span>
+            </a>
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- TOAST NOTIFICATION BANNER                                             -->
+    <!-- ===================================================================== -->
+    <div id="toast-banner" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden max-w-sm w-[92%] bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 text-xs sm:text-sm flex items-center gap-2.5">
+        <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
+        <span id="toast-message">বার্তা</span>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- BACKEND CONFIGURATION & APPLICATION LOGIC                             -->
+    <!-- ===================================================================== -->
+    <script>
+        /**
+         * =========================================================================
+         * SITE_CONFIG: ব্যাকএন্ড কনফিগারেশন (এখান থেকে সব লিংক ও সেটিংস পরিবর্তন করুন)
+         * =========================================================================
+         */
+        const SITE_CONFIG = {
+            // ১. হেডার কভার ছবির URL (ফাঁকা রাখলে ডিফল্ট একাডেমিক নেভি ব্যাকগ্রাউন্ড দেখাবে)
+            coverImageUrl: "",
+
+            // ২. নমুনা মডেল টেস্ট বাটনের লিংক
+            sampleTestUrl: "#sample-test",
+
+            // ৩. গুগল শিট Apps Script Web App URL (নিচের নির্দেশনা অনুযায়ী ডিপ্লয় করা URL এখানে বসান)
+            // URL বসানোর সাথে সাথেই কেবল গুগল শিটে থাকা ইউজারনেইম ও পাসওয়ার্ড দিয়েই লগইন হবে।
+            googleSheetWebAppUrl: "",
+
+            // ৪. গুগল শিট URL বসানোর আগ পর্যন্ত প্রিভিউ/টেস্টিংয়ের জন্য ডেমো মোড (URL বসালে এটি স্বয়ংক্রিয়ভাবে বন্ধ হয়ে যাবে)
+            fallbackDemoMode: true,
+
+            // ৫. ডেমো ইউজার তথ্য (শুধুমাত্র googleSheetWebAppUrl ফাঁকা থাকলে কাজ করবে)
+            defaultUser: {
+                username: "Admin1409",
+                password: "Admin1409",
+                shortName: "Noushin Tabassum"
+            },
+
+            // ৬. টেলিগ্রাম লিংকসমূহ
+            topChannelTelegramUrl: "https://t.me/testmission247",
+            contactTelegramUrl: "https://t.me/tanvirtarif1",
+
+            // ৭. ৭টি বিষয়ের তালিকা ও পরীক্ষার লিংক (এখানে '#' এর পরিবর্তে পরীক্ষার লিংক দিন)
+            subjects: [
+                {
+                    id: "bangla-1",
+                    title: "বাংলা ১ম পত্র",
+                    category: "bangla",
+                    url: "#"
+                },
+                {
+                    id: "bangla-2",
+                    title: "বাংলা ২য় পত্র",
+                    category: "bangla",
+                    url: "#"
+                },
+                {
+                    id: "english-1",
+                    title: "English 1st Paper",
+                    category: "english",
+                    url: "#"
+                },
+                {
+                    id: "english-2",
+                    title: "English 2nd Paper",
+                    category: "english",
+                    url: "#"
+                },
+                {
+                    id: "gk-bangladesh",
+                    title: "সাধারণ জ্ঞান (বাংলাদেশ বিষয়াবলি)",
+                    category: "gk",
+                    url: "#"
+                },
+                {
+                    id: "gk-international",
+                    title: "সাধারণ জ্ঞান (আন্তর্জাতিক বিষয়াবলি)",
+                    category: "gk",
+                    url: "#"
+                },
+                {
+                    id: "gk-recent",
+                    title: "সাধারণ জ্ঞান (সাম্প্রতিক ও অন্যান্য)",
+                    category: "gk",
+                    url: "#"
+                }
+            ]
+        };
+
+        // DOM Elements
+        const loginView = document.getElementById("login-view");
+        const dashboardView = document.getElementById("dashboard-view");
+        const loginForm = document.getElementById("login-form");
+        const loginErrorBox = document.getElementById("login-error-box");
+        const loginErrorText = document.getElementById("login-error-text");
+        const subjectsListEl = document.getElementById("subjects-list");
+        const studentShortNameEl = document.getElementById("student-short-name");
+        let toastTimer = null;
+
+        // Initialize App on Load
+        document.addEventListener("DOMContentLoaded", () => {
+            applyConfigBranding();
+            updateAuthModeIndicator();
+            renderSubjectRows();
+            setupPasswordToggle();
+            restoreSessionIfLoggedIn();
+        });
+
+        function updateAuthModeIndicator() {
+            const demoNotice = document.getElementById("demo-mode-notice");
+            const hasSheetUrl = SITE_CONFIG.googleSheetWebAppUrl && SITE_CONFIG.googleSheetWebAppUrl.trim() !== "";
+            if (!hasSheetUrl && SITE_CONFIG.fallbackDemoMode && demoNotice) {
+                demoNotice.classList.remove("hidden");
+            } else if (demoNotice) {
+                demoNotice.classList.add("hidden");
+            }
+        }
+
+        function applyConfigBranding() {
+        // Authenticate against Google Sheets Web App API (Strictly enforced when URL is set)
+        async function authenticateStudent(username, password) {
+            const sheetApiUrl = (SITE_CONFIG.googleSheetWebAppUrl || "").trim();
+
+            if (sheetApiUrl !== "") {
+                // Using text/plain avoids CORS preflight OPTIONS errors with Google Apps Script Web Apps
+                const response = await fetch(sheetApiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({
+                        action: "login",
+                        username: username,
+                        password: password
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Server responded with status " + response.status);
+                }
+
+                const data = await response.json();
+                if (data && data.success === true) {
+                    return {
+                        success: true,
+                        shortName: (data.shortName && String(data.shortName).trim()) || username
+                    };
+                }
+
+                return {
+                    success: false,
+                    message: data && data.message ? data.message : "ভুল ইউজারনেইম অথবা পাসওয়ার্ড! গুগল শিটের তথ্যের সাথে মেলেনি।"
+                };
+            }
+
+            // Fallback Demo Mode (Only active when googleSheetWebAppUrl is empty)
+            if (SITE_CONFIG.fallbackDemoMode) {
+                if (
+                    username === SITE_CONFIG.defaultUser.username &&
+                    password === SITE_CONFIG.defaultUser.password
+                ) {
+                    return {
+                        success: true,
+                        shortName: SITE_CONFIG.defaultUser.shortName
+                    };
+                }
+                return {
+                    success: false,
+                    message: "ভুল ইউজারনেইম অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।"
+                };
+            }
+
+            return {
+                success: false,
+                message: "গুগল শিট লগইন সার্ভার এখনো কনফিগার করা হয়নি।"
+            };
+        }
+
+        // Handle Login Form Submission
+        loginForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            loginErrorBox.classList.add("hidden");
+
+            const usernameVal = document.getElementById("username").value.trim();
+            const passwordVal = document.getElementById("password").value.trim();
+            const submitBtn = document.getElementById("login-submit-btn");
+
+            if (!usernameVal || !passwordVal) {
+                showLoginError("অনুগ্রহ করে ইউজারনেইম এবং পাসওয়ার্ড দিন।");
+                return;
+            }
+
+            const originalHtml = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span>গুগল শিটে যাচাই করা হচ্ছে...</span>`;
+
+            try {
+                const result = await authenticateStudent(usernameVal, passwordVal);
+                if (result.success) {
+                    sessionStorage.setItem("testmission_short_name", result.shortName);
+                    showDashboardView(result.shortName);
+                    showToast(`স্বাগতম, ${result.shortName}!`);
+                } else {
+                    showLoginError(result.message || "ভুল ইউজারনেইম অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।");
+                }
+            } catch (error) {
+                showLoginError("গুগল শিট সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি! Web App URL ও পারমিশন পরীক্ষা করুন।");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalHtml;
+            }
+        });
+
+        function restoreSessionIfLoggedIn() {
+            const savedShortName = sessionStorage.getItem("testmission_short_name");
+            if (savedShortName) {
+                showDashboardView(savedShortName);
+            }
+        }
+
+        function showDashboardView(shortName) {
+            studentShortNameEl.textContent = shortName;
+            loginView.classList.add("hidden");
+            dashboardView.classList.remove("hidden");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem("testmission_short_name");
+            document.getElementById("password").value = "";
+            dashboardView.classList.add("hidden");
+            loginView.classList.remove("hidden");
+            showToast("সফলভাবে লগআউট সম্পন্ন হয়েছে।");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function showLoginError(msg) {
+            loginErrorText.textContent = msg;
+            loginErrorBox.classList.remove("hidden");
+        }
+
+        function setupPasswordToggle() {
+            const toggleBtn = document.getElementById("toggle-password-btn");
+            const passwordInput = document.getElementById("password");
+            const eyeOpen = document.getElementById("eye-icon-open");
+            const eyeClosed = document.getElementById("eye-icon-closed");
+
+            toggleBtn.addEventListener("click", () => {
+                const isHidden = passwordInput.type === "password";
+                passwordInput.type = isHidden ? "text" : "password";
+                eyeOpen.classList.toggle("hidden", isHidden);
+                eyeClosed.classList.toggle("hidden", !isHidden);
+            });
+        }
+
+        // Sample Model Test Button Handler
+        function handleSampleTestClick() {
+            const url = SITE_CONFIG.sampleTestUrl;
+            if (!url || url === "#" || url === "#sample-test") {
+                showToast("নমুনা মডেল টেস্টের লিংক শীঘ্রই যুক্ত করা হবে।");
+            } else {
+                window.open(url, "_blank", "noopener,noreferrer");
+            }
+        }
+
+        // Subject Category Visual Icons
+        function getCategoryIconMarkup(category) {
+            if (category === "bangla") {
+                return {
+                    wrapperClass: "bg-rose-50 text-rose-700 border border-rose-200",
+                    svg: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                          </svg>`
+                };
+            }
+            if (category === "english") {
+                return {
+                    wrapperClass: "bg-indigo-50 text-indigo-700 border border-indigo-200",
+                    svg: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                          </svg>`
+                };
+            }
+            return {
+                wrapperClass: "bg-teal-50 text-teal-700 border border-teal-200",
+                svg: `<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>`
+            };
+        }
+
+        // Render Compact Subject Rows
+        function renderSubjectRows() {
+            subjectsListEl.innerHTML = "";
+
+            SITE_CONFIG.subjects.forEach((subject) => {
+                const iconInfo = getCategoryIconMarkup(subject.category);
+                const rowBtn = document.createElement("button");
+                rowBtn.type = "button";
+                rowBtn.className = "group w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-emerald-300 shadow-2xs hover:shadow-sm active:scale-[0.99] transition-all flex items-center justify-between gap-3 cursor-pointer";
+
+                rowBtn.onclick = () => {
+                    if (!subject.url || subject.url === "#") {
+                        showToast(`"${subject.title}" — পরীক্ষার লিংক শীঘ্রই যুক্ত করা হবে।`);
+                    } else {
+                        window.open(subject.url, "_blank", "noopener,noreferrer");
+                    }
+                };
+
+                rowBtn.innerHTML = `
+                    <span class="flex items-center gap-3 text-left min-w-0">
+                        <span class="w-9 h-9 rounded-lg ${iconInfo.wrapperClass} flex items-center justify-center shrink-0">
+                            ${iconInfo.svg}
+                        </span>
+                        <span class="text-sm sm:text-[15px] font-semibold text-slate-800 group-hover:text-slate-950 truncate">
+                            ${subject.title}
+                        </span>
+                    </span>
+                    <span class="inline-flex items-center gap-1 font-sans text-xs font-semibold bg-emerald-600 group-hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg shadow-sm shadow-emerald-600/20 transition-colors shrink-0">
+                        <span>Start</span>
+                        <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </span>
+                `;
+
+                subjectsListEl.appendChild(rowBtn);
+            });
+        }
+
+        // Clean Toast Notification
+        function showToast(message) {
+            const toastBanner = document.getElementById("toast-banner");
+            const toastMessage = document.getElementById("toast-message");
+            toastMessage.textContent = message;
+            toastBanner.classList.remove("hidden");
+
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            toastTimer = setTimeout(() => {
+                toastBanner.classList.add("hidden");
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
