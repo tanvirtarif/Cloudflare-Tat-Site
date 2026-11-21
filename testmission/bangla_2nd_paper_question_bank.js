@@ -117,7 +117,7 @@ Object.assign(window.TOPIC_EXAMS_DB, {
 }
     "ভাষা, বাংলা ভাষা ও ভাষারীতি (সাধু, চলিত ও প্রমিত)": {
         status: "live",
-        examEndDate: "2026-11-22T23:59:59",
+        examEndDate: "2026-11-22T12:59:59",
         driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
@@ -236,7 +236,7 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
     "বাংলা ব্যাকরণের উদ্ভব, ইতিহাস ও আলোচ্য বিষয়": {
     status: "live",
-    examEndDate: "2026-11-22T23:59:59",
+    examEndDate: "2026-11-22T12:59:59",
     driveChecklistPdfUrl: "",
     writtenQuestions: [
         {
