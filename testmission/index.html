@@ -606,6 +606,17 @@
     </div>
 
     <!-- ===================================================================== -->
+    <!-- ৭টি বিষয়ের আলাদা প্রশ্ন ব্যাংক (.js ফাইলসমূহ) — মূল স্ক্রিপ্টের আগে লোড -->
+    <!-- ===================================================================== -->
+    <script src="questions-bangla1.js"></script>
+    <script src="questions-bangla2.js"></script>
+    <script src="questions-english1.js"></script>
+    <script src="questions-english2.js"></script>
+    <script src="questions-gkbd.js"></script>
+    <script src="questions-gkint.js"></script>
+    <script src="questions-gkrecent.js"></script>
+
+    <!-- ===================================================================== -->
     <!-- BACKEND CONFIGURATION & ALL INTEGRATED SUBJECTS / TOPICS DATA         -->
     <!-- ===================================================================== -->
     <script>
@@ -932,11 +943,24 @@
             hasSubmitted: false
         };
 
-        document.addEventListener("DOMContentLoaded", () => {
+        function initializePortalApp() {
             applyConfigBranding();
             renderSubjectRows();
             renderAllLiveExamsOnDashboard();
             checkLogoutParamOrRestoreSession();
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initializePortalApp);
+        } else {
+            initializePortalApp();
+        }
+
+        window.addEventListener("load", () => {
+            renderAllLiveExamsOnDashboard();
+            if (currentSubjectId) {
+                renderSubjectTopics(currentSubjectId, activeTopicFilter);
+            }
         });
 
         function applyConfigBranding() {
@@ -2157,14 +2181,5 @@
             }, 3500);
         }
     </script>
-
-    <!-- ৭টি বিষয়ের আলাদা প্রশ্ন ব্যাংক (.js ফাইলসমূহ) -->
-    <script src="questions-bangla1.js"></script>
-    <script src="questions-bangla2.js"></script>
-    <script src="questions-english1.js"></script>
-    <script src="questions-english2.js"></script>
-    <script src="questions-gkbd.js"></script>
-    <script src="questions-gkint.js"></script>
-    <script src="questions-gkrecent.js"></script>
 </body>
 </html>
