@@ -1425,7 +1425,6 @@
                 const rawStatus = String(examEntry.status || "").trim().toLowerCase();
                 const isManuallyStarted = rawStatus === "live" || examEntry.isLive === true;
 
-                // Stay gray even when questions exist until manually set to "live"
                 if (!isManuallyStarted && rawStatus !== "archive") {
                     return { mode: "gray", examEntry };
                 }
@@ -1732,3 +1731,440 @@
                 container.appendChild(grid);
             }
         }
+
+        function openTopicChecklistScreen(subject, topicTitle, isEnglishText, examConfig, examMode = "live") {
+            const session = getActiveStudentSession();
+            if (!session) {
+                showLoginOnly();
+                return;
+            }
+
+            stopActiveExamTimer();
+
+            const totalQ = examConfig.questions.length;
+            const totalSecs = totalQ * SECONDS_PER_QUESTION;
+
+            activeExamContext = {
+                subject: subject,
+                topicTitle: topicTitle,
+                isEnglishText: isEnglishText,
+                examConfig: examConfig,
+                examMode: examMode,
+                timerInterval: null,
+                totalSeconds: totalSecs,
+                hasSubmitted: false
+            };
+
+            const passMark = (totalQ / 3).toFixed(2);
+            const durMins = Math.floor(totalSecs / 60);
+            const durSecs = totalSecs % 60;
+            const durationLabel = durSecs > 0 ? `${durMins} মিনিট ${durSecs} সেকেন্ড` : `${durMins} মিনিট`;
+
+            document.getElementById("intro-subject-name").textContent = subject.title;
+            document.getElementById("intro-topic-name").textContent =
+                examMode === "archive" ? `${topicTitle} (Archive)` : topicTitle;
+            document.getElementById("intro-student-name").textContent = session.shortName;
+            document.getElementById("intro-student-id").textContent = session.username || session.shortName;
+
+            document.getElementById("rule-total-q").textContent = totalQ;
+            document.getElementById("rule-total-marks").textContent = totalQ;
+            document.getElementById("rule-pass-mark").textContent = passMark;
+            document.getElementById("rule-duration").textContent = `${durationLabel} (প্রতি প্রশ্নে ${SECONDS_PER_QUESTION} সেকেন্ড)`;
+
+            document.querySelectorAll(".exam-consent-cb").forEach((cb) => {
+                cb.checked = false;
+            });
+            document.getElementById("checklist-alert").classList.add("hidden");
+
+            hideAllPortalViews();
+            examChecklistView.classList.remove("hidden");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function updateStartButtonState() {
+            const checkboxes = document.querySelectorAll(".exam-consent-cb");
+            const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
+            if (allChecked) {
+                document.getElementById("checklist-alert").classList.add("hidden");
+            }
+        }
+
+        function beginLiveTopicExam() {
+            const checkboxes = document.querySelectorAll(".exam-consent-cb");
+            const allChecked = Array.from(checkboxes).every((cb) => cb.checked);
+
+            if (!allChecked) {
+                document.getElementById("checklist-alert").classList.remove("hidden");
+                return;
+            }
+
+            const session = getActiveStudentSession();
+            if (!session) {
+                showLoginOnly();
+                return;
+            }
+
+            document.getElementById("exam-student-name").textContent = session.shortName;
+            document.getElementById("exam-student-id").textContent = session.username || session.shortName;
+            document.getElementById("exam-topic-header").textContent =
+                `${activeExamContext.subject.title} — ${activeExamContext.topicTitle}`;
+
+            hideAllPortalViews();
+            examLiveView.classList.remove("hidden");
+
+            renderLiveExamQuestions();
+            startExamCountdownTimer();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function backToSubjectTopicsFromExam() {
+            stopActiveExamTimer();
+            if (activeExamContext.subject) {
+                openSubjectView(activeExamContext.subject.id, false);
+            } else {
+                showAllSubjectsDashboard();
+            }
+        }
+
+        function renderLiveExamQuestions() {
+            const container = document.getElementById("questions-container");
+            const questions = activeExamContext.examConfig.questions;
+            const totalQ = questions.length;
+            const passMark = (totalQ / 3).toFixed(2);
+            const optionLetters = activeExamContext.isEnglishText ? ["A", "B", "C", "D"] : ["ক", "খ", "গ", "ঘ"];
+            const fontClass = activeExamContext.isEnglishText ? "font-sans" : "";
+
+            let html = `
+                <div class="bg-slate-900 text-amber-400 px-4 py-3 rounded-xl mb-4 text-sm sm:text-base font-bold">
+                    ${activeExamContext.topicTitle} (প্রশ্ন: ${totalQ}টি | পাস নম্বর: ${passMark})
+                </div>
+            `;
+
+            questions.forEach((item, qIdx) => {
+                html += `
+                    <div class="bg-white p-4 sm:p-5 border border-slate-200 rounded-2xl mb-4 shadow-2xs" id="q-card-${qIdx}">
+                        <div class="${fontClass} text-sm sm:text-base font-bold text-slate-900 mb-3.5 leading-relaxed">
+                            ${qIdx + 1}. ${item.q}
+                        </div>
+                        <ul class="space-y-2.5 m-0 p-0 list-none">
+                `;
+
+                (item.options || []).forEach((optText, optIdx) => {
+                    html += `
+                        <li>
+                            <label id="label-${qIdx}-${optIdx}"
+                                   class="flex items-center px-3.5 py-2.5 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 hover:border-slate-400 transition text-xs sm:text-sm select-none leading-relaxed">
+                                <input type="radio" name="topic_q_${qIdx}" value="${optIdx}"
+                                       class="mr-3 scale-110 shrink-0 accent-slate-900"
+                                       onchange="lockSelectedExamOption(${qIdx}, ${optIdx})">
+                                <strong class="font-sans mr-2">${optionLetters[optIdx] || optIdx + 1}.</strong>
+                                <span class="${fontClass}">${optText}</span>
+                            </label>
+                        </li>
+                    `;
+                });
+
+                html += `
+                        </ul>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function lockSelectedExamOption(qIdx, selectedIdx) {
+            const radios = document.querySelectorAll(`input[name="topic_q_${qIdx}"]`);
+            radios.forEach((radio) => {
+                radio.disabled = true;
+                const lbl = radio.closest("label");
+                if (lbl) lbl.classList.add("option-locked");
+            });
+
+            const selectedLabel = document.getElementById(`label-${qIdx}-${selectedIdx}`);
+            if (selectedLabel) {
+                selectedLabel.classList.add("option-selected-active");
+            }
+        }
+
+        function startExamCountdownTimer() {
+            updateTimerDisplayUI();
+            activeExamContext.timerInterval = setInterval(() => {
+                activeExamContext.totalSeconds--;
+                updateTimerDisplayUI();
+
+                if (activeExamContext.totalSeconds <= 0) {
+                    stopActiveExamTimer();
+                    if (!activeExamContext.hasSubmitted) {
+                        submitActiveTopicExam(true);
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplayUI() {
+            const mins = Math.max(0, Math.floor(activeExamContext.totalSeconds / 60)).toString().padStart(2, "0");
+            const secs = Math.max(0, activeExamContext.totalSeconds % 60).toString().padStart(2, "0");
+            document.getElementById("timer-display").textContent = `${mins}:${secs}`;
+        }
+
+        function openSubmitModal() {
+            if (activeExamContext.hasSubmitted) return;
+            const totalQ = activeExamContext.examConfig.questions.length;
+            const answered = document.querySelectorAll('#questions-container input[type="radio"]:checked').length;
+
+            document.getElementById("confirm-modal-text").textContent =
+                `আপনি ${totalQ}টি প্রশ্নের মধ্যে ${answered}টির উত্তর দিয়েছেন। আপনি কি নিশ্চিতভাবে ফাইনাল সাবমিট করতে চান?`;
+            document.getElementById("confirm-submit-modal").classList.remove("hidden");
+        }
+
+        function closeSubmitModal() {
+            document.getElementById("confirm-submit-modal").classList.add("hidden");
+        }
+
+        function confirmAndSubmitExam() {
+            closeSubmitModal();
+            submitActiveTopicExam(false);
+        }
+
+        async function submitActiveTopicExam(isAutoTimeout = false) {
+            if (activeExamContext.hasSubmitted) return;
+            activeExamContext.hasSubmitted = true;
+            stopActiveExamTimer();
+
+            const session = getActiveStudentSession() || { shortName: "Student", username: "" };
+            const questions = activeExamContext.examConfig.questions;
+            const totalQ = questions.length;
+
+            let correct = 0;
+            let wrong = 0;
+            let unattempted = 0;
+
+            questions.forEach((item, qIdx) => {
+                const selected = document.querySelector(`input[name="topic_q_${qIdx}"]:checked`);
+                if (selected) {
+                    if (parseInt(selected.value, 10) === parseInt(item.ans, 10)) {
+                        correct++;
+                    } else {
+                        wrong++;
+                    }
+                } else {
+                    unattempted++;
+                }
+                document.querySelectorAll(`input[name="topic_q_${qIdx}"]`).forEach((r) => {
+                    r.disabled = true;
+                });
+            });
+
+            const finalScore = (correct * 1) - (wrong * 0.25);
+            const passThreshold = totalQ / 3;
+            const isPassed = finalScore >= passThreshold;
+
+            hideAllPortalViews();
+            examResultView.classList.remove("hidden");
+
+            document.getElementById("res-subject-badge").textContent = activeExamContext.subject.title;
+            document.getElementById("res-topic-badge").textContent = activeExamContext.topicTitle;
+            document.getElementById("res-student-info").textContent = session.username
+                ? `${session.shortName} (ID: ${session.username})`
+                : session.shortName;
+
+            document.getElementById("total-score-display").textContent = `${finalScore.toFixed(2)} / ${totalQ}`;
+            document.getElementById("total-correct-display").textContent = correct;
+            document.getElementById("total-wrong-display").textContent = wrong;
+            document.getElementById("total-unattempted-display").textContent = unattempted;
+            document.getElementById("total-questions-display").textContent = totalQ;
+
+            const badgeEl = document.getElementById("pass-fail-badge");
+            if (isPassed) {
+                badgeEl.className = "inline-block px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold mt-2 bg-emerald-100 text-emerald-800 border-2 border-emerald-300";
+                badgeEl.textContent = "✅ পাস করেছেন (Passed)";
+            } else {
+                badgeEl.className = "inline-block px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold mt-2 bg-rose-100 text-rose-800 border-2 border-rose-300";
+                badgeEl.textContent = "❌ ফেইল করেছেন (Failed)";
+            }
+
+            document.getElementById("pass-mark-note").textContent = `(পাস নম্বর: ${passThreshold.toFixed(2)})`;
+
+            buildDetailedExplanationList();
+            renderWrittenQuestionsSection();
+            renderDriveImprovementNotePdf();
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
+            if (isAutoTimeout) {
+                showToast("নির্ধারিত সময় শেষ! উত্তরপত্র স্বয়ংক্রিয়ভাবে সাবমিট হয়েছে।");
+            }
+
+            saveResultSilentlyToGoogleSheet({
+                sheetTabName: activeExamContext.subject.sheetTabName || activeExamContext.subject.id,
+                subjectTitle: activeExamContext.subject.title,
+                topicTitle: activeExamContext.topicTitle,
+                examMode: activeExamContext.examMode,
+                totalQuestions: totalQ,
+                correct: correct,
+                wrong: wrong,
+                skipped: unattempted,
+                score: Number(finalScore.toFixed(2)),
+                status: isPassed ? "Pass" : "Fail"
+            });
+        }
+
+        function buildDetailedExplanationList() {
+            const container = document.getElementById("print-questions-list");
+            const questions = activeExamContext.examConfig.questions;
+            const optionLetters = activeExamContext.isEnglishText ? ["A", "B", "C", "D"] : ["ক", "খ", "গ", "ঘ"];
+            const fontClass = activeExamContext.isEnglishText ? "font-sans" : "";
+            let html = "";
+
+            questions.forEach((item, qIdx) => {
+                const selected = document.querySelector(`input[name="topic_q_${qIdx}"]:checked`);
+                const correctIdx = parseInt(item.ans, 10);
+                const selectedIdx = selected ? parseInt(selected.value, 10) : null;
+
+                let statusBadge = `<span class="text-[11px] px-2.5 py-0.5 rounded-md font-bold bg-slate-100 text-slate-600 border border-slate-300 whitespace-nowrap">⚪ উত্তর দেওয়া হয়নি</span>`;
+                if (selectedIdx !== null) {
+                    statusBadge = selectedIdx === correctIdx
+                        ? `<span class="text-[11px] px-2.5 py-0.5 rounded-md font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 whitespace-nowrap">✔️ সঠিক হয়েছে</span>`
+                        : `<span class="text-[11px] px-2.5 py-0.5 rounded-md font-bold bg-rose-100 text-rose-800 border border-rose-300 whitespace-nowrap">❌ ভুল হয়েছে</span>`;
+                }
+
+                html += `
+                    <div class="print-q-card bg-white border border-slate-300 rounded-xl p-4 mb-3.5">
+                        <div class="flex justify-between items-start gap-2.5 mb-2.5">
+                            <strong class="${fontClass} text-sm sm:text-base text-slate-900 leading-snug">${qIdx + 1}. ${item.q}</strong>
+                            ${statusBadge}
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2.5 my-2.5 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+                `;
+
+                (item.options || []).forEach((optText, optIdx) => {
+                    let optClass = "text-xs sm:text-sm px-2.5 py-1.5 rounded-md leading-relaxed border border-transparent text-slate-700";
+                    let tag = "";
+
+                    if (optIdx === correctIdx) {
+                        optClass = "print-opt-correct text-xs sm:text-sm px-2.5 py-1.5 rounded-md leading-relaxed border border-emerald-300 bg-emerald-100 text-emerald-950 font-bold";
+                        tag = ` <b class="text-[11px]">(সঠিক উত্তর)</b>`;
+                    } else if (selectedIdx !== null && optIdx === selectedIdx) {
+                        optClass = "print-opt-wrong text-xs sm:text-sm px-2.5 py-1.5 rounded-md leading-relaxed border border-rose-300 bg-rose-100 text-rose-900 line-through font-semibold";
+                        tag = ` <b class="text-[11px]">(আপনার ভুল উত্তর)</b>`;
+                    }
+
+                    html += `
+                        <div class="${optClass}">
+                            <strong class="font-sans">${optionLetters[optIdx] || optIdx + 1}.</strong> <span class="${fontClass}">${optText}</span>${tag}
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <div class="bg-emerald-50/80 border-l-4 border-l-emerald-600 px-3 py-2 text-xs sm:text-sm text-slate-800 mt-2 rounded-md leading-relaxed">
+                            <b>💡 ব্যাখ্যা:</b> ${item.exp || "এই প্রশ্নের জন্য কোনো ব্যাখ্যা যুক্ত করা হয়নি।"}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderWrittenQuestionsSection() {
+            const container = document.getElementById("written-questions-list");
+            const list = activeExamContext.examConfig.writtenQuestions || [];
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="text-center font-bold text-xs sm:text-sm text-slate-600">এই টপিকের লিখিত প্রশ্ন শীঘ্রই যুক্ত করা হবে।</div>`;
+                return;
+            }
+
+            container.innerHTML = list.map((item) => `
+                <div class="pb-2.5 border-b border-dashed border-slate-300 last:border-b-0 last:pb-0 text-xs sm:text-sm text-slate-900 leading-relaxed">
+                    <strong>${item.question}</strong>
+                    ${item.marks ? `<span class="inline-block bg-slate-200 text-slate-800 text-[11px] font-bold px-2 py-0.5 rounded-md ml-1.5">${item.marks}</span>` : ""}
+                </div>
+            `).join("");
+        }
+
+        function formatDrivePreviewUrl(rawUrl) {
+            if (!rawUrl) return "";
+            const match = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                return `https://drive.google.com/file/d/${match[1]}/preview`;
+            }
+            return rawUrl;
+        }
+
+        function renderDriveImprovementNotePdf() {
+            const rawUrl = (activeExamContext.examConfig.driveChecklistPdfUrl || "").trim();
+            const previewUrl = formatDrivePreviewUrl(rawUrl);
+            const iframeEl = document.getElementById("drive-pdf-iframe");
+            const directLinkEl = document.getElementById("drive-pdf-direct-link");
+            const wrapperEl = document.getElementById("drive-pdf-wrapper");
+
+            if (previewUrl) {
+                wrapperEl.classList.remove("hidden");
+                directLinkEl.classList.remove("hidden");
+                iframeEl.src = previewUrl;
+                directLinkEl.href = rawUrl.replace("/preview", "/view");
+            } else {
+                iframeEl.src = "about:blank";
+                wrapperEl.classList.add("hidden");
+                directLinkEl.classList.add("hidden");
+            }
+        }
+
+        async function saveResultSilentlyToGoogleSheet(payload) {
+            const apiUrl = (SITE_CONFIG.googleSheetWebAppUrl || "").trim();
+            const session = getActiveStudentSession();
+            if (!apiUrl || !session) return;
+
+            try {
+                await fetch(apiUrl, {
+                    method: "POST",
+                    redirect: "follow",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({
+                        action: "submitResult",
+                        sheetTabName: payload.sheetTabName,
+                        username: session.username || session.shortName,
+                        shortName: session.shortName,
+                        subjectTitle: payload.subjectTitle,
+                        topicTitle: payload.topicTitle,
+                        examMode: payload.examMode,
+                        totalQuestions: payload.totalQuestions,
+                        correct: payload.correct,
+                        wrong: payload.wrong,
+                        skipped: payload.skipped,
+                        score: payload.score,
+                        status: payload.status
+                    })
+                });
+            } catch (err) {}
+        }
+
+        function showToast(message) {
+            const toastBanner = document.getElementById("toast-banner");
+            const toastMessage = document.getElementById("toast-message");
+            toastMessage.textContent = message;
+            toastBanner.classList.remove("hidden");
+
+            if (toastTimer) {
+                clearTimeout(toastTimer);
+            }
+            toastTimer = setTimeout(() => {
+                toastBanner.classList.add("hidden");
+            }, 3500);
+        }
+    </script>
+
+    <!-- ৭টি বিষয়ের আলাদা প্রশ্ন ব্যাংক (.js ফাইলসমূহ) -->
+    <script src="questions-bangla1.js"></script>
+    <script src="questions-bangla2.js"></script>
+    <script src="questions-english1.js"></script>
+    <script src="questions-english2.js"></script>
+    <script src="questions-gkbd.js"></script>
+    <script src="questions-gkint.js"></script>
+    <script src="questions-gkrecent.js"></script>
+</body>
+</html>
