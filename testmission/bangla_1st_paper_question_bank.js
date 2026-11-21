@@ -64,7 +64,7 @@ Object.assign(window.TOPIC_EXAMS_DB, {
         ]
     }
 });
-"ঋতু বর্ণন": {
+"ঋতুবর্ণন": {
     status: "live",
     examEndDate: "2026-12-31T23:59:59",
     driveChecklistPdfUrl: "",
