@@ -10,7 +10,7 @@ window.TOPIC_EXAMS_DB = window.TOPIC_EXAMS_DB || {};
 Object.assign(window.TOPIC_EXAMS_DB, {
     "ধ্বনি ও বর্ণ": {
         // পরীক্ষা চালু করতে নিচের লাইনটি আনকমেন্ট করুন বা status: "live" লিখুন:
-        // status: "live",
+        status: "live",
         examEndDate: "2026-12-31T23:59:59",
         driveChecklistPdfUrl: "",
         writtenQuestions: [
