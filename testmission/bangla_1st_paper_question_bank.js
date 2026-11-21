@@ -1,10 +1,16 @@
 // =========================================================================
 // বাংলা ১ম পত্র — প্রশ্ন ব্যাংক (questions-bangla1.js)
+// নির্দেশনা:
+// ১. প্রশ্ন যোগ করার পর যখন পরীক্ষা চালু করতে চাইবেন তখন status: "live" লিখবেন।
+// ২. examEndDate-এ দেওয়া তারিখ ও সময় পার হয়ে গেলে এটি অটোমেটিক Archive হয়ে যাবে।
+// ৩. status: "live" না লিখলে প্রশ্ন এড থাকলেও টপিকটি গ্রে (Soon) অবস্থায় থাকবে।
 // =========================================================================
 window.TOPIC_EXAMS_DB = window.TOPIC_EXAMS_DB || {};
 
 Object.assign(window.TOPIC_EXAMS_DB, {
     "অপরিচিতা": {
+        status: "live",
+        examEndDate: "2026-12-31T23:59:59",
         driveChecklistPdfUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/view",
         writtenQuestions: [
             {
@@ -29,15 +35,16 @@ Object.assign(window.TOPIC_EXAMS_DB, {
                 ans: 1,
                 exp: "‘অপরিচিতা’ গল্পটি প্রথম প্রমথ চৌধুরী সম্পাদিত ‘সবুজপত্র’ পত্রিকার ১৩২১ বঙ্গাব্দের কার্তিক সংখ্যায় প্রকাশিত হয়।"
             }
-            // এভাবে ৩০-৪০টি প্রশ্ন কমা (,) দিয়ে নিচে নিচে বসিয়ে দিন
         ]
     },
 
     "বিলাসী": {
+        // এখানে status: "live" লেখা নেই, তাই প্রশ্ন এড করলেও গ্রে (Soon) থাকবে
+        examEndDate: "2026-12-31T23:59:59",
         driveChecklistPdfUrl: "",
         writtenQuestions: [],
         questions: [
-            // এখানে "বিলাসী" টপিকের প্রশ্নগুলো বসান
+            // এখানে "বিলাসী" টপিকের ৩০-৪০টি প্রশ্ন বসান
         ]
     }
 });
