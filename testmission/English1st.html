@@ -328,16 +328,22 @@
         }
 
         function handleLogout() {
+            function handleLogout() {
+            localStorage.removeItem("testmission_auth_session");
             localStorage.removeItem("testmission_short_name");
             localStorage.removeItem("testmission_username");
+            sessionStorage.removeItem("testmission_auth_session");
             sessionStorage.removeItem("testmission_short_name");
             sessionStorage.removeItem("testmission_username");
             sessionStorage.removeItem("tm_du_b_short_name");
 
-            showToast("লগআউট সম্পন্ন হয়েছে। মূল পোর্টালে নিয়ে যাওয়া হচ্ছে...");
+            showToast("লগআউট সম্পন্ন হয়েছে। লগইন পেইজে নিয়ে যাওয়া হচ্ছে...");
             setTimeout(() => {
-                window.location.href = SITE_CONFIG.homeUrl || "index.html";
-            }, 700);
+                const baseHome = SITE_CONFIG.homeUrl || SITE_CONFIG.homePageUrl || "index.html";
+                const sep = baseHome.includes("?") ? "&" : "?";
+                window.location.replace(`${baseHome}${sep}logout=1`);
+            }, 600);
+        }
         }
 
         function renderAlternatingTopicRows(containerId, topics) {
