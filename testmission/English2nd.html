@@ -364,7 +364,6 @@
         }
 
         function handleLogout() {
-           function handleLogout() {
             localStorage.removeItem("testmission_auth_session");
             localStorage.removeItem("testmission_short_name");
             localStorage.removeItem("testmission_username");
@@ -379,7 +378,6 @@
                 const sep = baseHome.includes("?") ? "&" : "?";
                 window.location.replace(`${baseHome}${sep}logout=1`);
             }, 600);
-        }
         }
 
         function renderTopicColumn(containerId, topics) {
