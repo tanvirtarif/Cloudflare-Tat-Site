@@ -10,7 +10,7 @@ window.TOPIC_EXAMS_DB = window.TOPIC_EXAMS_DB || {};
 Object.assign(window.TOPIC_EXAMS_DB, {
     "Pronouns: Classification, Use & Function": {
         status: "live",
-        examEndDate: "2026-12-31T23:59:59",
+        examEndDate: "2026-11-22T23:59:59",
         driveChecklistPdfUrl: "",
         writtenQuestions: [],
         questions: [
