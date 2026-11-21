@@ -40,6 +40,7 @@ Object.assign(window.TOPIC_EXAMS_DB, {
 
     "বিলাসী": {
         // এখানে status: "live" লেখা নেই, তাই প্রশ্ন এড করলেও গ্রে (Soon) থাকবে
+        status: "live"
         examEndDate: "2026-12-31T23:59:59",
         driveChecklistPdfUrl: "",
         writtenQuestions: [],
