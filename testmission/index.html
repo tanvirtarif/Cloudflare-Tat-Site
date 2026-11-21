@@ -208,6 +208,9 @@
             </div>
         </section>
 
+        <!-- ================================================================= -->
+        <!-- VIEW 2: AUTHENTICATED MODEL TEST DASHBOARD VIEW                   -->
+        <!-- ================================================================= -->
         <section id="dashboard-view" class="hidden max-w-md mx-auto animate-view">
             <!-- Welcome Header Card -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200/90 p-5 mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -287,16 +290,15 @@
             coverImageUrl: "",
 
             // ২. নমুনা মডেল টেস্ট বাটনের লিংক
-            sampleTestUrl: "#sample-test",
+            sampleTestUrl: "#sample-model-test",
 
-            // ৩. গুগল শিট Apps Script Web App URL (নিচের নির্দেশনা অনুযায়ী ডিপ্লয় করা URL এখানে বসান)
-            // URL বসানোর সাথে সাথেই কেবল গুগল শিটে থাকা ইউজারনেইম ও পাসওয়ার্ড দিয়েই লগইন হবে।
-            googleSheetWebAppUrl: "",
+            // ৩. গুগল শিট Apps Script Web App URL (লাইভ যুক্ত করা হয়েছে)
+            googleSheetWebAppUrl: "https://script.google.com/macros/s/AKfycbzuo-23XO4K8GWGsl6Lj8y9mw4xkXkXBATCITMMU23R9Q0C4Zwe4ltBrzoFRIJ1UD9Y9A/exec",
 
-            // ৪. গুগল শিট URL বসানোর আগ পর্যন্ত প্রিভিউ/টেস্টিংয়ের জন্য ডেমো মোড (URL বসালে এটি স্বয়ংক্রিয়ভাবে বন্ধ হয়ে যাবে)
-            fallbackDemoMode: true,
+            // ৪. ডেমো মোড বন্ধ রাখা হয়েছে যেহেতু লাইভ গুগল শিট URL যুক্ত আছে
+            fallbackDemoMode: false,
 
-            // ৫. ডেমো ইউজার তথ্য (শুধুমাত্র googleSheetWebAppUrl ফাঁকা থাকলে কাজ করবে)
+            // ৫. ডেমো ইউজার তথ্য (ব্যাকআপ রেফারেন্স)
             defaultUser: {
                 username: "Admin1409",
                 password: "Admin1409",
@@ -313,43 +315,43 @@
                     id: "bangla-1",
                     title: "বাংলা ১ম পত্র",
                     category: "bangla",
-                    url: "#"
+                    url: "#bangla-1st"
                 },
                 {
                     id: "bangla-2",
                     title: "বাংলা ২য় পত্র",
                     category: "bangla",
-                    url: "#"
+                    url: "#bangla-2nd"
                 },
                 {
                     id: "english-1",
                     title: "English 1st Paper",
                     category: "english",
-                    url: "#"
+                    url: "#english-1st"
                 },
                 {
                     id: "english-2",
                     title: "English 2nd Paper",
                     category: "english",
-                    url: "#"
+                    url: "#english-2nd"
                 },
                 {
                     id: "gk-bangladesh",
                     title: "সাধারণ জ্ঞান (বাংলাদেশ বিষয়াবলি)",
                     category: "gk",
-                    url: "#"
+                    url: "#gk-bangladesh"
                 },
                 {
                     id: "gk-international",
                     title: "সাধারণ জ্ঞান (আন্তর্জাতিক বিষয়াবলি)",
                     category: "gk",
-                    url: "#"
+                    url: "#gk-international"
                 },
                 {
                     id: "gk-recent",
                     title: "সাধারণ জ্ঞান (সাম্প্রতিক ও অন্যান্য)",
                     category: "gk",
-                    url: "#"
+                    url: "#gk-recent"
                 }
             ]
         };
@@ -384,6 +386,22 @@
         }
 
         function applyConfigBranding() {
+            const coverLayer = document.getElementById("cover-image-layer");
+            if (coverLayer && SITE_CONFIG.coverImageUrl && SITE_CONFIG.coverImageUrl.trim() !== "") {
+                coverLayer.style.backgroundImage = `url('${SITE_CONFIG.coverImageUrl.trim()}')`;
+            }
+
+            const topTelegramEl = document.getElementById("top-telegram-link");
+            if (topTelegramEl && SITE_CONFIG.topChannelTelegramUrl) {
+                topTelegramEl.href = SITE_CONFIG.topChannelTelegramUrl;
+            }
+
+            const footerContactEl = document.getElementById("footer-contact-link");
+            if (footerContactEl && SITE_CONFIG.contactTelegramUrl) {
+                footerContactEl.href = SITE_CONFIG.contactTelegramUrl;
+            }
+        }
+
         // Authenticate against Google Sheets Web App API (Strictly enforced when URL is set)
         async function authenticateStudent(username, password) {
             const sheetApiUrl = (SITE_CONFIG.googleSheetWebAppUrl || "").trim();
@@ -521,7 +539,7 @@
         // Sample Model Test Button Handler
         function handleSampleTestClick() {
             const url = SITE_CONFIG.sampleTestUrl;
-            if (!url || url === "#" || url === "#sample-test") {
+            if (!url || url === "#" || url === "#sample-test" || url === "#sample-model-test") {
                 showToast("নমুনা মডেল টেস্টের লিংক শীঘ্রই যুক্ত করা হবে।");
             } else {
                 window.open(url, "_blank", "noopener,noreferrer");
@@ -565,7 +583,7 @@
                 rowBtn.className = "group w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-emerald-300 shadow-2xs hover:shadow-sm active:scale-[0.99] transition-all flex items-center justify-between gap-3 cursor-pointer";
 
                 rowBtn.onclick = () => {
-                    if (!subject.url || subject.url === "#") {
+                    if (!subject.url || subject.url === "#" || subject.url.startsWith("#")) {
                         showToast(`"${subject.title}" — পরীক্ষার লিংক শীঘ্রই যুক্ত করা হবে।`);
                     } else {
                         window.open(subject.url, "_blank", "noopener,noreferrer");
