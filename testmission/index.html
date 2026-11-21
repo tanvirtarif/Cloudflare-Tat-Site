@@ -217,7 +217,7 @@
                 <div>
                     <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold mb-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span>পরীক্ষার্থী প্যানেল সক্রিয়</span>
+                        <span>শিক্ষার্থী প্যানেল</span>
                     </div>
                     <h2 class="text-sm sm:text-base font-medium text-slate-600">
                         স্বাগতম, <span id="student-short-name" class="font-sans text-sm sm:text-base font-bold text-slate-900 underline decoration-emerald-500 decoration-2 underline-offset-4">Noushin Tabassum</span>
@@ -432,7 +432,7 @@
 
                 return {
                     success: false,
-                    message: data && data.message ? data.message : "ভুল ইউজারনেইম অথবা পাসওয়ার্ড! গুগল শিটের তথ্যের সাথে মেলেনি।"
+                    message: data && data.message ? data.message : "ভুল ইউজারনেইম অথবা পাসওয়ার্ড!"
                 };
             }
 
@@ -455,7 +455,7 @@
 
             return {
                 success: false,
-                message: "গুগল শিট লগইন সার্ভার এখনো কনফিগার করা হয়নি।"
+                message: "তলগইন সার্ভার এখনো কনফিগার করা হয়নি।"
             };
         }
 
@@ -475,7 +475,7 @@
 
             const originalHtml = submitBtn.innerHTML;
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<span>গুগল শিটে যাচাই করা হচ্ছে...</span>`;
+            submitBtn.innerHTML = `<span>যাচাই করা হচ্ছে...</span>`;
 
             try {
                 const result = await authenticateStudent(usernameVal, passwordVal);
@@ -487,7 +487,7 @@
                     showLoginError(result.message || "ভুল ইউজারনেইম অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।");
                 }
             } catch (error) {
-                showLoginError("গুগল শিট সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি! Web App URL ও পারমিশন পরীক্ষা করুন।");
+                showLoginError("সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি!");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalHtml;
