@@ -56,7 +56,7 @@
     <!-- STICKY TOP NAVBAR                                                     -->
     <!-- ===================================================================== -->
     <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-13 py-2.5 flex items-center justify-between gap-3">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3">
             <!-- Left Portal Title -->
             <div class="flex items-center gap-2 text-slate-900 font-sans font-bold text-xs sm:text-sm tracking-tight">
                 <span class="w-7 h-7 rounded-lg bg-slate-900 text-amber-400 flex items-center justify-center shadow-xs shrink-0">
@@ -74,7 +74,7 @@
                 <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
                 </svg>
-                <span>TestMission Channel</span>
+                <span>TestMission Telegram</span>
             </a>
         </div>
     </nav>
@@ -143,11 +143,6 @@
                     <span id="login-error-text">ভুল ইউজারনেইম অথবা পাসওয়ার্ড।</span>
                 </div>
 
-                <!-- Demo Mode Notice (Shown only until Google Sheet URL is configured) -->
-                <div id="demo-mode-notice" class="hidden mb-4 p-2.5 rounded-xl bg-amber-50/90 border border-amber-200/90 text-amber-900 text-[11px] sm:text-xs text-center">
-                    <span class="font-semibold">ডেমো মোড চালু আছে:</span> গুগল শিট লিংক যুক্ত না করা পর্যন্ত <code class="font-sans font-bold bg-amber-100 px-1.5 py-0.5 rounded">Admin1409</code> দিয়ে টেস্ট করতে পারবেন।
-                </div>
-
                 <!-- Login Form -->
                 <form id="login-form" class="space-y-4" novalidate>
                     <div>
@@ -166,7 +161,7 @@
                             <input type="password" id="password" name="password" autocomplete="current-password" placeholder="আপনার পাসওয়ার্ড লিখুন" required
                                    class="w-full px-3.5 py-2.5 pr-10 rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white text-slate-900 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/15 focus:border-slate-900 transition">
                             <button type="button" id="toggle-password-btn" aria-label="Show or hide password"
-                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 transition">
+                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 transition cursor-pointer">
                                 <svg id="eye-icon-open" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -217,10 +212,11 @@
                 <div>
                     <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold mb-1.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span>শিক্ষার্থী প্যানেল</span>
+                        <span>পরীক্ষার্থী প্যানেল সক্রিয়</span>
                     </div>
                     <h2 class="text-sm sm:text-base font-medium text-slate-600">
                         স্বাগতম, <span id="student-short-name" class="font-sans text-sm sm:text-base font-bold text-slate-900 underline decoration-emerald-500 decoration-2 underline-offset-4">Noushin Tabassum</span>
+                        <span id="student-id-badge" class="hidden ml-1.5 font-sans text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200"></span>
                     </h2>
                     <p class="text-xs text-slate-500 mt-1">
                         নিচের যেকোনো বিষয়ের ওপর ক্লিক করে মডেল টেস্ট শুরু করুন
@@ -292,13 +288,13 @@
             // ২. নমুনা মডেল টেস্ট বাটনের লিংক
             sampleTestUrl: "#sample-model-test",
 
-            // ৩. গুগল শিট Apps Script Web App URL (লাইভ যুক্ত করা হয়েছে)
+            // ৩. গুগল শিট Apps Script Web App URL
             googleSheetWebAppUrl: "https://script.google.com/macros/s/AKfycbzuo-23XO4K8GWGsl6Lj8y9mw4xkXkXBATCITMMU23R9Q0C4Zwe4ltBrzoFRIJ1UD9Y9A/exec",
 
-            // ৪. ডেমো মোড বন্ধ রাখা হয়েছে যেহেতু লাইভ গুগল শিট URL যুক্ত আছে
+            // ৪. ডেমো মোড (গুগল শিট URL থাকলে false থাকবে)
             fallbackDemoMode: false,
 
-            // ৫. ডেমো ইউজার তথ্য (ব্যাকআপ রেফারেন্স)
+            // ৫. ব্যাকআপ ডেমো ইউজার
             defaultUser: {
                 username: "Admin1409",
                 password: "Admin1409",
@@ -309,54 +305,53 @@
             topChannelTelegramUrl: "https://t.me/testmission247",
             contactTelegramUrl: "https://t.me/tanvirtarif1",
 
-            // ৭. ৭টি বিষয়ের তালিকা ও পরীক্ষার লিংক (এখানে '#' এর পরিবর্তে পরীক্ষার লিংক দিন)
+            // ৭. ৭টি বিষয়ের তালিকা ও পরবর্তী পেইজের ফাইল লিংক
             subjects: [
                 {
                     id: "bangla-1",
                     title: "বাংলা ১ম পত্র",
                     category: "bangla",
-                    url: "https://tanvirtarif.com/testmission/bangla1st"
+                    url: "bangla-1st.html"
                 },
                 {
                     id: "bangla-2",
                     title: "বাংলা ২য় পত্র",
                     category: "bangla",
-                    url: "https://tanvirtarif.com/testmission/bangla2nd"
+                    url: "bangla-2nd.html"
                 },
                 {
                     id: "english-1",
                     title: "English 1st Paper",
                     category: "english",
-                    url: "https://tanvirtarif.com/testmission/english1st"
+                    url: "english-1st.html"
                 },
                 {
                     id: "english-2",
                     title: "English 2nd Paper",
                     category: "english",
-                    url: "https://tanvirtarif.com/testmission/english2nd"
+                    url: "english-2nd.html"
                 },
                 {
                     id: "gk-bangladesh",
                     title: "সাধারণ জ্ঞান (বাংলাদেশ বিষয়াবলি)",
                     category: "gk",
-                    url: "https://tanvirtarif.com/testmission/gkbd"
+                    url: "gk-bangladesh.html"
                 },
                 {
                     id: "gk-international",
                     title: "সাধারণ জ্ঞান (আন্তর্জাতিক বিষয়াবলি)",
                     category: "gk",
-                    url: "https://tanvirtarif.com/testmission/gkint"
+                    url: "gk-international.html"
                 },
                 {
                     id: "gk-recent",
                     title: "সাধারণ জ্ঞান (সাম্প্রতিক ও অন্যান্য)",
                     category: "gk",
-                    url: "https://tanvirtarif.com/testmission/gkr&o"
+                    url: "gk-recent.html"
                 }
             ]
         };
 
-        // DOM Elements
         const loginView = document.getElementById("login-view");
         const dashboardView = document.getElementById("dashboard-view");
         const loginForm = document.getElementById("login-form");
@@ -364,26 +359,15 @@
         const loginErrorText = document.getElementById("login-error-text");
         const subjectsListEl = document.getElementById("subjects-list");
         const studentShortNameEl = document.getElementById("student-short-name");
+        const studentIdBadgeEl = document.getElementById("student-id-badge");
         let toastTimer = null;
 
-        // Initialize App on Load
         document.addEventListener("DOMContentLoaded", () => {
             applyConfigBranding();
-            updateAuthModeIndicator();
             renderSubjectRows();
             setupPasswordToggle();
             restoreSessionIfLoggedIn();
         });
-
-        function updateAuthModeIndicator() {
-            const demoNotice = document.getElementById("demo-mode-notice");
-            const hasSheetUrl = SITE_CONFIG.googleSheetWebAppUrl && SITE_CONFIG.googleSheetWebAppUrl.trim() !== "";
-            if (!hasSheetUrl && SITE_CONFIG.fallbackDemoMode && demoNotice) {
-                demoNotice.classList.remove("hidden");
-            } else if (demoNotice) {
-                demoNotice.classList.add("hidden");
-            }
-        }
 
         function applyConfigBranding() {
             const coverLayer = document.getElementById("cover-image-layer");
@@ -402,12 +386,10 @@
             }
         }
 
-        // Authenticate against Google Sheets Web App API (Strictly enforced when URL is set)
         async function authenticateStudent(username, password) {
             const sheetApiUrl = (SITE_CONFIG.googleSheetWebAppUrl || "").trim();
 
             if (sheetApiUrl !== "") {
-                // Using text/plain avoids CORS preflight OPTIONS errors with Google Apps Script Web Apps
                 const response = await fetch(sheetApiUrl, {
                     method: "POST",
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -432,11 +414,10 @@
 
                 return {
                     success: false,
-                    message: data && data.message ? data.message : "ভুল ইউজারনেইম অথবা পাসওয়ার্ড!"
+                    message: data && data.message ? data.message : "ভুল ইউজারনেইম অথবা পাসওয়ার্ড! গুগল শিটের তথ্যের সাথে মেলেনি।"
                 };
             }
 
-            // Fallback Demo Mode (Only active when googleSheetWebAppUrl is empty)
             if (SITE_CONFIG.fallbackDemoMode) {
                 if (
                     username === SITE_CONFIG.defaultUser.username &&
@@ -455,11 +436,10 @@
 
             return {
                 success: false,
-                message: "তলগইন সার্ভার এখনো কনফিগার করা হয়নি।"
+                message: "গুগল শিট লগইন সার্ভার কনফিগার করা হয়নি।"
             };
         }
 
-        // Handle Login Form Submission
         loginForm.addEventListener("submit", async (event) => {
             event.preventDefault();
             loginErrorBox.classList.add("hidden");
@@ -475,41 +455,87 @@
 
             const originalHtml = submitBtn.innerHTML;
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<span>যাচাই করা হচ্ছে...</span>`;
+            submitBtn.innerHTML = `<span>গুগল শিটে যাচাই করা হচ্ছে...</span>`;
 
             try {
                 const result = await authenticateStudent(usernameVal, passwordVal);
                 if (result.success) {
+                    const sessionData = {
+                        isLoggedIn: true,
+                        username: usernameVal,
+                        shortName: result.shortName,
+                        loginTime: new Date().toISOString()
+                    };
+                    localStorage.setItem("testmission_auth_session", JSON.stringify(sessionData));
+                    localStorage.setItem("testmission_short_name", result.shortName);
+                    localStorage.setItem("testmission_username", usernameVal);
+                    sessionStorage.setItem("testmission_auth_session", JSON.stringify(sessionData));
                     sessionStorage.setItem("testmission_short_name", result.shortName);
-                    showDashboardView(result.shortName);
+                    sessionStorage.setItem("testmission_username", usernameVal);
+
+                    showDashboardView(result.shortName, usernameVal);
                     showToast(`স্বাগতম, ${result.shortName}!`);
                 } else {
                     showLoginError(result.message || "ভুল ইউজারনেইম অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।");
                 }
             } catch (error) {
-                showLoginError("সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি!");
+                showLoginError("গুগল শিট সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি! Web App URL ও পারমিশন পরীক্ষা করুন।");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalHtml;
             }
         });
 
-        function restoreSessionIfLoggedIn() {
-            const savedShortName = sessionStorage.getItem("testmission_short_name");
+        function getActiveStudentSession() {
+            try {
+                const raw = localStorage.getItem("testmission_auth_session") || sessionStorage.getItem("testmission_auth_session");
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && parsed.isLoggedIn && parsed.shortName) {
+                        return parsed;
+                    }
+                }
+            } catch (e) {}
+
+            const savedShortName = localStorage.getItem("testmission_short_name") || sessionStorage.getItem("testmission_short_name");
+            const savedUsername = localStorage.getItem("testmission_username") || sessionStorage.getItem("testmission_username");
             if (savedShortName) {
-                showDashboardView(savedShortName);
+                return {
+                    isLoggedIn: true,
+                    username: savedUsername || "",
+                    shortName: savedShortName
+                };
+            }
+            return null;
+        }
+
+        function restoreSessionIfLoggedIn() {
+            const session = getActiveStudentSession();
+            if (session) {
+                showDashboardView(session.shortName, session.username);
             }
         }
 
-        function showDashboardView(shortName) {
+        function showDashboardView(shortName, username = "") {
             studentShortNameEl.textContent = shortName;
+            if (username && username !== shortName && studentIdBadgeEl) {
+                studentIdBadgeEl.textContent = `ID: ${username}`;
+                studentIdBadgeEl.classList.remove("hidden");
+            } else if (studentIdBadgeEl) {
+                studentIdBadgeEl.classList.add("hidden");
+            }
             loginView.classList.add("hidden");
             dashboardView.classList.remove("hidden");
             window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
         function handleLogout() {
+            localStorage.removeItem("testmission_auth_session");
+            localStorage.removeItem("testmission_short_name");
+            localStorage.removeItem("testmission_username");
+            sessionStorage.removeItem("testmission_auth_session");
             sessionStorage.removeItem("testmission_short_name");
+            sessionStorage.removeItem("testmission_username");
             document.getElementById("password").value = "";
             dashboardView.classList.add("hidden");
             loginView.classList.remove("hidden");
@@ -536,7 +562,6 @@
             });
         }
 
-        // Sample Model Test Button Handler
         function handleSampleTestClick() {
             const url = SITE_CONFIG.sampleTestUrl;
             if (!url || url === "#" || url === "#sample-test" || url === "#sample-model-test") {
@@ -546,7 +571,6 @@
             }
         }
 
-        // Subject Category Visual Icons
         function getCategoryIconMarkup(category) {
             if (category === "bangla") {
                 return {
@@ -572,7 +596,22 @@
             };
         }
 
-        // Render Compact Subject Rows
+        function buildAuthenticatedUrl(baseUrl) {
+            const session = getActiveStudentSession();
+            if (!session) return baseUrl;
+            try {
+                const targetUrl = new URL(baseUrl, window.location.href);
+                targetUrl.searchParams.set("student", session.shortName);
+                if (session.username) {
+                    targetUrl.searchParams.set("user", session.username);
+                }
+                return targetUrl.toString();
+            } catch (e) {
+                const sep = baseUrl.includes("?") ? "&" : "?";
+                return `${baseUrl}${sep}student=${encodeURIComponent(session.shortName)}&user=${encodeURIComponent(session.username || "")}`;
+            }
+        }
+
         function renderSubjectRows() {
             subjectsListEl.innerHTML = "";
 
@@ -586,7 +625,8 @@
                     if (!subject.url || subject.url === "#" || subject.url.startsWith("#")) {
                         showToast(`"${subject.title}" — পরীক্ষার লিংক শীঘ্রই যুক্ত করা হবে।`);
                     } else {
-                        window.open(subject.url, "_blank", "noopener,noreferrer");
+                        const redirectUrl = buildAuthenticatedUrl(subject.url);
+                        window.location.href = redirectUrl;
                     }
                 };
 
@@ -611,7 +651,6 @@
             });
         }
 
-        // Clean Toast Notification
         function showToast(message) {
             const toastBanner = document.getElementById("toast-banner");
             const toastMessage = document.getElementById("toast-message");
