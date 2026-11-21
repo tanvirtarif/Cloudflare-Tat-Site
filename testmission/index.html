@@ -603,7 +603,7 @@
         const SITE_CONFIG = {
             coverImageUrl: "",
             sampleTestUrl: "#sample-model-test",
-            googleSheetWebAppUrl: "https://script.google.com/macros/s/AKfycbwpNOGS5iP15U2oT9AgSPaCMkea1ormUfKVZLraNle8Y6Xw8lv67wE9Jpy0RyMgZiXhoQ/exec",
+            googleSheetWebAppUrl: "https://script.google.com/macros/s/AKfycbxtr4IwcwADovKD0URrgvIJhrSU57-ItuYiNrnwGjP09k1R8VR7nfeKcMyP29XAIYajZQ/exec",
             fallbackDemoMode: false,
             defaultUser: {
                 username: "Admin1409",
@@ -2078,7 +2078,7 @@
             const list = activeExamContext.examConfig.writtenQuestions || [];
 
             if (list.length === 0) {
-                container.innerHTML = `<div class="text-center font-bold text-xs sm:text-sm text-slate-600">প্রযোজ্য নয়!</div>`;
+                container.innerHTML = `<div class="text-center font-bold text-xs sm:text-sm text-slate-600">প্রযোজ্য নয়!</div>`;
                 return;
             }
 
@@ -2100,11 +2100,13 @@
         }
 
         function renderDriveImprovementNotePdf() {
-            const rawUrl = (activeExamContext.examConfig.driveChecklistPdfUrl || "").trim();
-            const previewUrl = formatDrivePreviewUrl(rawUrl);
             const iframeEl = document.getElementById("drive-pdf-iframe");
             const directLinkEl = document.getElementById("drive-pdf-direct-link");
             const wrapperEl = document.getElementById("drive-pdf-wrapper");
+            if (!iframeEl || !directLinkEl || !wrapperEl) return;
+
+            const rawUrl = (activeExamContext.examConfig.driveChecklistPdfUrl || "").trim();
+            const previewUrl = formatDrivePreviewUrl(rawUrl);
 
             if (previewUrl) {
                 wrapperEl.classList.remove("hidden");
