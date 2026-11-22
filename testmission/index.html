@@ -666,7 +666,7 @@
                     layout: "two-columns",
                     subtitle: "নিচের যেকোনো Live বা Archive টপিকে ক্লিক করে মডেল টেস্ট দিন",
                     leftTopics: [
-                        { title: "ভাষা, বাংলা ভাষা ও ভাষারীতি (সাধু, চলিত ও প্রমিত)", examDate: "2026-11-21", url: "#" },
+                        { title: "ভাষা, বাংলা ভাষা ও ভাষারীতি (সাধু, চলিত ও প্রমিত)", examDate: "2026-11-22", url: "#" },
                         { title: "ধ্বনি ও বর্ণ, এবং অক্ষর (Syllable)", examDate: "2026-11-22", url: "#" },
                         { title: "বাংলা উচ্চারণের নিয়ম (উচ্চারণসূত্র)", examDate: "2026-11-23", url: "#" },
                         { title: "ণ-ত্ব বিধান ও ষ-ত্ব বিধান", examDate: "2026-11-24", url: "#" },
@@ -683,8 +683,8 @@
                         { title: "বাংলা ভাষার প্রয়োগ ও অপপ্রয়োগ (শব্দ ও বাক্য শুদ্ধি)", examDate: "2026-12-07", url: "#" }
                     ],
                     rightTopics: [
-                        { title: "বাংলা ব্যাকরণের উদ্ভব, ইতিহাস ও আলোচ্য বিষয়", examDate: "2026-11-21", url: "#" },
-                        { title: "ধ্বনি পরিবর্তন", examDate: "2026-11-23", url: "#" },
+                        { title: "বাংলা ব্যাকরণের উদ্ভব, ইতিহাস ও আলোচ্য বিষয়", examDate: "2026-11-22", url: "#" },
+                        { title: "ধ্বনি পরিবর্তন", examDate: "2026-11-22", url: "#" },
                         { title: "সন্ধি (স্বরসন্ধি, ব্যঞ্জনসন্ধি, বিসর্গ সন্ধি ও নিপাতনে সিদ্ধ সন্ধি)", examDate: "2026-11-24", url: "#" },
                         { title: "উপসর্গ, অনুসর্গ বা কর্মপ্রবচনীয়", examDate: "2026-11-25", url: "#" },
                         { title: "সমাস", examDate: "2026-11-26", url: "#" },
@@ -942,7 +942,6 @@
             }
         });
 
-        // প্রতি ৩০ সেকেন্ড পরপর সময় চেক করে স্বয়ংক্রিয়ভাবে সকাল ৬টায় Live ও রাত ১১:৫৯-এ Archive আপডেট করা
         setInterval(() => {
             if (!dashboardView.classList.contains("hidden")) {
                 renderAllLiveExamsOnDashboard();
@@ -1374,6 +1373,8 @@
                         openTopicChecklistScreen(subject, topic.title, subject.isEnglishTitle, state.examEntry, "live");
                     } else if (topic.url && topic.url !== "#" && !topic.url.startsWith("#")) {
                         window.open(topic.url, "_blank", "noopener,noreferrer");
+                    } else {
+                        showToast(`"${topic.title}" — এই টপিকের প্রশ্ন ব্যাংক যুক্ত করা হয়নি।`);
                     }
                 };
 
@@ -1424,7 +1425,6 @@
             });
         }
 
-        // তারিখ-সময় পার্সার: index.html-এর examDate ("YYYY-MM-DD") অনুযায়ী সকাল ০৬:০০টায় Live ও রাত ২৩:৫৯:৫৯-এ Archive (+06:00)
         function parseScheduledDateTime(dateStr, defaultTime = "06:00:00") {
             const raw = String(dateStr || "").trim();
             if (!raw) return NaN;
@@ -1460,58 +1460,50 @@
             const hasQuestions = examEntry && Array.isArray(examEntry.questions) && examEntry.questions.length > 0;
             const hasExternalUrl = topic.url && topic.url !== "#" && !topic.url.startsWith("#");
 
-            if (!hasQuestions && !hasExternalUrl) {
-                const upcomingRaw = (topic.examDate || topic.examStartDate || "").trim();
-                return {
-                    mode: "gray",
-                    examEntry: null,
-                    scheduledStartText: upcomingRaw ? formatBanglaScheduleDate(upcomingRaw) : ""
-                };
+            const nowMs = Date.now();
+            const centralDateRaw = (topic.examDate || "").trim();
+            const startRaw = (centralDateRaw || topic.examStartDate || (examEntry && (examEntry.examDate || examEntry.examStartDate)) || "").trim();
+            const endRaw = (centralDateRaw || topic.examEndDate || (examEntry && (examEntry.examDate || examEntry.examEndDate)) || "").trim();
+
+            if (startRaw) {
+                const startMs = parseScheduledDateTime(startRaw, "06:00:00");
+                if (!Number.isNaN(startMs) && nowMs < startMs) {
+                    return {
+                        mode: "gray",
+                        examEntry: hasQuestions ? examEntry : null,
+                        scheduledStartText: formatBanglaScheduleDate(startRaw)
+                    };
+                }
+            }
+
+            if (endRaw) {
+                const endMs = parseScheduledDateTime(endRaw, "23:59:59");
+                if (!Number.isNaN(endMs) && nowMs > endMs) {
+                    return {
+                        mode: "archive",
+                        examEntry: hasQuestions ? examEntry : null,
+                        scheduledStartText: ""
+                    };
+                }
             }
 
             if (hasQuestions) {
                 const rawStatus = String(examEntry.status || "").trim().toLowerCase();
-
                 if (rawStatus === "archive") {
                     return { mode: "archive", examEntry, scheduledStartText: "" };
                 }
-
-                const nowMs = Date.now();
-                // index.html-এর কেন্দ্রীয় examDate-কে সর্বোচ্চ অগ্রাধিকার দেওয়া হচ্ছে
-                const centralDateRaw = (topic.examDate || "").trim();
-                const startRaw = (centralDateRaw || topic.examStartDate || examEntry.examDate || examEntry.examStartDate || "").trim();
-                const endRaw = (centralDateRaw || topic.examEndDate || examEntry.examDate || examEntry.examEndDate || "").trim();
-
-                // ১. নির্ধারিত তারিখের সকাল ৬:০০ টার আগে থাকলে অটোমেটিক Soon (Gray) থাকবে
-                if (startRaw) {
-                    const startMs = parseScheduledDateTime(startRaw, "06:00:00");
-                    if (!Number.isNaN(startMs) && nowMs < startMs) {
-                        return {
-                            mode: "gray",
-                            examEntry,
-                            scheduledStartText: formatBanglaScheduleDate(startRaw)
-                        };
-                    }
-                }
-
-                // ২. নির্ধারিত তারিখের রাত ১১:৫৯:৫৯ (23:59:59) পার হয়ে গেলে অটোমেটিক Archive হয়ে যাবে
-                if (endRaw) {
-                    const endMs = parseScheduledDateTime(endRaw, "23:59:59");
-                    if (!Number.isNaN(endMs) && nowMs > endMs) {
-                        return { mode: "archive", examEntry, scheduledStartText: "" };
-                    }
-                }
-
-                // ৩. সকাল ৬:০০ টা থেকে রাত ১১:৫৯:৫৯ পর্যন্ত স্বয়ংক্রিয়ভাবে Live থাকবে
-                const isManuallyStarted = rawStatus === "live" || examEntry.isLive === true || Boolean(startRaw);
-                if (!isManuallyStarted) {
-                    return { mode: "gray", examEntry, scheduledStartText: "" };
-                }
-
                 return { mode: "live", examEntry, scheduledStartText: "" };
             }
 
-            return { mode: "live", examEntry: null, scheduledStartText: "" };
+            if (hasExternalUrl) {
+                return { mode: "live", examEntry: null, scheduledStartText: "" };
+            }
+
+            return {
+                mode: "gray",
+                examEntry: null,
+                scheduledStartText: startRaw ? formatBanglaScheduleDate(startRaw) : ""
+            };
         }
 
         function createTopicButton(subject, topic, styleInfo, isEnglishText = false, customType = null) {
@@ -1562,6 +1554,8 @@
                         openTopicChecklistScreen(subject, topic.title, isEnglishText, state.examEntry, "archive");
                     } else if (topic.url && topic.url !== "#") {
                         window.open(topic.url, "_blank", "noopener,noreferrer");
+                    } else {
+                        showToast(`"${topic.title}" — এই আর্কাইভ টপিকের প্রশ্ন ব্যাংক যুক্ত করা হয়নি।`);
                     }
                 };
                 btn.innerHTML = `
@@ -1586,6 +1580,8 @@
                     openTopicChecklistScreen(subject, topic.title, isEnglishText, state.examEntry, "live");
                 } else if (topic.url && topic.url !== "#" && !topic.url.startsWith("#")) {
                     window.open(topic.url, "_blank", "noopener,noreferrer");
+                } else {
+                    showToast(`"${topic.title}" — এই টপিকের প্রশ্ন ব্যাংক যুক্ত করা হয়নি।`);
                 }
             };
 
