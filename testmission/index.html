@@ -942,6 +942,16 @@
             }
         });
 
+        // প্রতি ৩০ সেকেন্ড পরপর তারিখ-সময় চেক করে স্বয়ংক্রিয়ভাবে Live / Archive অবস্থা আপডেট করা
+        setInterval(() => {
+            if (!dashboardView.classList.contains("hidden")) {
+                renderAllLiveExamsOnDashboard();
+            }
+            if (!subjectDetailView.classList.contains("hidden") && currentSubjectId) {
+                renderSubjectTopics(currentSubjectId, activeTopicFilter);
+            }
+        }, 30000);
+
         function applyConfigBranding() {
             const coverLayer = document.getElementById("cover-image-layer");
             if (coverLayer && SITE_CONFIG.coverImageUrl && SITE_CONFIG.coverImageUrl.trim() !== "") {
@@ -1414,6 +1424,31 @@
             });
         }
 
+        function parseScheduledDateTime(dateStr) {
+            const raw = String(dateStr || "").trim();
+            if (!raw) return NaN;
+            // টাইমজোন না থাকলে বাংলাদেশের স্থানীয় সময় (+06:00) হিসেবে বিবেচনা করা হবে
+            const hasTimezone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(raw);
+            if (!hasTimezone && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?$/.test(raw)) {
+                return Date.parse(`${raw}+06:00`);
+            }
+            return Date.parse(raw);
+        }
+
+        function formatBanglaScheduleDate(dateStr) {
+            const ms = parseScheduledDateTime(dateStr);
+            if (Number.isNaN(ms)) return "";
+            try {
+                return new Date(ms).toLocaleDateString("bn-BD", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                });
+            } catch (e) {
+                return String(dateStr).split("T")[0];
+            }
+        }
+
         function getTopicExamState(topic) {
             const db = window.TOPIC_EXAMS_DB || {};
             const examEntry = db[topic.title];
@@ -1421,33 +1456,50 @@
             const hasExternalUrl = topic.url && topic.url !== "#" && !topic.url.startsWith("#");
 
             if (!hasQuestions && !hasExternalUrl) {
-                return { mode: "gray", examEntry: null };
+                return { mode: "gray", examEntry: null, scheduledStartText: "" };
             }
 
             if (hasQuestions) {
                 const rawStatus = String(examEntry.status || "").trim().toLowerCase();
-                const isManuallyStarted = rawStatus === "live" || examEntry.isLive === true;
-
-                if (!isManuallyStarted && rawStatus !== "archive") {
-                    return { mode: "gray", examEntry };
-                }
 
                 if (rawStatus === "archive") {
-                    return { mode: "archive", examEntry };
+                    return { mode: "archive", examEntry, scheduledStartText: "" };
                 }
 
+                const nowMs = Date.now();
+                const startRaw = (examEntry.examStartDate || topic.examStartDate || "").trim();
                 const endRaw = (examEntry.examEndDate || topic.examEndDate || "").trim();
-                if (endRaw) {
-                    const endMs = Date.parse(endRaw);
-                    if (!Number.isNaN(endMs) && Date.now() > endMs) {
-                        return { mode: "archive", examEntry };
+
+                // ১. নির্ধারিত শুরুর তারিখ ও সময়ের আগে থাকলে অটোমেটিক Soon (Gray) থাকবে
+                if (startRaw) {
+                    const startMs = parseScheduledDateTime(startRaw);
+                    if (!Number.isNaN(startMs) && nowMs < startMs) {
+                        return {
+                            mode: "gray",
+                            examEntry,
+                            scheduledStartText: formatBanglaScheduleDate(startRaw)
+                        };
                     }
                 }
 
-                return { mode: "live", examEntry };
+                // ২. নির্ধারিত শেষ তারিখ ও সময় পার হয়ে গেলে অটোমেটিক Archive হয়ে যাবে
+                if (endRaw) {
+                    const endMs = parseScheduledDateTime(endRaw);
+                    if (!Number.isNaN(endMs) && nowMs > endMs) {
+                        return { mode: "archive", examEntry, scheduledStartText: "" };
+                    }
+                }
+
+                // ৩. নির্ধারিত সময়ের মধ্যে থাকলে এবং status: "live" বা examStartDate দেওয়া থাকলে অটো Live হবে
+                const isManuallyStarted = rawStatus === "live" || examEntry.isLive === true || Boolean(startRaw);
+                if (!isManuallyStarted) {
+                    return { mode: "gray", examEntry, scheduledStartText: "" };
+                }
+
+                return { mode: "live", examEntry, scheduledStartText: "" };
             }
 
-            return { mode: "live", examEntry: null };
+            return { mode: "live", examEntry: null, scheduledStartText: "" };
         }
 
         function createTopicButton(subject, topic, styleInfo, isEnglishText = false, customType = null) {
@@ -1469,7 +1521,11 @@
             if (state.mode === "gray") {
                 btn.className = "w-full py-2 px-2 sm:py-2.5 sm:px-3.5 rounded-xl bg-slate-100/80 border border-slate-200/80 opacity-65 transition-all flex items-center justify-between gap-1.5 sm:gap-2.5 cursor-not-allowed";
                 btn.onclick = () => {
-                    showToast(`"${topic.title}" — পরীক্ষা এখনো লাইভ হয়নি।`);
+                    if (state.scheduledStartText) {
+                        showToast(`"${topic.title}" — পরীক্ষাটি ${state.scheduledStartText} তারিখে লাইভ হবে।`);
+                    } else {
+                        showToast(`"${topic.title}" — পরীক্ষা এখনো লাইভ হয়নি।`);
+                    }
                 };
                 btn.innerHTML = `
                     <span class="flex items-center gap-1.5 sm:gap-2.5 text-left min-w-0">
