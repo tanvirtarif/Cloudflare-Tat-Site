@@ -63,7 +63,7 @@
                 color: #000000 !important;
                 font-size: 11pt;
             }
-            nav, header, footer, #toast-banner, #login-view, #dashboard-view, #subject-detail-view,
+            nav, header, footer, #toast-banner, #maintenance-view, #login-view, #dashboard-view, #subject-detail-view,
             #exam-checklist-view, #exam-live-view, #confirm-submit-modal, #no-print-actions,
             #written-questions-card, #drive-note-card {
                 display: none !important;
@@ -164,8 +164,57 @@
     <!-- ===================================================================== -->
     <main class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 py-7 sm:py-10">
 
+        <!-- VIEW 0: UNDER CONSTRUCTION / MAINTENANCE GATE -->
+        <section id="maintenance-view" class="hidden max-w-md mx-auto animate-view">
+            <div class="bg-white rounded-2xl shadow-lg shadow-slate-200/70 border border-amber-200/90 p-6 sm:p-8 text-center">
+                <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shadow-2xs">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86l-8.48 14.7A1 1 0 002.68 20h16.64a1 1 0 00.87-1.44l-8.48-14.7a1 1 0 00-1.74 0z" />
+                    </svg>
+                </div>
+
+                <span class="inline-flex items-center px-3 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold mb-2">
+                    Under Construction / আপডেট চলছে
+                </span>
+
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-snug">
+                    পোর্টাল সাময়িকভাবে বন্ধ আছে, অনুগ্রহপূর্বক কিছুক্ষণ পর চেষ্টা করুন।
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
+                    নতুন প্রশ্ন ও মডেল টেস্ট যুক্ত করার কাজ চলছে। অ্যাডমিন হলে নিচে নির্ধারিত ইউজারনেইম ও পাসওয়ার্ড দিয়ে প্রবেশ করুন।
+                </p>
+
+                <div id="maint-error-box" class="hidden mt-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm text-left">
+                    <span id="maint-error-text">ভুল অ্যাডমিন ইউজারনেইম অথবা পাসওয়ার্ড!</span>
+                </div>
+
+                <form id="maintenance-login-form" class="mt-5 space-y-3.5 text-left" novalidate>
+                    <div>
+                        <label for="maint-username" class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                            অ্যাডমিন ইউজারনেইম
+                        </label>
+                        <input type="text" id="maint-username" autocomplete="username" placeholder="Username" required
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50/70 focus:bg-white text-slate-900 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/15 focus:border-slate-900 transition">
+                    </div>
+
+                    <div>
+                        <label for="maint-password" class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                            অ্যাডমিন পাসওয়ার্ড
+                        </label>
+                        <input type="password" id="maint-password" autocomplete="current-password" placeholder="Password" required
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50/70 focus:bg-white text-slate-900 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/15 focus:border-slate-900 transition">
+                    </div>
+
+                    <button type="submit"
+                            class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm shadow-sm transition cursor-pointer">
+                        অ্যাডমিন প্রবেশ করুন
+                    </button>
+                </form>
+            </div>
+        </section>
+
         <!-- VIEW 1: LOGIN VIEW -->
-        <section id="login-view" class="max-w-md mx-auto animate-view">
+        <section id="login-view" class="hidden max-w-md mx-auto animate-view">
             <div class="bg-white rounded-2xl shadow-lg shadow-slate-200/70 border border-slate-200/80 p-6 sm:p-8">
                 <div class="text-center mb-6">
                     <div class="w-11 h-11 mx-auto mb-3 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center shadow-sm">
@@ -601,6 +650,14 @@
     <!-- ===================================================================== -->
     <script>
         const SITE_CONFIG = {
+            // সাইট আন্ডার কন্সট্রাকশন বা প্রশ্ন অ্যাড মোড চালু করতে true রাখুন, স্বাভাবিক অবস্থায় false করুন
+            maintenanceMode: true,
+            maintenanceBypass: {
+                username: "AdminTat",
+                password: "admin0099",
+                shortName: "AdminTat"
+            },
+
             coverImageUrl: "",
             sampleTestUrl: "#sample-model-test",
             googleSheetWebAppUrl: "https://script.google.com/macros/s/AKfycbxtr4IwcwADovKD0URrgvIJhrSU57-ItuYiNrnwGjP09k1R8VR7nfeKcMyP29XAIYajZQ/exec",
@@ -894,12 +951,17 @@
 
         const SECONDS_PER_QUESTION = 25;
 
+        const maintenanceView = document.getElementById("maintenance-view");
         const loginView = document.getElementById("login-view");
         const dashboardView = document.getElementById("dashboard-view");
         const subjectDetailView = document.getElementById("subject-detail-view");
         const examChecklistView = document.getElementById("exam-checklist-view");
         const examLiveView = document.getElementById("exam-live-view");
         const examResultView = document.getElementById("exam-result-view");
+
+        const maintenanceLoginForm = document.getElementById("maintenance-login-form");
+        const maintErrorBox = document.getElementById("maint-error-box");
+        const maintErrorText = document.getElementById("maint-error-text");
 
         const loginForm = document.getElementById("login-form");
         const loginErrorBox = document.getElementById("login-error-box");
@@ -922,8 +984,71 @@
             hasSubmitted: false
         };
 
+        function isMaintenanceLocked() {
+            if (!SITE_CONFIG.maintenanceMode) return false;
+            const session = getActiveStudentSession();
+            const bypassUser = (SITE_CONFIG.maintenanceBypass && SITE_CONFIG.maintenanceBypass.username) || "AdminTat";
+            return !(session && session.isLoggedIn && session.username === bypassUser);
+        }
+
+        function showMaintenanceGate(errorMessage = "") {
+            stopActiveExamTimer();
+            hideAllPortalViews();
+            maintenanceView.classList.remove("hidden");
+            if (maintErrorBox && maintErrorText) {
+                if (errorMessage) {
+                    maintErrorText.textContent = errorMessage;
+                    maintErrorBox.classList.remove("hidden");
+                } else {
+                    maintErrorBox.classList.add("hidden");
+                }
+            }
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        if (maintenanceLoginForm) {
+            maintenanceLoginForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const uInput = (document.getElementById("maint-username").value || "").trim();
+                const pInput = (document.getElementById("maint-password").value || "").trim();
+                const bypass = SITE_CONFIG.maintenanceBypass || {
+                    username: "AdminTat",
+                    password: "admin0099",
+                    shortName: "AdminTat"
+                };
+
+                if (uInput === bypass.username && pInput === bypass.password) {
+                    const sessionData = {
+                        isLoggedIn: true,
+                        username: bypass.username,
+                        shortName: bypass.shortName || bypass.username,
+                        loginTime: new Date().toISOString()
+                    };
+                    try {
+                        localStorage.setItem("testmission_auth_session", JSON.stringify(sessionData));
+                        localStorage.setItem("testmission_short_name", sessionData.shortName);
+                        localStorage.setItem("testmission_username", sessionData.username);
+                        sessionStorage.setItem("testmission_auth_session", JSON.stringify(sessionData));
+                        sessionStorage.setItem("testmission_short_name", sessionData.shortName);
+                        sessionStorage.setItem("testmission_username", sessionData.username);
+                    } catch (e) {}
+
+                    if (maintErrorBox) maintErrorBox.classList.add("hidden");
+                    updateStudentDisplays(sessionData.shortName, sessionData.username);
+                    showAllSubjectsDashboard();
+                    showToast(`অ্যাডমিন মোডে স্বাগতম, ${sessionData.shortName}!`);
+                } else {
+                    showMaintenanceGate("ভুল অ্যাডমিন ইউজারনেইম অথবা পাসওয়ার্ড!");
+                }
+            });
+        }
+
         function initializePortalApp() {
             applyConfigBranding();
+            if (isMaintenanceLocked()) {
+                showMaintenanceGate();
+                return;
+            }
             renderSubjectRows();
             renderAllLiveExamsOnDashboard();
             checkLogoutParamOrRestoreSession();
@@ -936,6 +1061,10 @@
         }
 
         window.addEventListener("load", () => {
+            if (isMaintenanceLocked()) {
+                showMaintenanceGate();
+                return;
+            }
             renderAllLiveExamsOnDashboard();
             if (currentSubjectId) {
                 renderSubjectTopics(currentSubjectId, activeTopicFilter);
@@ -943,6 +1072,7 @@
         });
 
         setInterval(() => {
+            if (isMaintenanceLocked()) return;
             if (!dashboardView.classList.contains("hidden")) {
                 renderAllLiveExamsOnDashboard();
             }
@@ -981,6 +1111,7 @@
         }
 
         function hideAllPortalViews() {
+            if (maintenanceView) maintenanceView.classList.add("hidden");
             loginView.classList.add("hidden");
             dashboardView.classList.add("hidden");
             subjectDetailView.classList.add("hidden");
@@ -997,13 +1128,22 @@
         }
 
         function checkLogoutParamOrRestoreSession() {
+            if (isMaintenanceLocked()) {
+                showMaintenanceGate();
+                return;
+            }
+
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get("logout") === "1") {
                 clearAllAuthStorage();
                 try {
                     window.history.replaceState({}, document.title, window.location.pathname);
                 } catch (e) {}
-                showLoginOnly();
+                if (isMaintenanceLocked()) {
+                    showMaintenanceGate();
+                } else {
+                    showLoginOnly();
+                }
                 showToast("সফলভাবে লগআউট সম্পন্ন হয়েছে।");
                 return;
             }
@@ -1017,10 +1157,24 @@
                 } else {
                     showAllSubjectsDashboard();
                 }
+            } else {
+                showLoginOnly();
             }
         }
 
         async function authenticateStudent(username, password) {
+            const bypass = SITE_CONFIG.maintenanceBypass;
+            if (
+                bypass &&
+                String(username).trim() === bypass.username &&
+                String(password).trim() === bypass.password
+            ) {
+                return {
+                    success: true,
+                    shortName: bypass.shortName || bypass.username
+                };
+            }
+
             const sheetApiUrl = (SITE_CONFIG.googleSheetWebAppUrl || "").trim();
 
             if (sheetApiUrl !== "") {
@@ -1179,6 +1333,10 @@
         }
 
         function handleBrandHomeClick() {
+            if (isMaintenanceLocked()) {
+                showMaintenanceGate();
+                return;
+            }
             stopActiveExamTimer();
             const session = getActiveStudentSession();
             if (session) {
@@ -1189,6 +1347,10 @@
         }
 
         function showLoginOnly() {
+            if (isMaintenanceLocked()) {
+                showMaintenanceGate();
+                return;
+            }
             stopActiveExamTimer();
             hideAllPortalViews();
             loginView.classList.remove("hidden");
@@ -1196,6 +1358,10 @@
         }
 
         function showAllSubjectsDashboard() {
+            if (isMaintenanceLocked()) {
+                showMaintenanceGate();
+                return;
+            }
             const session = getActiveStudentSession();
             if (!session) {
                 showLoginOnly();
@@ -1217,11 +1383,19 @@
             clearAllAuthStorage();
             document.getElementById("username").value = "";
             document.getElementById("password").value = "";
+            const mUser = document.getElementById("maint-username");
+            const mPass = document.getElementById("maint-password");
+            if (mUser) mUser.value = "";
+            if (mPass) mPass.value = "";
             loginErrorBox.classList.add("hidden");
             try {
                 window.history.replaceState({}, document.title, window.location.pathname);
             } catch (e) {}
-            showLoginOnly();
+            if (isMaintenanceLocked()) {
+                showMaintenanceGate();
+            } else {
+                showLoginOnly();
+            }
             showToast("সফলভাবে লগআউট সম্পন্ন হয়েছে।");
         }
 
@@ -1604,6 +1778,10 @@
         }
 
         function openSubjectView(subjectId, resetFilter = true) {
+            if (isMaintenanceLocked()) {
+                showMaintenanceGate();
+                return;
+            }
             const session = getActiveStudentSession();
             if (!session) {
                 showLoginOnly();
