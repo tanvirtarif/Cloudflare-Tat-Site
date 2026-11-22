@@ -1,16 +1,14 @@
 // =========================================================================
 // বাংলা ১ম পত্র — প্রশ্ন ব্যাংক (bangla_1st_paper_question_bank.js)
 // নির্দেশনা:
-// ১. সব টপিক অবশ্যই Object.assign(window.TOPIC_EXAMS_DB, { ... }); এর ভেতরে থাকবে।
-// ২. এক টপিক শেষ হলে } এর পর কমা (,) দিয়ে পরের টপিক লিখবেন।
+// ১. টপিকের নাম index.html-এর টপিকের নামের সাথে হুবহু মিলতে হবে।
+// ২. প্রতিটি টপিকে শুধু writtenQuestions (লিখিত) ও questions (MCQ) থাকবে।
+// ৩. পরীক্ষার তারিখ ও Live/Archive স্ট্যাটাস index.html থেকেই নিয়ন্ত্রিত হয়।
 // =========================================================================
 window.TOPIC_EXAMS_DB = window.TOPIC_EXAMS_DB || {};
 
 Object.assign(window.TOPIC_EXAMS_DB, {
     "বিভীষণের প্রতি মেঘনাদ": {
-        status: "live",
-        examEndDate: "2026-11-22T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘নিজগৃহপথ, তাত, দেখাও তস্করে?’ প্রেক্ষাপট ব্যাখ্যা করো।",
@@ -120,9 +118,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "অপরিচিতা": {
-        status: "live",
-        examEndDate: "2026-11-22T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘অপরিচিতা’ গল্পে শম্ভুনাথ সেন কীভাবে তৎকালীন যৌতুকপ্রথার বিরুদ্ধে এক বলিষ্ঠ প্রতিরোধের প্রতীক হয়ে উঠেছেন তা বিশ্লেষণ করো।",
@@ -226,9 +221,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "বাঙ্গালার নব্য লেখকদিগের প্রতি নিবেদন": {
-        status: "live",
-        examEndDate: "2026-11-22T12:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘বাঙ্গালার নব্য লেখকদিগের প্রতি নিবেদন’ প্রবন্ধে বঙ্কিমচন্দ্র চট্টোপাধ্যায় কীভাবে একজন আদর্শ লেখকের মানদণ্ড নির্ধারণ করেছেন তা বিশ্লেষণ করো।",
@@ -338,9 +330,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "ঋতু বর্ণন": {
-        status: "live",
-        examEndDate: "2026-12-31T12:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘ঋতু বর্ণন’ কবিতায় আলাওল কীভাবে প্রকৃতির রূপবৈচিত্র্যের সাথে মানবমনের সম্পর্ক ও প্রভাব ফুটিয়ে তুলেছেন তা বিশ্লেষণ করো।",
@@ -450,9 +439,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "সাহিত্যে খেলা": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. “সাহিত্যের উদ্দেশ্য সকলকে আনন্দ দেওয়া, কারও মনোরঞ্জন করা নয়।” — উক্তিটির তাৎপর্য বিশ্লেষণ করো।",
@@ -660,9 +646,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "সোনার তরী": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. “ঠাঁই নাই, ঠাঁই নাই—ছোটো সে তরী,/ আমারি সোনার ধানে গিয়েছে ভরি।” — পঙ্ক্তিদ্বয়ের তাৎপর্য ব্যাখ্যা করো।",
@@ -870,9 +853,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "বিলাসী": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘বিলাসী’ গল্পে মৃত্যুঞ্জয়ের প্রতি বিলাসীর নিঃস্বার্থ ভালোবাসা ও সেবার স্বরূপ আলোচনা করো।",
@@ -1080,9 +1060,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "বিদ্রোহী": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘বিদ্রোহী’ কবিতায় কাজী নজরুল ইসলামের বিদ্রোহী সত্তার বহুমাত্রিক রূপ বিশ্লেষণ করো।",
@@ -1290,9 +1267,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "অর্ধাঙ্গী": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. “আমি অবরোধ প্রথার বিরুদ্ধে দণ্ডায়মান হই নাই... আমি মানসিক দাসত্বের (enslaved মনের) আলোচনা করিয়াছি।” — উক্তিটির তাৎপর্য বিশ্লেষণ করো।",
@@ -1500,9 +1474,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "সুচেতনা": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘সুচেতনা’ কবিতায় জীবনানন্দ দাশ কীভাবে হতাশা ও অন্ধকারের মাঝেও চেতনা ও আলোর প্রত্যাশা জাগিয়েছেন তা আলোচনা করো।",
@@ -1710,9 +1681,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "যৌবনের গান": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘যৌবনের গান’ প্রবন্ধে কাজী নজরুল ইসলাম কীভাবে ‘যৌবন’ ও ‘বার্ধক্য’-এর মধ্যে পার্থক্য নিরূপণ করেছেন তা আলোচনা করো।",
@@ -1920,9 +1888,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "প্রতিদান": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. “যে মোরে করিছে ঘৃণা, আমি তারে ভালোবাসি”— ‘প্রতিদান’ কবিতার আলোকে এই চরণের গভীর মানবিক তাৎপর্য বিশ্লেষণ করো।",
@@ -2130,9 +2095,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "জীবন ও বৃক্ষ": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘জীবন ও বৃক্ষ’ প্রবন্ধে মোতাহার হোসেন চৌধুরী কীভাবে বৃক্ষের জীবনধর্ম ও মানবজীবনের সাদৃশ্য তুলে ধরেছেন তা আলোচনা করো।",
@@ -2340,9 +2302,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "তাহারেই পড়ে মনে": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘তাহারেই পড়ে মনে’ কবিতায় প্রকৃতির ঋতুপরিবর্তন ও কবির ব্যক্তিগত বিষাদের দ্বন্দ্ব কীভাবে ফুটে উঠেছে তা আলোচনা করো।",
@@ -2550,9 +2509,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "গন্তব্য কাবুল": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘গন্তব্য কাবুল’ রচনায় সৈয়দ মুজতবা আলীর ভ্রমণ-অভিজ্ঞতা ও রসাত্মক জীবনবোধ কীভাবে ফুটে উঠেছে তা আলোচনা করো।",
@@ -2760,9 +2716,6 @@ Object.assign(window.TOPIC_EXAMS_DB, {
     },
 
     "পদ্মা": {
-        status: "live",
-        examEndDate: "2026-12-31T23:59:59",
-        driveChecklistPdfUrl: "",
         writtenQuestions: [
             {
                 question: "১. ‘পদ্মা’ রচনায় কাজী নজরুল ইসলাম কীভাবে পদ্মা নদীর প্রমত্ততা, সৌন্দর্য ও জীবনশক্তিকে তুলে ধরেছেন তা আলোচনা করো।",
