@@ -115,4 +115,4 @@ Object.assign(window.TOPIC_EXAMS_DB, {
             }
         ]
     }
-}):
+});
