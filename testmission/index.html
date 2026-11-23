@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <title>TestMission — ঢাবি 'খ' ইউনিট মডেল টেস্ট</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        bengali: ['"Noto Serif Bengali"', '"Plus Jakarta Sans"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', '"Noto Serif Bengali"', 'sans-serif'],
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        body { font-family: 'Noto Serif Bengali', 'Plus Jakarta Sans', serif; background-color: #f8fafc; color: #0f172a; -webkit-tap-highlight-color: transparent; }
+        .academic-pattern { background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 20px 20px; }
+        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-view { animation: fadeSlideIn 0.28s ease-out both; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { scrollbar-width: none; }
+
+        /* ইনপুট */
+        .inp { width: 100%; padding: .6rem .85rem; border-radius: .75rem; border: 1px solid #cbd5e1; background: #fff; font-size: .875rem; color: #0f172a; transition: box-shadow .15s, border-color .15s; }
+        .inp:focus { outline: none; border-color: #0f172a; box-shadow: 0 0 0 3px rgba(15,23,42,.12); }
+        textarea.inp { line-height: 1.6; resize: vertical; }
+
+        /* MCQ অপশন */
+        .opt { width: 100%; display: flex; align-items: flex-start; gap: .65rem; text-align: left; padding: .7rem .85rem; border: 1px solid #e2e8f0; border-radius: .8rem; background: #fff; font-size: .9rem; line-height: 1.55; transition: background .15s, border-color .15s; cursor: pointer; }
+        .opt:hover { background: #f8fafc; border-color: #94a3b8; }
+        .opt .opt-letter { flex-shrink: 0; width: 1.6rem; height: 1.6rem; border-radius: 999px; display: grid; place-items: center; font-weight: 700; font-size: .8rem; background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
+        .opt.sel { background: #fef9c3; border-color: #eab308; color: #713f12; font-weight: 700; }
+        .opt.sel .opt-letter { background: #eab308; color: #fff; border-color: #eab308; }
+        .opt.locked { cursor: not-allowed; opacity: .6; }
+        .opt.locked:hover { background: #fff; border-color: #e2e8f0; }
+        .opt.sel.locked { opacity: 1; }
+        .timer-warn { animation: pulse 1s ease-in-out infinite; background: #e11d48 !important; color: #fff !important; border-color: #e11d48 !important; }
+        @keyframes pulse { 50% { opacity: .65; } }
+
+        @media print {
+            body { background: #fff !important; color: #000 !important; font-size: 11pt; }
+            nav, header, footer, .no-print, #toast, #modal { display: none !important; }
+            main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+            .print-score-box { background: #fff !important; color: #0f172a !important; border: 2px solid #0f172a !important; }
+            .print-score-box * { color: #0f172a !important; }
+            .print-opt-correct { background-color: #dcfce7 !important; border-color: #86efac !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .print-opt-wrong { background-color: #fee2e2 !important; border-color: #fca5a5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .print-q-card { page-break-inside: avoid; }
+            #result-body, #result-body * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #result-body .rq-card.hidden { display: block !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-200 selection:text-slate-900">
+
+    <!-- ============================ NAVBAR ============================ -->
+    <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+            <button type="button" onclick="goHome()" class="flex items-center gap-2 text-slate-900 font-sans font-bold text-xs sm:text-sm tracking-tight cursor-pointer">
+                <span class="w-7 h-7 rounded-lg bg-slate-900 text-amber-400 flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+                </span>
+                <span id="nav-brand-text">B Unit Model Test Portal</span>
+            </button>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+            <button type="button" id="nav-back" onclick="navBack()"
+               class="hidden inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-white bg-slate-900 hover:bg-slate-700 ring-2 ring-amber-400 px-3 sm:px-3.5 py-1.5 rounded-full shadow-sm transition cursor-pointer">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                <span class="font-bengali">ফিরে যান</span>
+            </button>
+            <button type="button" id="nav-logout" onclick="logout()"
+               class="hidden inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-rose-700 hover:text-white bg-rose-50 hover:bg-rose-600 border-2 border-rose-300 hover:border-rose-600 px-2.5 sm:px-3 py-1 rounded-full transition cursor-pointer">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                <span>লগআউট</span>
+            </button>
+            <a id="nav-telegram" href="#" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-1.5 font-sans text-xs font-semibold text-sky-700 hover:text-white bg-sky-50 hover:bg-sky-600 border border-sky-200 hover:border-sky-600 px-3 py-1.5 rounded-full transition">
+                <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                <span id="nav-tg-text"><span class="hidden sm:inline">TestMission Telegram</span><span class="sm:hidden">Telegram</span></span>
+            </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================ HERO ============================ -->
+    <header id="hero" class="relative w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
+        <div class="absolute inset-0 academic-pattern"></div>
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 text-center">
+            <h1 class="tracking-tight">
+                <span class="block font-sans text-2xl sm:text-3xl md:text-4xl font-extrabold text-amber-400 tracking-wide">TestMission</span>
+                <span class="block mt-1.5 text-lg sm:text-2xl md:text-3xl font-bold leading-snug">ঢাবি 'খ' ইউনিট মডেল টেস্ট</span>
+                <span class="block mt-1 text-xs sm:text-sm font-medium text-slate-300">(কলা, আইন ও সামাজিক বিজ্ঞান ইউনিট)</span>
+            </h1>
+            <p class="mt-2.5 font-sans text-xs sm:text-sm font-semibold text-amber-300/95">(ProjectConsistency X Finishers)</p>
+        </div>
+        <div class="relative h-1 w-full bg-gradient-to-r from-slate-900 via-amber-400 to-slate-900"></div>
+    </header>
+
+    <main class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-9">
+
+        <!-- LOADING -->
+        <section id="v-loading" class="max-w-md mx-auto animate-view">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 text-center">
+                <div id="loading-spinner" class="w-9 h-9 mx-auto mb-3 rounded-full border-4 border-slate-200 border-t-amber-500 animate-spin"></div>
+                <p id="loading-text" class="text-sm font-semibold text-slate-700 leading-relaxed">পোর্টাল লোড হচ্ছে...</p>
+                <button type="button" id="loading-retry" onclick="init()" class="hidden mt-4 py-2.5 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm cursor-pointer">আবার চেষ্টা করুন</button>
+            </div>
+        </section>
+
+        <!-- MAINTENANCE -->
+        <section id="v-maint" class="hidden max-w-md mx-auto animate-view">
+            <div class="bg-white rounded-2xl shadow-lg shadow-slate-200/70 border border-amber-200 p-6 sm:p-8 text-center">
+                <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86l-8.48 14.7A1 1 0 002.68 20h16.64a1 1 0 00.87-1.44l-8.48-14.7a1 1 0 00-1.74 0z"/></svg>
+                </div>
+                <span class="inline-flex px-3 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold mb-2">আপডেট চলছে</span>
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-snug">পোর্টাল সাময়িকভাবে বন্ধ আছে, অনুগ্রহপূর্বক কিছুক্ষণ পর চেষ্টা করুন।</h2>
+                <p class="text-xs sm:text-sm text-slate-500 mt-2">পোর্টাল আপডেটের কাজ চলছে। সাময়িক অসুবিধার জন্য আন্তরিকভাবে দুঃখিত!</p>
+
+                <details class="mt-5 text-left group">
+                    <summary class="text-xs font-semibold text-slate-500 hover:text-slate-800 cursor-pointer list-none text-center">🔐 অ্যাডমিন লগইন</summary>
+                    <div id="maint-error" class="hidden mt-3 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm"></div>
+                    <form id="maint-form" class="mt-3 space-y-3" novalidate>
+                        <input type="text" id="maint-username" autocomplete="username" placeholder="Username" class="inp font-sans">
+                        <input type="password" id="maint-password" autocomplete="current-password" placeholder="Password" class="inp font-sans">
+                        <button type="submit" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm cursor-pointer">লগইন করুন</button>
+                    </form>
+                </details>
+            </div>
+        </section>
+
+        <!-- LOGIN -->
+        <section id="v-login" class="hidden max-w-md mx-auto animate-view">
+            <div class="bg-white rounded-2xl shadow-lg shadow-slate-200/70 border border-slate-200 p-6 sm:p-8">
+                <div class="text-center mb-6">
+                    <div class="w-11 h-11 mx-auto mb-3 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold">পরীক্ষার্থী লগইন</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">মডেল টেস্ট প্যানেলে প্রবেশ করতে ইউজারনেইম ও পাসওয়ার্ড দিন</p>
+                </div>
+                <div id="login-error" class="hidden mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm"></div>
+                <form id="login-form" class="space-y-4" novalidate>
+                    <div>
+                        <label for="username" class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">ইউজারনেইম (Username)</label>
+                        <input type="text" id="username" autocomplete="username" autocapitalize="off" placeholder="যেমন: 21_Abdullah" class="inp font-sans">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">পাসওয়ার্ড (Password)</label>
+                        <div class="relative">
+                            <input type="password" id="password" autocomplete="current-password" placeholder="যেমন: 13194" class="inp font-sans pr-11">
+                            <button type="button" onclick="togglePw()" aria-label="Show password" class="absolute inset-y-0 right-0 px-3.5 text-slate-500 hover:text-slate-800 cursor-pointer">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" id="login-btn" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.99] text-white font-semibold text-sm sm:text-base transition flex items-center justify-center gap-2 cursor-pointer">
+                        <span>লগইন করুন</span>
+                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </button>
+                </form>
+                <div class="relative my-5">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+                    <div class="relative flex justify-center text-xs"><span class="px-2.5 bg-white text-slate-400 text-center">মডেল টেস্ট ব্যাচে যুক্ত হতে নিচের বাটনে ক্লিক করুন</span></div>
+                </div>
+                <a id="join-batch" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-950 font-semibold text-sm sm:text-base transition flex items-center justify-center gap-2">
+                    <span>📝</span><span>মডেল টেস্ট ব্যাচে যুক্ত হোন</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- DASHBOARD -->
+        <section id="v-dash" class="hidden animate-view">
+            <div id="dash-head" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5 mb-5 flex flex-wrap items-center justify-between gap-3"></div>
+            <div id="dash-live"></div>
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm sm:text-base font-bold text-slate-800">📚 বিষয়সমূহ</h3>
+                <span class="text-[11px] sm:text-xs text-slate-500">যেকোনো বিষয়ে ক্লিক করে টপিক দেখুন</span>
+            </div>
+            <div id="dash-subjects" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </section>
+
+        <!-- SUBJECT DETAIL -->
+        <section id="v-subject" class="hidden animate-view">
+            <div id="subj-head" class="mb-5"></div>
+            <div id="subj-filters" class="flex gap-2 overflow-x-auto no-scrollbar pb-1 mb-5"></div>
+            <div id="subj-topics"></div>
+        </section>
+
+        <!-- PRE-EXAM CHECKLIST -->
+        <section id="v-check" class="hidden max-w-3xl mx-auto animate-view">
+            <div id="check-body" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-8"></div>
+        </section>
+
+        <!-- LIVE EXAM -->
+        <section id="v-exam" class="hidden max-w-3xl mx-auto">
+            <div class="sticky top-[53px] z-20 -mx-4 sm:mx-0 mb-5">
+                <div class="bg-white/95 backdrop-blur-md sm:rounded-xl shadow-sm border-y sm:border border-slate-200 px-4 py-2.5">
+                    <div class="flex items-center justify-between gap-2.5">
+                        <div class="min-w-0">
+                            <div id="exam-title" class="text-xs sm:text-sm font-bold text-slate-900 truncate"></div>
+                            <div id="exam-sub" class="text-[11px] text-slate-500 truncate"></div>
+                        </div>
+                        <div id="exam-timer" class="font-sans text-base sm:text-lg font-extrabold text-rose-600 bg-rose-50 px-3 py-1 rounded-lg border border-rose-200 tabular-nums shrink-0">00:00</div>
+                        <button type="button" onclick="askSubmit()" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm cursor-pointer shrink-0">সাবমিট</button>
+                    </div>
+                    <div class="mt-2 flex items-center gap-2">
+                        <div class="flex-1 h-1.5 rounded-full bg-slate-200 overflow-hidden"><div id="exam-progress-bar" class="h-full bg-emerald-500 transition-all" style="width:0%"></div></div>
+                        <span id="exam-progress-text" class="font-sans text-[11px] font-semibold text-slate-600 tabular-nums">0/0</span>
+                    </div>
+                </div>
+            </div>
+            <div id="exam-retry" class="hidden mb-4 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm font-semibold">
+                ⚠️ সংযোগ সমস্যার কারণে উত্তরপত্র জমা হয়নি। আপনার উত্তরগুলো সংরক্ষিত আছে — ইন্টারনেট দেখে আবার “সাবমিট” চাপুন।
+            </div>
+            <div id="exam-questions"></div>
+            <button type="button" onclick="askSubmit()" class="w-full mt-4 mb-10 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:opacity-95 text-white font-bold text-sm sm:text-base shadow-md shadow-emerald-600/25 cursor-pointer">✅ সাবমিট করুন</button>
+        </section>
+
+        <!-- RESULT -->
+        <section id="v-result" class="hidden max-w-3xl mx-auto animate-view">
+            <div id="result-body" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-8 text-center"></div>
+        </section>
+
+        <!-- ADMIN PANEL -->
+        <section id="v-admin" class="hidden animate-view">
+            <div id="admin-head" class="bg-slate-900 text-white rounded-2xl p-4 sm:p-5 mb-4 flex flex-wrap items-center justify-between gap-3"></div>
+            <div id="admin-tabs" class="flex gap-1.5 overflow-x-auto no-scrollbar bg-white border border-slate-200 rounded-2xl p-1.5 mb-5"></div>
+            <div id="admin-body"></div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 mt-auto">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div>
+                <p class="text-xs sm:text-sm font-semibold text-slate-800">TestMission — ঢাবি 'খ' ইউনিট ভর্তি প্রস্তুতি</p>
+                <p class="font-sans text-[11px] text-slate-500 mt-0.5">©TanvirTarif | ProjectConsistency X Finishers</p>
+            </div>
+            <a id="footer-contact" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold">
+                <span class="text-amber-400">✈</span><span>যোগাযোগ (Telegram)</span>
+            </a>
+        </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div id="modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px]" onclick="closeModal(true)"></div>
+        <div id="modal-panel" class="relative w-full sm:max-w-lg bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl max-h-[92vh] overflow-y-auto animate-view">
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-[60] max-w-sm w-[92%] bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 text-xs sm:text-sm flex items-center gap-2.5">
+        <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
+        <span id="toast-msg"></span>
+    </div>
+
+<script>
+/* =====================================================================
+ *  CONFIG — শুধু এই অংশটুকু বদলাবেন
+ * ===================================================================== */
+const CONFIG = {
+    // Apps Script ডিপ্লয় করার পর পাওয়া Web App URL (…/exec দিয়ে শেষ)
+    apiUrl: "https://script.google.com/macros/s/AKfycbzogFC2qzfhTB9h9lN4ZJuyAavzYK1rGv69Xned1mTddsZ1-jxUPyFgsdJQj8YpHRkQvA/exec",
+
+    telegramChannelUrl: "https://t.me/testmission247",
+    contactUrl: "https://t.me/tanvirtarif1",
+    joinBatchUrl: "https://t.me/testmission247"
+};
+
+/* ===================================================================== */
+
+const SESSION_KEY = "tm_session_v3";
+const DRAFT_KEY = "tm_draft_v3";
+const REFRESH_MS = 3 * 60 * 1000;
+const VIEWS = ["v-loading", "v-maint", "v-login", "v-dash", "v-subject", "v-check", "v-exam", "v-result", "v-admin"];
+
+const S = { settings: {}, maintenance: false, user: null, subjects: [], topics: [], fetchedAt: 0, subjectId: null, filter: "all", refreshing: false };
+let PENDING = null;   // চেকলিস্ট পেজে নির্বাচিত টপিক
+let EX = null;        // চলমান পরীক্ষা
+let timerHandle = null;
+let memSession = null;
+let toastTimer = null;
+
+/* --------------------------- ছোট হেল্পার --------------------------- */
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = (s) => esc(s).replace(/\n/g, "<br>");
+const BN = "০১২৩৪৫৬৭৮৯";
+const bn = (x) => String(x).replace(/\d/g, (d) => BN[d]);
+const hasBn = (s) => /[ঀ-৿]/.test(s || "");
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const num2 = (n) => Number(n || 0).toFixed(2).replace(/\.00$/, "");
+
+function durLabel(sec) {
+    sec = Math.max(0, Math.round(sec || 0));
+    const m = Math.floor(sec / 60), s = sec % 60;
+    if (!m) return `${bn(s)} সেকেন্ড`;
+    return s ? `${bn(m)} মিনিট ${bn(s)} সেকেন্ড` : `${bn(m)} মিনিট`;
+}
+function fmtDateTime(ms) {
+    try { return new Date(ms).toLocaleString("bn-BD", { day: "numeric", month: "long", hour: "numeric", minute: "2-digit", timeZone: "Asia/Dhaka" }); }
+    catch (e) { return new Date(ms).toLocaleString(); }
+}
+function mmss(t) { return `${String(Math.floor(t / 60)).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`; }
+
+const COLORS = {
+    rose:    { chip: "bg-rose-50 text-rose-700 border-rose-200",       dot: "bg-rose-500",    label: "গোলাপি" },
+    orange:  { chip: "bg-orange-50 text-orange-700 border-orange-200", dot: "bg-orange-500",  label: "কমলা" },
+    amber:   { chip: "bg-amber-50 text-amber-800 border-amber-200",    dot: "bg-amber-500",   label: "হলুদ" },
+    emerald: { chip: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500", label: "সবুজ" },
+    teal:    { chip: "bg-teal-50 text-teal-700 border-teal-200",       dot: "bg-teal-500",    label: "টিল" },
+    sky:     { chip: "bg-sky-50 text-sky-700 border-sky-200",          dot: "bg-sky-500",     label: "আকাশি" },
+    indigo:  { chip: "bg-indigo-50 text-indigo-700 border-indigo-200", dot: "bg-indigo-500",  label: "নীল" },
+    violet:  { chip: "bg-violet-50 text-violet-700 border-violet-200", dot: "bg-violet-500",  label: "বেগুনি" },
+    slate:   { chip: "bg-slate-100 text-slate-700 border-slate-200",   dot: "bg-slate-500",   label: "ধূসর" }
+};
+const color = (c) => COLORS[c] || COLORS.slate;
+const BOOK_SVG = `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>`;
+
+const MODE = {
+    live:    { label: "Live",     bn: "চলমান", pill: "bg-emerald-600 text-white", card: "bg-white border-emerald-200 hover:border-emerald-400 hover:bg-emerald-50/40" },
+    archive: { label: "Archive",  bn: "বিগত",  pill: "bg-amber-600 text-white",   card: "bg-amber-50/40 border-amber-200 hover:border-amber-400 hover:bg-amber-50" },
+    coming:  { label: "আসন্ন",    bn: "আসন্ন", pill: "bg-slate-200 text-slate-600", card: "bg-slate-50 border-slate-200 opacity-75" },
+    hidden:  { label: "Hidden",   bn: "লুকানো", pill: "bg-slate-700 text-white",  card: "bg-white border-dashed border-slate-300 opacity-75" }
+};
+
+/* --------------------------- সেশন --------------------------- */
+function getSession() {
+    try { const s = JSON.parse(localStorage.getItem(SESSION_KEY) || "null"); if (s && s.token) return s; } catch (e) {}
+    return memSession;
+}
+function saveSession(s) { memSession = s; try { localStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) {} }
+function clearSession() { memSession = null; S.user = null; try { localStorage.removeItem(SESSION_KEY); } catch (e) {} }
+
+/* --------------------------- API --------------------------- */
+async function api(action, data = {}) {
+    const s = getSession();
+    const res = await fetch(CONFIG.apiUrl, {
+        method: "POST",
+        redirect: "follow",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(Object.assign({ action, token: s ? s.token : "" }, data))
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
+}
+
+/* --------------------------- ভিউ --------------------------- */
+function show(id) {
+    VIEWS.forEach((v) => $(v).classList.toggle("hidden", v !== id));
+    document.body.dataset.view = id;
+    $("hero").classList.toggle("hidden", ["v-exam", "v-admin", "v-result", "v-check"].includes(id));
+    updateNav(id);
+    window.scrollTo({ top: 0 });
+}
+const currentView = () => document.body.dataset.view;
+
+/** উপরের বারে "ফিরে যান" ও "লগআউট" বাটন দেখানো/লুকানো */
+function updateNav(id) {
+    const inApp = !!S.user && !["v-login", "v-maint", "v-loading"].includes(id);
+    $("nav-logout").classList.toggle("hidden", !inApp);
+    $("nav-back").classList.toggle("hidden", !(inApp && ["v-subject", "v-check", "v-exam", "v-result", "v-admin"].includes(id)));
+    $("nav-brand-text").classList.toggle("max-sm:hidden", inApp);
+    $("nav-tg-text").classList.toggle("max-sm:hidden", inApp);
+}
+
+/* --------------------------- ব্রাউজারের Back বাটন (History) --------------------------- */
+let CUR = null;      // বর্তমান history state
+let START_SUBJECT = new URLSearchParams(location.search).get("subject");
+let NAV = "push";    // push | replace | none
+const stateUrl = (st) => st.v === "subject" ? `?subject=${encodeURIComponent(st.id)}` : location.pathname;
+const sameState = (a, b) => !!(a && b && a.v === b.v && a.id === b.id && a.topicId === b.topicId && !a.base === !b.base);
+
+function pushNav(st) {
+    if (NAV === "none") return;
+    try {
+        if (NAV === "replace") {
+            st.d = CUR ? CUR.d : 1;
+            history.replaceState(st, "", stateUrl(st));
+        } else {
+            if (sameState(CUR, st)) return;
+            st.d = (CUR ? CUR.d : 0) + 1;
+            history.pushState(st, "", stateUrl(st));
+        }
+        CUR = st;
+    } catch (e) {}
+}
+function withNav(mode, fn) { const prev = NAV; NAV = mode; try { return fn(); } finally { NAV = prev; } }
+function goBack(fallback) { if (CUR && CUR.d > 1) history.back(); else fallback(); }
+
+function leaveExam() {
+    stopTimer();
+    clearDraft();
+    const sid = EX && EX.subject && EX.subject.id;
+    EX = null;
+    withNav("replace", () => (sid && subjectById(sid) ? openSubject(sid, false) : showDashboard()));
+}
+
+/** উপরের "ফিরে যান" বাটন */
+async function navBack() {
+    const v = currentView();
+    if (v === "v-exam" && EX && !EX.submitted) {
+        if (await confirmBox("পরীক্ষা চলছে। এখন বের হলে উত্তরগুলো জমা হবে না। তবুও বের হবেন?", { okText: "বের হব", danger: true })) leaveExam();
+        return;
+    }
+    const fallback = {
+        "v-check": () => openSubject(PENDING.subject.id, false),
+        "v-result": () => (EX && subjectById(EX.subject.id) ? openSubject(EX.subject.id, false) : showDashboard())
+    }[v] || showDashboard;
+    goBack(fallback);
+}
+
+window.addEventListener("popstate", async (e) => {
+    if (!S.user) { try { history.replaceState(null, "", location.pathname); } catch (x) {} return; }
+    const st = e.state || { v: "dash", base: true, d: 0 };
+    if (!$("modal").classList.contains("hidden")) {           // মডাল খোলা থাকলে শুধু মডাল বন্ধ
+        history.pushState(CUR, "", stateUrl(CUR));
+        if (!modalLocked) closeModal();
+        return;
+    }
+    if (isExamRunning()) {                                     // পরীক্ষা চলাকালে নিশ্চিত হয়ে নেওয়া
+        history.pushState(CUR, "", stateUrl(CUR));
+        if (await confirmBox("পরীক্ষা চলছে। এখন বের হলে উত্তরগুলো জমা হবে না। তবুও বের হবেন?", { okText: "বের হব", danger: true })) leaveExam();
+        return;
+    }
+    CUR = st;
+    withNav("none", () => {
+        if (st.v === "dash") {
+            if (st.base && currentView() === "v-dash") return showToast("সাইট থেকে বের হতে আবার Back চাপুন", 2500);
+            showDashboard();
+            if (st.base) { CUR = { v: "dash", d: 1 }; history.pushState(CUR, "", location.pathname); }
+        } else if (st.v === "subject") subjectById(st.id) ? openSubject(st.id, false) : showDashboard();
+        else if (st.v === "check") { const t = topicById(st.topicId); t ? openCheck(t, st.mode) : showDashboard(); }
+        else if (st.v === "exam" || st.v === "result") { EX && EX.submitted ? show("v-result") : showDashboard(); }
+        else if (st.v === "admin" && S.user.isAdmin) openAdmin(st.tab);
+        else showDashboard();
+    });
+});
+
+function showLoading(msg, retry = false) {
+    $("loading-text").textContent = msg || "লোড হচ্ছে...";
+    $("loading-spinner").classList.toggle("hidden", !!retry);
+    $("loading-retry").classList.toggle("hidden", !retry);
+    show("v-loading");
+}
+function showMaint(err = "") {
+    stopTimer();
+    $("maint-error").textContent = err;
+    $("maint-error").classList.toggle("hidden", !err);
+    show("v-maint");
+}
+function showLogin(err = "") {
+    if (S.maintenance) return showMaint();
+    stopTimer();
+    $("login-error").textContent = err;
+    $("login-error").classList.toggle("hidden", !err);
+    show("v-login");
+}
+
+function showToast(msg, ms = 3500) {
+    $("toast-msg").textContent = msg;
+    $("toast").classList.remove("hidden");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => $("toast").classList.add("hidden"), ms);
+}
+
+/* --------------------------- শুরু --------------------------- */
+async function init() {
+    $("nav-telegram").href = CONFIG.telegramChannelUrl || "#";
+    $("footer-contact").href = CONFIG.contactUrl || "#";
+    $("join-batch").href = CONFIG.joinBatchUrl || "#";
+
+    if (!CONFIG.apiUrl || CONFIG.apiUrl.indexOf("PASTE_") === 0) {
+        showLoading("সাইট এখনো কনফিগার করা হয়নি: index.html ফাইলের CONFIG.apiUrl-এ Apps Script Web App লিংক বসান।", true);
+        return;
+    }
+    showLoading("পোর্টাল লোড হচ্ছে...");
+    try {
+        await sync(true);
+    } catch (e) {
+        showLoading("সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।", true);
+    }
+}
+
+/** সার্ভার থেকে সেটিংস + বিষয় + টপিক এনে প্রয়োজনমতো পেজ দেখায় */
+async function sync(navigate) {
+    const d = await api("bootstrap");
+    if (!d || !d.version) {
+        showLoading("API সঠিকভাবে সাড়া দিচ্ছে না। Code.gs ডিপ্লয় হয়েছে কিনা ও apiUrl ঠিক আছে কিনা যাচাই করুন।", true);
+        return false;
+    }
+    S.settings = d.settings || {};
+    S.maintenance = !!d.maintenance;
+    if (d.loggedIn) {
+        S.user = d.user;
+        S.subjects = d.subjects || [];
+        S.topics = d.topics || [];
+        S.fetchedAt = Date.now();
+        const s = getSession();
+        if (s) saveSession(Object.assign(s, { username: d.user.username, name: d.user.name, isAdmin: d.user.isAdmin }));
+        if (navigate) routeAfterLogin();
+        return true;
+    }
+    if (!d.sessionValid && getSession()) clearSession();
+    S.user = null;
+    if (navigate || ["v-dash", "v-subject", "v-admin"].includes(currentView())) {
+        d.maintenance ? showMaint() : showLogin();
+    }
+    return false;
+}
+
+function routeAfterLogin() {
+    CUR = { v: "dash", base: true, d: 0 };
+    try { history.replaceState(CUR, "", location.pathname + location.search); } catch (e) {}
+    if (resumeDraft()) return;
+    const sid = START_SUBJECT;
+    START_SUBJECT = null;   // শুধু প্রথমবার পেজ খোলার সময় ?subject= মানা হবে
+    if (sid && S.subjects.some((s) => s.id === sid)) openSubject(sid);
+    else showDashboard();
+}
+
+async function refreshIfStale(force = false) {
+    if (S.refreshing || !S.user) return;
+    if (!force && Date.now() - S.fetchedAt < REFRESH_MS) return;
+    S.refreshing = true;
+    try {
+        const ok = await sync(false);
+        if (ok) {
+            if (currentView() === "v-dash") renderDashboard();
+            if (currentView() === "v-subject") renderSubject();
+        }
+    } catch (e) { /* নেটওয়ার্ক সমস্যা হলে আগের তালিকাই থাকবে */ }
+    finally { S.refreshing = false; }
+}
+setInterval(() => { if (["v-dash", "v-subject"].includes(currentView())) refreshIfStale(false); }, 60000);
+document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && ["v-dash", "v-subject"].includes(currentView())) refreshIfStale(false);
+});
+
+/* --------------------------- লগইন / লগআউট --------------------------- */
+async function doLogin(username, password) {
+    const d = await api("login", { username, password });
+    if (d.success && d.token) {
+        saveSession({ token: d.token, username: d.username, name: d.name, isAdmin: !!d.isAdmin });
+        showLoading("লোড হচ্ছে...");
+        await sync(true);
+        showToast(d.isAdmin ? `অ্যাডমিন মোডে স্বাগতম, ${d.name}!` : `স্বাগতম, ${d.name}!`);
+    }
+    return d;
+}
+
+$("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const u = $("username").value.trim(), p = $("password").value.trim();
+    if (!u || !p) return showLogin("অনুগ্রহ করে ইউজারনেইম এবং পাসওয়ার্ড দিন।");
+    const btn = $("login-btn"), html = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = "<span>যাচাই করা হচ্ছে...</span>";
+    try {
+        const d = await doLogin(u, p);
+        if (!d.success) {
+            if (d.maintenance) { S.maintenance = true; showMaint(); }
+            else showLogin(d.message || "ভুল ইউজারনেইম অথবা পাসওয়ার্ড!");
+        }
+    } catch (err) {
+        showLogin("সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি! আবার চেষ্টা করুন।");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = html;
+    }
+});
+
+$("maint-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const u = $("maint-username").value.trim(), p = $("maint-password").value.trim();
+    if (!u || !p) return showMaint("ইউজারনেইম ও পাসওয়ার্ড দিন।");
+    const btn = e.target.querySelector("button");
+    btn.disabled = true;
+    try {
+        const d = await doLogin(u, p);
+        if (!d.success) showMaint(d.message || "ভুল ইউজারনেইম অথবা পাসওয়ার্ড!");
+    } catch (err) {
+        showMaint("সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি!");
+    } finally {
+        btn.disabled = false;
+    }
+});
+
+function togglePw() { const i = $("password"); i.type = i.type === "password" ? "text" : "password"; }
+
+async function logout() {
+    if (isExamRunning() && !(await confirmBox("পরীক্ষা চলছে। লগআউট করলে উত্তরগুলো জমা হবে না। তবুও লগআউট করবেন?", { okText: "লগআউট", danger: true }))) return;
+    stopTimer();
+    api("logout").catch(() => {});
+    clearSession();
+    clearDraft();
+    EX = null;
+    ["username", "password", "maint-username", "maint-password"].forEach((id) => { $(id).value = ""; });
+    CUR = null;
+    try { history.replaceState(null, "", location.pathname); } catch (e) {}
+    S.maintenance ? showMaint() : showLogin();
+    showToast("সফলভাবে লগআউট সম্পন্ন হয়েছে।");
+}
+
+function authExpired(msg) {
+    stopTimer();
+    clearSession();
+    showLogin(msg || "সেশনের মেয়াদ শেষ, আবার লগইন করুন।");
+}
+
+async function goHome() {
+    if (isExamRunning()) {
+        if (!(await confirmBox("পরীক্ষা চলছে। এখন বের হলে উত্তরগুলো জমা হবে না। তবুও বের হবেন?", { okText: "বের হব", danger: true }))) return;
+        leaveExam();
+    }
+    if (S.user) showDashboard();
+    else if (S.maintenance) showMaint();
+    else if (currentView() !== "v-loading") showLogin();
+}
+
+/* --------------------------- ড্যাশবোর্ড --------------------------- */
+const subjectById = (id) => S.subjects.find((s) => s.id === id);
+const topicById = (id) => S.topics.find((t) => t.id === id);
+const topicsOf = (sid) => S.topics.filter((t) => t.subjectId === sid);
+
+function userBar(extraBtn = "") {
+    const u = S.user;
+    return `
+        <div class="flex items-center gap-3 min-w-0">
+            <div class="w-11 h-11 rounded-xl bg-slate-900 text-amber-400 grid place-items-center font-sans font-extrabold text-lg shrink-0">${esc((u.name || "?").trim().charAt(0).toUpperCase())}</div>
+            <div class="min-w-0">
+                <p class="text-[11px] text-slate-500">স্বাগতম,</p>
+                <h2 class="font-sans text-sm sm:text-base font-bold text-slate-900 truncate">${esc(u.name)}</h2>
+                <p class="font-sans text-[11px] text-slate-500">ID: ${esc(u.username)}${u.isAdmin ? ' · <span class="text-amber-600 font-bold">Admin</span>' : ""}</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+            ${extraBtn}
+            ${u.isAdmin ? `<button type="button" onclick="openAdmin()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 text-xs font-bold cursor-pointer">⚙️ অ্যাডমিন প্যানেল</button>` : ""}
+            <button type="button" onclick="logout()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-sm shadow-rose-600/25 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>লগআউট</button>
+        </div>`;
+}
+
+function showDashboard() {
+    if (!S.user) return showLogin();
+    stopTimer();
+    renderDashboard();
+    show("v-dash");
+    pushNav({ v: "dash" });
+    refreshIfStale(false);
+}
+
+function renderDashboard() {
+    $("dash-head").innerHTML = userBar();
+
+    const live = S.topics.filter((t) => t.mode === "live");
+    $("dash-live").innerHTML = !live.length ? "" : `
+        <div class="mb-6 bg-emerald-50/70 rounded-2xl border border-emerald-200 p-3.5 sm:p-4">
+            <div class="flex items-center justify-between gap-2 mb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <h3 class="text-xs sm:text-sm font-bold text-emerald-950">চলমান লাইভ পরীক্ষাসমূহ</h3>
+                </div>
+                <span class="font-sans text-[11px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded-full">${bn(live.length)}</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${live.map((t) => topicCard(t, true)).join("")}</div>
+        </div>`;
+
+    $("dash-subjects").innerHTML = S.subjects.length ? S.subjects.map((s) => {
+        const list = topicsOf(s.id).filter((t) => t.mode !== "hidden");
+        const lv = list.filter((t) => t.mode === "live").length;
+        const ar = list.filter((t) => t.mode === "archive").length;
+        const c = color(s.color);
+        return `
+        <button type="button" data-id="${esc(s.id)}" onclick="openSubject(this.dataset.id)"
+            class="group w-full p-4 rounded-2xl bg-white border border-slate-200 hover:border-slate-400 shadow-sm hover:shadow-md active:scale-[0.99] transition flex items-center gap-3.5 text-left cursor-pointer">
+            <span class="w-12 h-12 rounded-xl border ${c.chip} grid place-items-center shrink-0">${BOOK_SVG}</span>
+            <span class="flex-1 min-w-0">
+                <span class="block ${hasBn(s.title) ? "" : "font-sans"} text-sm sm:text-[15px] font-bold text-slate-900 truncate">${esc(s.title)}${!s.active ? ' <span class="text-[10px] text-rose-600">(নিষ্ক্রিয়)</span>' : ""}</span>
+                <span class="block text-[11px] sm:text-xs text-slate-500 mt-0.5 truncate">${s.description ? esc(s.description) + " · " : ""}${bn(list.length)}টি টপিক</span>
+                <span class="flex gap-1.5 mt-1.5">
+                    ${lv ? `<span class="font-sans text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">${lv} Live</span>` : ""}
+                    ${ar ? `<span class="font-sans text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800">${ar} Archive</span>` : ""}
+                </span>
+            </span>
+            <svg class="w-5 h-5 text-slate-400 group-hover:text-slate-900 group-hover:translate-x-0.5 transition shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>`;
+    }).join("") : `<div class="sm:col-span-2 bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">এখনো কোনো বিষয় যুক্ত হয়নি।</div>`;
+}
+
+function topicMeta(t) {
+    if (t.mode === "coming" || t.mode === "hidden") {
+        const admin = S.user && S.user.isAdmin && !t.qCount ? " · ⚠ প্রশ্ন নেই" : "";
+        return (t.liveAt && t.liveAt > Date.now() ? `লাইভ: ${fmtDateTime(t.liveAt)}` : "শীঘ্রই আসছে") + admin;
+    }
+    return `${bn(t.qCount)}টি প্রশ্ন · ${durLabel(t.durationSec)}`;
+}
+
+function topicCard(t, showSubject = false) {
+    const m = MODE[t.mode] || MODE.coming;
+    const s = subjectById(t.subjectId) || {};
+    const en = !hasBn(t.title);
+    const clickable = t.mode === "live" || t.mode === "archive" || (S.user && S.user.isAdmin && t.qCount > 0);
+    return `
+    <button type="button" data-id="${esc(t.id)}" onclick="clickTopic(this.dataset.id)"
+        class="group w-full px-3 py-2.5 sm:px-3.5 rounded-xl border ${m.card} shadow-[0_1px_2px_rgba(0,0,0,.03)] transition flex items-center justify-between gap-2.5 text-left ${clickable ? "cursor-pointer active:scale-[0.99]" : "cursor-default"}">
+        <span class="min-w-0">
+            ${showSubject ? `<span class="inline-block mb-1 px-2 py-0.5 rounded-md border text-[10px] font-bold ${color(s.color).chip}">${esc(s.title || "")}</span>` : ""}
+            <span class="block ${en ? "font-sans" : ""} text-[13px] sm:text-sm font-semibold text-slate-900 leading-snug break-words">${esc(t.title)}</span>
+            <span class="block text-[11px] text-slate-500 mt-0.5">${esc(topicMeta(t))}</span>
+        </span>
+        <span class="inline-flex items-center gap-1 font-sans text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-lg shrink-0 ${m.pill}">
+            ${t.mode === "live" ? '<span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>' : ""}${m.label}
+        </span>
+    </button>`;
+}
+
+/* --------------------------- বিষয়ের পেজ --------------------------- */
+function openSubject(id, resetFilter = true) {
+    if (!S.user) return showLogin();
+    if (!subjectById(id)) return showDashboard();
+    stopTimer();
+    S.subjectId = id;
+    if (resetFilter) S.filter = "all";
+    renderSubject();
+    show("v-subject");
+    pushNav({ v: "subject", id });
+    refreshIfStale(false);
+}
+
+function setFilter(f) { S.filter = f; renderSubject(); }
+
+function renderSubject() {
+    const s = subjectById(S.subjectId);
+    if (!s) return showDashboard();
+    const all = topicsOf(s.id);
+    const c = color(s.color);
+    $("subj-head").innerHTML = `
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+                <button type="button" onclick="navBack()" aria-label="Back" class="w-10 h-10 rounded-xl bg-slate-900 hover:bg-slate-700 text-white ring-2 ring-amber-400 grid place-items-center shrink-0 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <span class="w-10 h-10 rounded-xl border ${c.chip} grid place-items-center shrink-0">${BOOK_SVG}</span>
+                <div class="min-w-0">
+                    <h2 class="${hasBn(s.title) ? "" : "font-sans"} text-base sm:text-xl font-bold text-slate-900 truncate">${esc(s.title)}</h2>
+                    <p class="text-[11px] sm:text-xs text-slate-500 truncate">${s.description ? esc(s.description) : "Live বা Archive টপিকে ক্লিক করে মডেল টেস্ট দিন"}</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                ${S.user.isAdmin ? `<button type="button" onclick="AD.topicFilter.subject=${jsq(s.id)};openAdmin('topics')" class="px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 text-xs font-bold cursor-pointer">⚙️ এডিট</button>` : ""}
+                <button type="button" onclick="navBack()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-700 text-white text-xs font-bold cursor-pointer">⬅️ সকল বিষয়</button>
+            </div>
+        </div>`;
+
+    const count = (m) => all.filter((t) => t.mode === m).length;
+    const filters = [["all", "সকল", all.length], ["live", "Live", count("live")], ["archive", "Archive", count("archive")], ["coming", "আসন্ন", count("coming")]];
+    if (S.user.isAdmin && count("hidden")) filters.push(["hidden", "Hidden", count("hidden")]);
+    $("subj-filters").innerHTML = filters.map(([k, label, n]) => `
+        <button type="button" onclick="setFilter('${k}')" class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-xs font-semibold transition cursor-pointer ${S.filter === k ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-700 border-slate-200 hover:border-slate-400"}">
+            ${k === "live" ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>' : ""}${label}
+            <span class="font-sans text-[10px] px-1.5 rounded-full ${S.filter === k ? "bg-white/20" : "bg-slate-100"}">${n}</span>
+        </button>`).join("");
+
+    const list = all.filter((t) => S.filter === "all" || t.mode === S.filter);
+    if (!list.length) {
+        $("subj-topics").innerHTML = `<div class="bg-white rounded-2xl border border-slate-200 p-10 text-center text-sm font-semibold text-slate-500">এই মুহূর্তে এখানে কোনো টপিক নেই।</div>`;
+        return;
+    }
+    const groups = [];
+    list.forEach((t) => {
+        const name = t.section || "";
+        let g = groups.find((x) => x.name === name);
+        if (!g) { g = { name, items: [] }; groups.push(g); }
+        g.items.push(t);
+    });
+    if (groups.length === 1) {
+        $("subj-topics").innerHTML = `
+            ${groups[0].name ? `<h4 class="text-sm font-bold text-slate-700 mb-2.5">${esc(groups[0].name)}</h4>` : ""}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">${groups[0].items.map((t) => topicCard(t)).join("")}</div>`;
+    } else {
+        $("subj-topics").innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">${groups.map((g) => `
+            <section class="bg-slate-50/80 rounded-2xl border border-slate-200 p-3 sm:p-4">
+                <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-200">
+                    <h4 class="${hasBn(g.name) ? "" : "font-sans"} text-sm sm:text-base font-bold text-slate-900">${esc(g.name || "অন্যান্য")}</h4>
+                    <span class="font-sans text-[11px] text-slate-500">${g.items.length}</span>
+                </div>
+                <div class="space-y-2">${g.items.map((t) => topicCard(t)).join("")}</div>
+            </section>`).join("")}</div>`;
+    }
+}
+
+function clickTopic(id) {
+    const t = topicById(id);
+    if (!t) return;
+    if (t.mode === "live" || t.mode === "archive") return openCheck(t, t.mode);
+    if (S.user.isAdmin && t.qCount > 0) return openCheck(t, "preview");
+    if (t.liveAt && t.liveAt > Date.now()) return showToast(`"${t.title}" — পরীক্ষাটি ${fmtDateTime(t.liveAt)}-এ লাইভ হবে।`);
+    showToast(`"${t.title}" — পরীক্ষাটি এখনো লাইভ হয়নি।`);
+}
+
+/* --------------------------- চেকলিস্ট --------------------------- */
+function openCheck(t, mode) {
+    const s = subjectById(t.subjectId) || { id: t.subjectId, title: "" };
+    PENDING = { topic: t, subject: s, mode };
+    const total = t.qCount;
+    const pass = total * (Number(S.settings.passPercent) || 33.33) / 100;
+    const neg = Number(S.settings.negativeMark ?? 0.25);
+    const tag = mode === "archive" ? "Archive" : mode === "preview" ? "Admin Preview" : "Live";
+    $("check-body").innerHTML = `
+        <div class="text-center">
+            <div class="inline-flex flex-wrap items-center justify-center gap-1.5 px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs sm:text-sm font-bold mb-3">
+                <span>📘 ${esc(s.title)}</span><span>•</span><span>${esc(t.title)}</span>
+                <span class="font-sans text-[10px] px-2 py-0.5 rounded-full ${mode === "live" ? "bg-emerald-600" : mode === "archive" ? "bg-amber-600" : "bg-slate-700"} text-white">${tag}</span>
+            </div>
+            <h2 class="text-lg sm:text-xl font-extrabold text-blue-700 mb-4">📋 পরীক্ষার নির্দেশনা ও সম্মতি</h2>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5">
+            ${[["প্রশ্ন", bn(total) + "টি"], ["পূর্ণমান", bn(total)], ["পাস নম্বর", bn(num2(pass))], ["সময়", durLabel(t.durationSec)]].map(([k, v]) => `
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center">
+                    <div class="text-[11px] text-slate-500">${k}</div>
+                    <div class="text-sm sm:text-base font-extrabold text-slate-900 mt-0.5">${v}</div>
+                </div>`).join("")}
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 border-l-4 border-l-blue-600 p-4 sm:p-5 rounded-xl text-left text-xs sm:text-sm text-slate-700 leading-relaxed mb-5">
+            <h3 class="text-blue-700 font-bold text-sm mb-2">📌 জরুরি নিয়মাবলি</h3>
+            <ul class="list-disc pl-5 space-y-1.5">
+                <li>প্রতিটি সঠিক উত্তরে <b>+১</b>, প্রতিটি ভুল উত্তরে <b>-${bn(neg)}</b> নম্বর। উত্তর না দিলে নম্বর কাটা যাবে না।</li>
+                ${S.settings.lockAnswers !== false ? `<li><b>বিশেষ সতর্কতা:</b> একবার কোনো অপশন বাছাই করলে তা <b>লক হয়ে যাবে</b>, পরে বদলানো যাবে না।</li>` : ""}
+                <li>কোনো বই, নোট, ইন্টারনেট বা অন্য কারো সাহায্য নেওয়া সম্পূর্ণ নিষিদ্ধ।</li>
+                <li>সময় শেষ হলে উত্তরপত্র <b>স্বয়ংক্রিয়ভাবে সাবমিট</b> হবে। সাবমিটের পর ফলাফল ও ব্যাখ্যা দেখা যাবে।</li>
+                <li>পরীক্ষার মাঝে পেজ রিফ্রেশ হয়ে গেলে আবার লগইন অবস্থায় খুললে পরীক্ষাটি আগের জায়গা থেকে চলবে (সময় থেমে থাকবে না)।</li>
+            </ul>
+        </div>
+
+        <div class="flex flex-col gap-2.5 mb-4 text-left">
+            ${["সংশ্লিষ্ট টপিকটি আমি ভালোভাবে পড়েছি এবং পূর্ণ প্রস্তুতি নিয়ে পরীক্ষা শুরু করছি।", "আমি কোনো বই, নোট বা অনলাইন মাধ্যমের সাহায্য না নিয়ে সম্পূর্ণ সততার সাথে পরীক্ষা দেব।"].map((txt) => `
+                <label class="flex items-start p-3.5 bg-blue-50 hover:bg-blue-100/80 border border-blue-200 rounded-xl cursor-pointer text-xs sm:text-sm font-semibold text-slate-900 leading-relaxed">
+                    <input type="checkbox" class="consent-cb mt-1 mr-3 w-4 h-4 accent-blue-600 shrink-0" onchange="$('check-alert').classList.add('hidden')">
+                    <span>${txt}</span>
+                </label>`).join("")}
+        </div>
+        <div id="check-alert" class="hidden bg-rose-50 border border-rose-300 text-rose-800 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold mb-4">⚠️ পরীক্ষা শুরু করার আগে দুটি বক্সেই টিক (✓) দিন।</div>
+        <button type="button" id="start-btn" onclick="beginExam()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:opacity-95 text-white font-bold text-sm sm:text-base shadow-md shadow-emerald-600/25 cursor-pointer">শুরু করুন — Start Exam</button>
+        <button type="button" onclick="navBack()" class="w-full mt-2.5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-900 font-bold text-xs sm:text-sm cursor-pointer">⬅️ পূর্বের পেইজে ফিরে যান</button>`;
+    show("v-check");
+    pushNav({ v: "check", topicId: t.id, mode });
+}
+
+/* --------------------------- পরীক্ষা --------------------------- */
+const isExamRunning = () => !!(EX && !EX.submitted && currentView() === "v-exam");
+
+async function beginExam() {
+    const ok = [...document.querySelectorAll(".consent-cb")].every((c) => c.checked);
+    if (!ok) return $("check-alert").classList.remove("hidden");
+    const btn = $("start-btn"), txt = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "প্রশ্ন লোড হচ্ছে...";
+    let d = null;
+    try { d = await api("getExam", { topicId: PENDING.topic.id }); }
+    catch (e) { showToast("প্রশ্ন লোড করা যায়নি। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।"); }
+    finally { btn.disabled = false; btn.textContent = txt; }
+    if (!d) return;
+    if (!d.success) {
+        if (d.auth === false) return authExpired(d.message);
+        if (d.maintenance) { S.maintenance = true; return showMaint(); }
+        return showToast(d.message || "পরীক্ষা শুরু করা যায়নি।");
+    }
+    EX = {
+        subject: PENDING.subject, topic: PENDING.topic, mode: d.mode, questions: d.questions || [],
+        answers: {}, durationSec: d.durationSec, startedAt: Date.now(), endAt: Date.now() + d.durationSec * 1000,
+        passMark: d.passMark, negativeMark: d.negativeMark, lock: d.lockAnswers !== false,
+        submitted: false, submitting: false
+    };
+    saveDraft();
+    startExamView();
+    withNav("replace", () => pushNav({ v: "exam" }));
+}
+
+function startExamView() {
+    renderExam();
+    $("exam-retry").classList.add("hidden");
+    show("v-exam");
+    startTimer();
+}
+
+function letters(q) { return hasBn(q.q + (q.o || []).join("")) ? "কখগঘঙ" : "ABCDE"; }
+
+function renderExam() {
+    $("exam-title").textContent = `${EX.topic.title}${EX.mode === "preview" ? " (Preview)" : EX.mode === "archive" ? " (Archive)" : ""}`;
+    $("exam-sub").textContent = `${S.user.name} · ${EX.subject.title} · পাস নম্বর ${bn(num2(EX.passMark))}`;
+    $("exam-questions").innerHTML = EX.questions.map((q, qi) => {
+        const L = letters(q), en = !hasBn(q.q + q.o.join(""));
+        return `
+        <div id="qcard-${qi}" class="bg-white p-4 sm:p-5 border border-slate-200 rounded-2xl mb-3.5 shadow-[0_1px_2px_rgba(0,0,0,.03)]">
+            <div class="flex gap-2.5 mb-3.5">
+                <span class="font-sans text-xs font-bold w-7 h-7 rounded-lg bg-slate-900 text-amber-400 grid place-items-center shrink-0">${qi + 1}</span>
+                <div class="${en ? "font-sans" : ""} text-sm sm:text-base font-bold text-slate-900 leading-relaxed pt-0.5">${fmt(q.q)}</div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                ${q.o.map((o, oi) => `
+                    <button type="button" class="opt ${en ? "font-sans" : ""}" data-qi="${qi}" data-oi="${oi}" onclick="pick(this)">
+                        <span class="opt-letter font-sans">${L[oi] || oi + 1}</span><span class="pt-0.5">${fmt(o)}</span>
+                    </button>`).join("")}
+            </div>
+        </div>`;
+    }).join("");
+    EX.questions.forEach((_, qi) => paintQ(qi));
+    updateProgress();
+}
+
+function pick(btn) {
+    if (!EX || EX.submitted || EX.submitting) return;
+    if (Date.now() >= EX.endAt) return showToast("সময় শেষ! এখন আর উত্তর দেওয়া যাবে না।");
+    const qi = Number(btn.dataset.qi), oi = Number(btn.dataset.oi);
+    const q = EX.questions[qi];
+    if (EX.lock && EX.answers[q.id] !== undefined) return showToast("এই প্রশ্নের উত্তর লক হয়ে গেছে।", 1800);
+    EX.answers[q.id] = oi;
+    paintQ(qi);
+    updateProgress();
+    saveDraft();
+}
+
+function paintQ(qi) {
+    const q = EX.questions[qi];
+    const a = EX.answers[q.id];
+    document.querySelectorAll(`#qcard-${qi} .opt`).forEach((b) => {
+        const oi = Number(b.dataset.oi);
+        b.classList.toggle("sel", a === oi);
+        b.classList.toggle("locked", EX.lock && a !== undefined);
+    });
+}
+
+function answeredCount() { return Object.keys(EX.answers).length; }
+
+function updateProgress() {
+    const total = EX.questions.length, n = answeredCount();
+    $("exam-progress-text").textContent = `${n}/${total}`;
+    $("exam-progress-bar").style.width = total ? `${(n / total) * 100}%` : "0%";
+}
+
+function startTimer() {
+    stopTimer();
+    tick();
+    timerHandle = setInterval(tick, 500);
+}
+function stopTimer() { if (timerHandle) { clearInterval(timerHandle); timerHandle = null; } }
+function tick() {
+    if (!EX) return stopTimer();
+    const left = Math.max(0, Math.ceil((EX.endAt - Date.now()) / 1000));
+    const el = $("exam-timer");
+    el.textContent = mmss(left);
+    el.classList.toggle("timer-warn", left <= 60);
+    if (left <= 0) {
+        stopTimer();
+        document.querySelectorAll("#exam-questions .opt").forEach((b) => b.classList.add("locked"));
+        if (!EX.submitted && !EX.submitting) submitExam(true);
+    }
+}
+
+async function askSubmit() {
+    if (!EX || EX.submitted || EX.submitting) return;
+    const total = EX.questions.length, n = answeredCount();
+    const ok = await confirmBox(`আপনি ${bn(total)}টি প্রশ্নের মধ্যে ${bn(n)}টির উত্তর দিয়েছেন${total - n ? ` (${bn(total - n)}টি বাকি)` : ""}। আপনি কি নিশ্চিতভাবে ফাইনাল সাবমিট করতে চান?`, { title: "পরীক্ষা সাবমিট করবেন?", okText: "হ্যাঁ, সাবমিট করুন" });
+    if (ok) submitExam(false);
+}
+
+async function submitExam(auto) {
+    if (!EX || EX.submitted || EX.submitting) return;
+    EX.submitting = true;
+    stopTimer();
+    showLoading(auto ? "সময় শেষ! উত্তরপত্র জমা হচ্ছে..." : "উত্তরপত্র জমা হচ্ছে ও ফলাফল তৈরি হচ্ছে...");
+    const payload = { topicId: EX.topic.id, answers: EX.answers, timeUsedSec: Math.min(EX.durationSec, Math.round((Date.now() - EX.startedAt) / 1000)) };
+    let d = null;
+    for (let i = 0; i < 3 && !d; i++) {
+        try { d = await api("submit", payload); }
+        catch (e) { await sleep(1500 * (i + 1)); }
+    }
+    EX.submitting = false;
+    if (!d || !d.success) {
+        if (d && d.auth === false) return authExpired(d.message);
+        show("v-exam");
+        $("exam-retry").classList.remove("hidden");
+        if (Date.now() < EX.endAt) startTimer();
+        else {
+            $("exam-timer").textContent = "00:00";
+            document.querySelectorAll("#exam-questions .opt").forEach((b) => b.classList.add("locked"));
+        }
+        return showToast((d && d.message) || "সংযোগ সমস্যার কারণে জমা হয়নি। আবার “সাবমিট” চাপুন।", 5000);
+    }
+    EX.submitted = true;
+    EX.result = d;
+    clearDraft();
+    renderResult();
+    show("v-result");
+    withNav("replace", () => pushNav({ v: "result" }));
+    if (auto) showToast("নির্ধারিত সময় শেষ! উত্তরপত্র স্বয়ংক্রিয়ভাবে সাবমিট হয়েছে।", 4500);
+}
+
+/* ---- অসমাপ্ত পরীক্ষা (রিফ্রেশ হলে) ---- */
+function saveDraft() {
+    if (!EX || EX.submitted || !S.user) return;
+    try {
+        localStorage.setItem(DRAFT_KEY, JSON.stringify({
+            u: S.user.username, subject: { id: EX.subject.id, title: EX.subject.title }, topic: { id: EX.topic.id, title: EX.topic.title },
+            mode: EX.mode, questions: EX.questions, answers: EX.answers, durationSec: EX.durationSec, startedAt: EX.startedAt,
+            endAt: EX.endAt, passMark: EX.passMark, negativeMark: EX.negativeMark, lock: EX.lock
+        }));
+    } catch (e) {}
+}
+function clearDraft() { try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} }
+function resumeDraft() {
+    let d = null;
+    try { d = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch (e) {}
+    if (!d || !S.user || d.u !== S.user.username || !d.questions) { clearDraft(); return false; }
+    if (Date.now() > d.endAt + 6 * 3600e3) { clearDraft(); return false; }
+    EX = Object.assign(d, { submitted: false, submitting: false });
+    EX.subject = subjectById(d.subject.id) || d.subject;
+    EX.topic = topicById(d.topic.id) || d.topic;
+    startExamView();
+    pushNav({ v: "exam" });
+    if (Date.now() >= EX.endAt) submitExam(true);
+    else showToast("আপনার অসমাপ্ত পরীক্ষাটি আবার চালু হয়েছে।");
+    return true;
+}
+window.addEventListener("beforeunload", (e) => { if (isExamRunning()) { e.preventDefault(); e.returnValue = ""; } });
+
+/* --------------------------- ফলাফল --------------------------- */
+function renderResult() {
+    const d = EX.result;
+    const neg = Number(d.negativeMark ?? 0.25);
+    const stat = (label, val, cls) => `
+        <div class="bg-white/10 border border-white/15 rounded-xl p-3">
+            <div class="text-[11px] sm:text-xs text-slate-300">${label}</div>
+            <div class="font-sans text-lg sm:text-xl font-extrabold ${cls} mt-0.5">${val}</div>
+        </div>`;
+
+    // তিন ধরনের কার্ডের আলাদা ডিজাইন
+    const ST = {
+        correct: { card: "border-emerald-300 bg-emerald-50/50", bar: "bg-emerald-500", num: "bg-emerald-600 text-white", badge: "bg-emerald-600 text-white", label: "✔ সঠিক (+১)" },
+        wrong:   { card: "border-rose-300 bg-rose-50/50",       bar: "bg-rose-500",    num: "bg-rose-600 text-white",    badge: "bg-rose-600 text-white",    label: `✘ ভুল (−${bn(num2(neg))})` },
+        skipped: { card: "border-dashed border-slate-300 bg-slate-50", bar: "bg-slate-300", num: "bg-white text-slate-500 border-2 border-dashed border-slate-400", badge: "bg-white text-slate-600 border border-dashed border-slate-400", label: "— উত্তর দেননি (০)" }
+    };
+
+    const cards = EX.questions.map((q, qi) => {
+        const det = (d.details || {})[q.id] || {};
+        const ans = Number(det.ans), sel = EX.answers[q.id];
+        const status = sel === undefined ? "skipped" : sel === ans ? "correct" : "wrong";
+        const s = ST[status];
+        const L = letters(q), en = !hasBn(q.q + q.o.join(""));
+        const opts = q.o.map((o, oi) => {
+            let cls = "bg-white border border-slate-200 text-slate-700", tag = "";
+            if (oi === ans && status === "correct") { cls = "bg-emerald-600 border border-emerald-600 text-white font-bold"; tag = "✔ আপনার উত্তর — সঠিক"; }
+            else if (oi === ans && status === "wrong") { cls = "bg-emerald-50 border-2 border-emerald-500 text-emerald-900 font-bold"; tag = "✔ সঠিক উত্তর"; }
+            else if (oi === ans) { cls = "bg-white border-2 border-dashed border-emerald-500 text-emerald-800 font-bold"; tag = "সঠিক উত্তর (আপনি দেননি)"; }
+            else if (oi === sel) { cls = "bg-rose-100 border-2 border-rose-400 text-rose-900 font-semibold"; tag = "✘ আপনার উত্তর"; }
+            return `<div class="text-xs sm:text-sm px-2.5 py-1.5 rounded-lg leading-relaxed ${cls}">
+                <b class="font-sans">${L[oi] || oi + 1}.</b> <span class="${en ? "font-sans" : ""} ${oi === sel && oi !== ans ? "line-through" : ""}">${fmt(o)}</span>
+                ${tag ? `<span class="block sm:inline sm:ml-1 text-[10px] sm:text-[11px] font-bold opacity-90">(${tag})</span>` : ""}
+            </div>`;
+        }).join("");
+        return `
+        <div class="rq-card print-q-card relative overflow-hidden rounded-xl border-2 ${s.card} p-3.5 sm:p-4 pl-5 sm:pl-6 mb-3 text-left" data-st="${status}">
+            <span class="absolute left-0 top-0 bottom-0 w-1.5 ${s.bar}"></span>
+            <div class="flex justify-between items-start gap-2.5 mb-2.5">
+                <div class="flex gap-2.5 min-w-0">
+                    <span class="font-sans text-xs font-bold w-7 h-7 rounded-lg grid place-items-center shrink-0 ${s.num}">${qi + 1}</span>
+                    <strong class="${en ? "font-sans" : ""} text-sm sm:text-base text-slate-900 leading-snug pt-0.5">${fmt(q.q)}</strong>
+                </div>
+                <span class="text-[10px] sm:text-[11px] px-2 py-1 rounded-md font-bold whitespace-nowrap ${s.badge}">${s.label}</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 my-2.5">${opts}</div>
+            <div class="bg-white/80 border-l-4 border-emerald-600 px-3 py-2 text-xs sm:text-sm text-slate-800 rounded-md leading-relaxed"><b>💡 ব্যাখ্যা:</b> ${det.exp ? fmt(det.exp) : "এই প্রশ্নের জন্য কোনো ব্যাখ্যা যুক্ত করা হয়নি।"}</div>
+        </div>`;
+    }).join("");
+
+    const written = (d.written || []).length ? `
+        <div class="bg-white border-2 border-dashed border-blue-500 rounded-2xl my-6 p-4 sm:p-5 text-left">
+            <h3 class="text-center text-blue-700 text-base sm:text-lg font-extrabold mb-3">✍️ লিখিত প্রশ্ন (Written)</h3>
+            <div class="bg-slate-50 border border-slate-300 rounded-xl p-4 space-y-2.5">
+                ${d.written.map((w, i) => `<div class="pb-2.5 border-b border-dashed border-slate-300 last:border-0 last:pb-0 text-xs sm:text-sm leading-relaxed"><b>${bn(i + 1)}. ${fmt(w.question)}</b>${w.marks ? ` <span class="inline-block bg-blue-100 text-blue-800 text-[11px] font-bold px-2 py-0.5 rounded-md ml-1">মান: ${esc(w.marks)}</span>` : ""}</div>`).join("")}
+            </div>
+            <div class="mt-3.5 bg-blue-50 border border-blue-200 text-blue-900 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-center">📌 ব্যাচ গ্রুপে প্রদত্ত নির্দেশনা অনুযায়ী যথাস্থানে সাবমিট করুন</div>
+        </div>` : "";
+
+    const filters = [["all", "সব", d.total, "bg-slate-900 text-white border-slate-900"], ["correct", "✔ সঠিক", d.correct, "bg-emerald-600 text-white border-emerald-600"],
+                     ["wrong", "✘ ভুল", d.wrong, "bg-rose-600 text-white border-rose-600"], ["skipped", "— উত্তর দেননি", d.skipped, "bg-slate-500 text-white border-slate-500"]];
+
+    $("result-body").innerHTML = `
+        <div class="inline-flex flex-wrap justify-center items-center gap-1.5 px-4 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold mb-2">
+            <span>📊 ${esc(EX.subject.title)}</span><span>•</span><span>${esc(EX.topic.title)}</span>
+        </div>
+        <h2 class="text-lg sm:text-2xl font-extrabold text-blue-700">পরীক্ষার ফলাফল ও মূল্যায়ন</h2>
+        <div class="font-sans text-xs sm:text-sm font-bold text-slate-600 mt-1 mb-4">${esc(S.user.name)} (ID: ${esc(S.user.username)})</div>
+
+        <div class="print-score-box bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 sm:p-6 rounded-2xl my-4">
+            <div class="text-xs sm:text-sm text-slate-300">আপনার অর্জিত স্কোর</div>
+            <div class="font-sans text-3xl sm:text-4xl font-extrabold text-amber-400 my-1">${num2(d.score)} / ${d.total}</div>
+            <div class="inline-block px-4 py-1.5 rounded-full text-xs sm:text-sm font-extrabold mt-1 border-2 ${d.passed ? "bg-emerald-100 text-emerald-800 border-emerald-300" : "bg-rose-100 text-rose-800 border-rose-300"}">${d.passed ? "✅ পাস করেছেন (Passed)" : "❌ ফেইল করেছেন (Failed)"}</div>
+            <div class="text-xs sm:text-sm text-slate-300 mt-2">(পাস নম্বর: ${bn(num2(d.passMark))})</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-5">
+                ${stat("✔️ সঠিক", d.correct, "text-emerald-400")}
+                ${stat(`❌ ভুল (-${num2(neg)})`, d.wrong, "text-rose-400")}
+                ${stat("⚪ উত্তর দেননি", d.skipped, "text-slate-200")}
+                ${stat("📝 মোট প্রশ্ন", d.total, "text-amber-400")}
+            </div>
+        </div>
+
+        ${written}
+
+        <hr class="border-0 border-t-2 border-dashed border-slate-300 my-6">
+        <h3 class="text-base sm:text-lg font-extrabold text-blue-700 mb-3">📌 উত্তরপত্র ও বিস্তারিত ব্যাখ্যা</h3>
+        <div id="rq-filters" class="no-print flex gap-2 overflow-x-auto no-scrollbar pb-1 mb-3 justify-start sm:justify-center">
+            ${filters.map(([k, label, n, on]) => `<button type="button" data-k="${k}" data-on="${on}" onclick="filterResult('${k}')" class="rq-f shrink-0 px-3 py-1.5 rounded-full border text-xs font-bold cursor-pointer ${k === "all" ? on : "bg-white text-slate-700 border-slate-300"}">${label} <span class="font-sans">${n}</span></button>`).join("")}
+        </div>
+        <div id="rq-empty" class="hidden p-6 text-sm text-slate-500 border border-dashed border-slate-300 rounded-xl mb-3">এই ধরনের কোনো প্রশ্ন নেই।</div>
+        ${cards}
+
+        <div class="no-print">
+            <button type="button" onclick="filterResult('all');window.print()" class="w-full mt-3 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:opacity-95 text-white font-bold text-xs sm:text-sm shadow-md shadow-blue-600/25 cursor-pointer">🖨️ ব্যাখ্যাসহ উত্তরপত্র PDF ডাউনলোড / প্রিন্ট</button>
+            <div class="grid ${EX.mode === "archive" ? "grid-cols-2" : "grid-cols-1"} gap-2.5 mt-3">
+                ${EX.mode === "archive" ? `<button type="button" onclick="retakeExam()" class="py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm cursor-pointer">🔁 আবার দিন</button>` : ""}
+                <button type="button" onclick="navBack()" class="py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm cursor-pointer">⬅️ অন্যান্য টপিকে ফিরে যান</button>
+            </div>
+        </div>`;
+}
+
+function filterResult(k) {
+    let shown = 0;
+    document.querySelectorAll("#result-body .rq-card").forEach((c) => {
+        const on = k === "all" || c.dataset.st === k;
+        c.classList.toggle("hidden", !on);
+        if (on) shown++;
+    });
+    $("rq-empty").classList.toggle("hidden", shown > 0);
+    document.querySelectorAll("#rq-filters .rq-f").forEach((b) => {
+        const active = b.dataset.k === k;
+        b.className = `rq-f shrink-0 px-3 py-1.5 rounded-full border text-xs font-bold cursor-pointer ${active ? b.dataset.on : "bg-white text-slate-700 border-slate-300"}`;
+    });
+}
+
+function retakeExam() {
+    const t = topicById(EX.topic.id);
+    if (t) openCheck(t, t.mode === "archive" ? "archive" : t.mode);
+}
+
+/* =====================================================================
+ *  মডাল ও কনফার্ম
+ * ===================================================================== */
+let modalLocked = false;
+function openModal(html, wide = false) {
+    $("modal-panel").className = `relative w-full ${wide ? "sm:max-w-2xl" : "sm:max-w-lg"} bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl max-h-[92vh] overflow-y-auto animate-view`;
+    $("modal-content").innerHTML = html;
+    $("modal").classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+}
+function closeModal(fromBackdrop = false) {
+    if (fromBackdrop && modalLocked) return;
+    $("modal").classList.add("hidden");
+    $("modal-content").innerHTML = "";
+    document.body.classList.remove("overflow-hidden");
+    if (window._confirmResolve) { window._confirmResolve(false); window._confirmResolve = null; }
+}
+
+function confirmBox(msg, { title = "নিশ্চিত করুন", okText = "হ্যাঁ", danger = false } = {}) {
+    return new Promise((resolve) => {
+        openModal(`
+            <div class="p-6 text-center">
+                <h3 class="text-lg font-bold text-slate-900 mb-2">${esc(title)}</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">${esc(msg)}</p>
+                <div class="grid grid-cols-2 gap-2.5 mt-5">
+                    <button type="button" id="cf-no" class="py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm cursor-pointer">বাতিল</button>
+                    <button type="button" id="cf-yes" class="py-2.5 rounded-xl ${danger ? "bg-rose-600 hover:bg-rose-700" : "bg-emerald-600 hover:bg-emerald-700"} text-white font-bold text-sm cursor-pointer">${esc(okText)}</button>
+                </div>
+            </div>`);
+        window._confirmResolve = resolve;
+        $("cf-no").onclick = () => closeModal();
+        $("cf-yes").onclick = () => { window._confirmResolve = null; closeModal(); resolve(true); };
+    });
+}
+
+/** সাধারণ ফর্ম মডাল — অ্যাডমিন প্যানেলের সব ফর্ম এটি দিয়ে তৈরি */
+function formModal({ title, fields, values = {}, submitText = "সংরক্ষণ করুন", onSubmit, wide = false, note = "" }) {
+    const field = (f) => {
+        const v = values[f.name] ?? f.default ?? "";
+        const span = f.half ? "" : "sm:col-span-2";
+        const hint = f.hint ? `<p class="text-[11px] text-slate-500 mt-1">${esc(f.hint)}</p>` : "";
+        const label = `<label for="f_${f.name}" class="block text-xs font-semibold text-slate-700 mb-1">${esc(f.label)}${f.required ? ' <span class="text-rose-500">*</span>' : ""}</label>`;
+        if (f.type === "checkbox") return `
+            <label class="${span} flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                <input type="checkbox" id="f_${f.name}" ${v ? "checked" : ""} class="w-4 h-4 accent-slate-900"><span class="text-sm font-semibold">${esc(f.label)}</span>
+            </label>`;
+        let input;
+        if (f.type === "textarea") input = `<textarea id="f_${f.name}" rows="${f.rows || 3}" class="inp" placeholder="${esc(f.placeholder || "")}">${esc(v)}</textarea>`;
+        else if (f.type === "select") input = `<select id="f_${f.name}" class="inp">${f.options.map((o) => o.group
+            ? `<optgroup label="${esc(o.group)}">${o.options.map((x) => `<option value="${esc(x.value)}" ${String(x.value) === String(v) ? "selected" : ""}>${esc(x.label)}</option>`).join("")}</optgroup>`
+            : `<option value="${esc(o.value)}" ${String(o.value) === String(v) ? "selected" : ""}>${esc(o.label)}</option>`).join("")}</select>`;
+        else input = `<input id="f_${f.name}" type="${f.type || "text"}" value="${esc(v)}" ${f.readonly ? "readonly" : ""} ${f.step ? `step="${f.step}"` : ""} placeholder="${esc(f.placeholder || "")}" class="inp ${f.readonly ? "bg-slate-100 text-slate-500" : ""} ${f.mono ? "font-sans" : ""}">`;
+        return `<div class="${span}">${label}${input}${hint}</div>`;
+    };
+    openModal(`
+        <form id="mf" class="p-5 sm:p-6" novalidate>
+            <div class="flex items-start justify-between gap-3 mb-4">
+                <h3 class="text-base sm:text-lg font-bold text-slate-900">${esc(title)}</h3>
+                <button type="button" onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-slate-100 text-slate-500 grid place-items-center cursor-pointer">✕</button>
+            </div>
+            ${note ? `<div class="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs leading-relaxed">${note}</div>` : ""}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">${fields.map(field).join("")}</div>
+            <div id="mf-err" class="hidden mt-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm"></div>
+            <div class="mt-5 flex gap-2 justify-end">
+                <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm cursor-pointer">বাতিল</button>
+                <button type="submit" id="mf-submit" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm cursor-pointer">${esc(submitText)}</button>
+            </div>
+        </form>`, wide);
+    $("mf").onsubmit = async (e) => {
+        e.preventDefault();
+        const vals = {};
+        fields.forEach((f) => { const el = $("f_" + f.name); vals[f.name] = f.type === "checkbox" ? el.checked : el.value.trim(); });
+        const missing = fields.find((f) => f.required && f.type !== "checkbox" && !vals[f.name]);
+        const err = $("mf-err");
+        if (missing) { err.textContent = `"${missing.label}" পূরণ করুন।`; err.classList.remove("hidden"); return; }
+        const btn = $("mf-submit"), t = btn.textContent;
+        btn.disabled = true; btn.textContent = "সংরক্ষণ হচ্ছে..."; modalLocked = true;
+        try { await onSubmit(vals); closeModal(); }
+        catch (ex) { err.textContent = ex.message || "ব্যর্থ হয়েছে"; err.classList.remove("hidden"); }
+        finally { modalLocked = false; if ($("mf-submit")) { btn.disabled = false; btn.textContent = t; } }
+    };
+    return $("mf");
+}
+
+/* =====================================================================
+ *  অ্যাডমিন প্যানেল
+ * ===================================================================== */
+const AD = { tab: "overview", data: null, qTopic: "", questions: [], results: null, topicFilter: { subject: "", status: "", q: "" }, userQ: "", resFilter: { topicId: "", username: "" } };
+const ADMIN_TABS = [["overview", "📊", "ড্যাশবোর্ড"], ["subjects", "📚", "বিষয়"], ["topics", "🗂️", "টপিক"], ["questions", "❓", "প্রশ্ন"], ["users", "👥", "শিক্ষার্থী"], ["results", "🏆", "ফলাফল"]];
+const STATUS_OPTS = [
+    { value: "live", label: "🟢 Live (চলমান)" }, { value: "archive", label: "📦 Archive (বিগত)" },
+    { value: "coming", label: "⚪ Coming (আসন্ন)" }, { value: "auto", label: "📅 Auto (তারিখ অনুযায়ী)" },
+    { value: "hidden", label: "🚫 Hidden (লুকানো)" }
+];
+
+async function adminApi(op, extra = {}) {
+    let d;
+    try { d = await api("admin", Object.assign({ op }, extra)); }
+    catch (e) { throw new Error("সার্ভারের সাথে সংযোগ হয়নি। আবার চেষ্টা করুন।"); }
+    if (!d || !d.success) {
+        if (d && d.auth === false) { authExpired(d.message); }
+        throw new Error((d && d.message) || "ব্যর্থ হয়েছে");
+    }
+    return d;
+}
+
+async function run(fn, okMsg) {
+    showToast("অপেক্ষা করুন...", 20000);
+    try { const r = await fn(); if (okMsg) showToast(okMsg); return r; }
+    catch (e) { showToast("⚠️ " + e.message, 5000); return null; }
+}
+
+async function openAdmin(tab) {
+    if (!S.user || !S.user.isAdmin) return;
+    if (tab) AD.tab = tab;
+    show("v-admin");
+    pushNav({ v: "admin", tab: AD.tab });
+    $("admin-head").innerHTML = `
+        <div class="min-w-0">
+            <p class="text-[11px] text-amber-300 font-semibold">⚙️ অ্যাডমিন প্যানেল</p>
+            <h2 class="font-sans text-base sm:text-lg font-bold truncate">${esc(S.user.name)}</h2>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <a id="ad-sheet-link" href="#" target="_blank" rel="noopener" class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white text-xs font-bold">📄 Google Sheet</a>
+            <button type="button" onclick="adminReload()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold cursor-pointer">🔄 রিফ্রেশ</button>
+            <button type="button" onclick="leaveAdmin()" class="px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 text-xs font-bold cursor-pointer">⬅️ স্টুডেন্ট ভিউ</button>
+        </div>`;
+    renderAdminTabs();
+    await adminReload();
+}
+
+function leaveAdmin() { goBack(showDashboard); }
+
+function renderAdminTabs() {
+    $("admin-tabs").innerHTML = ADMIN_TABS.map(([k, ic, label]) => `
+        <button type="button" onclick="switchAdminTab('${k}')" class="shrink-0 flex-1 min-w-[88px] px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition cursor-pointer ${AD.tab === k ? "bg-slate-900 text-white shadow" : "text-slate-600 hover:bg-slate-100"}">
+            <span class="mr-1">${ic}</span>${label}
+        </button>`).join("");
+}
+
+function switchAdminTab(k) {
+    AD.tab = k;
+    if (CUR && CUR.v === "admin") { CUR.tab = k; try { history.replaceState(CUR, "", location.pathname); } catch (e) {} }
+    renderAdminTabs();
+    renderAdminTab();
+}
+
+async function adminReload(silent = false) {
+    if (!silent) $("admin-body").innerHTML = `<div class="bg-white rounded-2xl border border-slate-200 p-10 text-center"><div class="w-8 h-8 mx-auto mb-3 rounded-full border-4 border-slate-200 border-t-amber-500 animate-spin"></div><p class="text-sm text-slate-600">ডেটা লোড হচ্ছে...</p></div>`;
+    try {
+        AD.data = await adminApi("overview");
+        S.fetchedAt = 0;
+        const link = $("ad-sheet-link");
+        if (link && AD.data.sheetUrl) link.href = AD.data.sheetUrl;
+        renderAdminTab();
+    } catch (e) {
+        $("admin-body").innerHTML = `<div class="bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl p-6 text-sm">⚠️ ${esc(e.message)}</div>`;
+    }
+}
+
+function renderAdminTab() {
+    if (!AD.data) return;
+    ({ overview: adOverview, subjects: adSubjects, topics: adTopics, questions: adQuestions, users: adUsers, results: adResults })[AD.tab]();
+}
+
+const card = (inner, cls = "") => `<div class="bg-white rounded-2xl border border-slate-200 shadow-[0_1px_2px_rgba(0,0,0,.03)] ${cls}">${inner}</div>`;
+const smallBtn = (label, onclick, kind = "default") => {
+    const k = { default: "bg-slate-100 hover:bg-slate-200 text-slate-800", danger: "bg-rose-50 hover:bg-rose-100 text-rose-700", primary: "bg-slate-900 hover:bg-slate-800 text-white", amber: "bg-amber-100 hover:bg-amber-200 text-amber-900" }[kind];
+    return `<button type="button" onclick="${onclick}" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold ${k} cursor-pointer whitespace-nowrap">${label}</button>`;
+};
+const subjTitle = (id) => (AD.data.subjects.find((s) => s.id === id) || {}).title || id;
+const jsq = (s) => esc(JSON.stringify(String(s)));   // onclick-এ নিরাপদে স্ট্রিং পাঠাতে
+
+/* ---------- ড্যাশবোর্ড + সেটিংস ---------- */
+function adOverview() {
+    const { stats, settings: st } = AD.data;
+    const statBox = (ic, label, val, tab) => `
+        <button type="button" ${tab ? `onclick="switchAdminTab('${tab}')"` : ""} class="text-left bg-white rounded-2xl border border-slate-200 p-4 hover:border-slate-400 transition ${tab ? "cursor-pointer" : "cursor-default"}">
+            <div class="text-lg">${ic}</div>
+            <div class="font-sans text-2xl font-extrabold text-slate-900 mt-1">${val}</div>
+            <div class="text-xs text-slate-500">${label}</div>
+        </button>`;
+    $("admin-body").innerHTML = `
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5">
+            ${statBox("👥", "শিক্ষার্থী", stats.students, "users")}
+            ${statBox("📚", "বিষয়", stats.subjects, "subjects")}
+            ${statBox("🗂️", "টপিক", stats.topics, "topics")}
+            ${statBox("❓", "প্রশ্ন", stats.questions, "questions")}
+            ${statBox("🏆", "জমাকৃত পরীক্ষা", stats.results, "results")}
+        </div>
+
+        ${card(`
+            <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full ${st.maintenance ? "bg-rose-500 animate-pulse" : "bg-emerald-500"}"></span>
+                        <h3 class="font-bold text-slate-900">মেইনটেন্যান্স মোড: ${st.maintenance ? '<span class="text-rose-600">চালু (সাইট বন্ধ)</span>' : '<span class="text-emerald-600">বন্ধ (সাইট সচল)</span>'}</h3>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">চালু করলে Users ট্যাবের ২য় সারির অ্যাডমিন ছাড়া কেউ লগইন বা পরীক্ষা দিতে পারবে না।</p>
+                </div>
+                <button type="button" onclick="toggleMaint()" class="shrink-0 px-4 py-2.5 rounded-xl font-bold text-sm cursor-pointer ${st.maintenance ? "bg-emerald-600 hover:bg-emerald-700 text-white" : "bg-rose-600 hover:bg-rose-700 text-white"}">
+                    ${st.maintenance ? "✅ সাইট চালু করুন" : "🔒 মেইনটেন্যান্স চালু করুন"}
+                </button>
+            </div>`, "mb-5 " + (st.maintenance ? "!border-rose-300" : ""))}
+
+        ${card(`
+            <form id="settings-form" class="p-4 sm:p-5" novalidate>
+                <h3 class="font-bold text-slate-900 mb-1">⚙️ পরীক্ষার সাধারণ সেটিংস</h3>
+                <p class="text-xs text-slate-500 mb-4">টপিকে আলাদা সময় (মিনিট) না দিলে “প্রতি প্রশ্নে সেকেন্ড” হিসেবে সময় গণনা হবে।</p>
+                <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+                    <div><label class="block text-xs font-semibold text-slate-700 mb-1">প্রতি প্রশ্নে সময় (সেকেন্ড)</label><input id="s_sec" type="number" min="5" value="${st.secondsPerQuestion}" class="inp font-sans"></div>
+                    <div><label class="block text-xs font-semibold text-slate-700 mb-1">নেগেটিভ মার্ক</label><input id="s_neg" type="number" step="0.01" min="0" value="${st.negativeMark}" class="inp font-sans"></div>
+                    <div><label class="block text-xs font-semibold text-slate-700 mb-1">পাস (%)</label><input id="s_pass" type="number" step="0.01" min="0" max="100" value="${st.passPercent}" class="inp font-sans"></div>
+                    <div><label class="block text-xs font-semibold text-slate-700 mb-1">Auto লাইভ শুরুর সময়</label><input id="s_live" type="time" value="${esc(st.liveStartTime)}" class="inp font-sans"></div>
+                    <div class="col-span-2 lg:col-span-1"><label class="block text-xs font-semibold text-slate-700 mb-1">লগইন থাকবে (দিন)</label><input id="s_days" type="number" min="1" value="${st.sessionDays}" class="inp font-sans"></div>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-3 mt-3">
+                    <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer"><input id="s_lock" type="checkbox" ${st.lockAnswers ? "checked" : ""} class="w-4 h-4 accent-slate-900"><span class="text-sm font-semibold">উত্তর লক (একবার বাছাই করলে আর বদলানো যাবে না)</span></label>
+                    <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer"><input id="s_shuf" type="checkbox" ${st.shuffleQuestions ? "checked" : ""} class="w-4 h-4 accent-slate-900"><span class="text-sm font-semibold">প্রশ্নের ক্রম এলোমেলো (Shuffle)</span></label>
+                </div>
+                <div class="mt-4 flex justify-end"><button type="submit" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm cursor-pointer">সেটিংস সংরক্ষণ করুন</button></div>
+            </form>`, "mb-5")}
+
+        ${card(`
+            <div class="p-4 sm:p-5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <h3 class="font-bold text-slate-900 mb-2">💡 দ্রুত কাজের টিপস</h3>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>একসাথে অনেক প্রশ্ন যোগ করতে “প্রশ্ন” ট্যাবে <b>Bulk পেস্ট</b> ব্যবহার করুন, অথবা সরাসরি Google Sheet-এর <b>Questions</b> ট্যাবে পেস্ট করুন।</li>
+                    <li>শিটে সরাসরি পরিবর্তন করলে সাইটে সঙ্গে সঙ্গে দেখাবে। না দেখালে উপরের <b>🔄 রিফ্রেশ</b> চাপুন।</li>
+                    <li>টপিকের status <b>Auto</b> দিলে examDate তারিখে নির্ধারিত সময় থেকে ২৪ ঘণ্টা Live, তারপর নিজে থেকেই Archive হবে।</li>
+                    <li>Coming/Hidden টপিকে আপনি (অ্যাডমিন) ক্লিক করলে <b>Preview</b> হিসেবে পরীক্ষা দিয়ে দেখতে পারবেন।</li>
+                </ul>
+            </div>`)}`;
+
+    $("settings-form").onsubmit = (e) => {
+        e.preventDefault();
+        const data = {
+            secondsPerQuestion: $("s_sec").value, negativeMark: $("s_neg").value, passPercent: $("s_pass").value,
+            liveStartTime: $("s_live").value || "06:00", sessionDays: $("s_days").value,
+            lockAnswers: $("s_lock").checked, shuffleQuestions: $("s_shuf").checked
+        };
+        if (!(Number(data.secondsPerQuestion) > 0) || !(Number(data.sessionDays) > 0) || isNaN(Number(data.negativeMark)) || isNaN(Number(data.passPercent))) {
+            return showToast("⚠️ সংখ্যাগুলো সঠিকভাবে দিন।");
+        }
+        run(async () => { await adminApi("setSettings", { data }); await adminReload(true); }, "✅ সেটিংস সংরক্ষিত হয়েছে");
+    };
+}
+
+async function toggleMaint() {
+    const on = !AD.data.settings.maintenance;
+    const ok = await confirmBox(on ? "মেইনটেন্যান্স মোড চালু করলে অ্যাডমিন ছাড়া কেউ সাইটে ঢুকতে পারবে না। চালু করবেন?" : "মেইনটেন্যান্স মোড বন্ধ করবেন? সবাই আবার লগইন করতে পারবে।",
+        { okText: on ? "চালু করুন" : "বন্ধ করুন", danger: on });
+    if (!ok) return;
+    await run(async () => { await adminApi("setSettings", { data: { maintenanceMode: on } }); S.maintenance = on; await adminReload(true); },
+        on ? "🔒 মেইনটেন্যান্স মোড চালু হয়েছে" : "✅ সাইট আবার চালু হয়েছে");
+}
+
+/* ---------- বিষয় ---------- */
+function adSubjects() {
+    const { subjects, topics } = AD.data;
+    $("admin-body").innerHTML = `
+        <div class="flex items-center justify-between gap-3 mb-3">
+            <h3 class="font-bold text-slate-900">📚 বিষয়সমূহ <span class="font-sans text-xs text-slate-500">(${subjects.length})</span></h3>
+            ${smallBtn("＋ নতুন বিষয়", "subjectForm()", "primary")}
+        </div>
+        <div class="space-y-2.5">
+        ${subjects.map((s) => {
+            const n = topics.filter((t) => t.subjectId === s.id).length;
+            return card(`
+                <div class="p-3.5 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                        <span class="w-10 h-10 rounded-xl border ${color(s.color).chip} grid place-items-center shrink-0">${BOOK_SVG}</span>
+                        <div class="min-w-0">
+                            <div class="font-bold text-sm text-slate-900 truncate">${esc(s.title)} ${s.active ? "" : '<span class="text-[10px] font-sans px-1.5 py-0.5 rounded bg-rose-100 text-rose-700">নিষ্ক্রিয়</span>'}</div>
+                            <div class="text-[11px] text-slate-500 truncate"><span class="font-sans">${esc(s.id)}</span> · ${n}টি টপিক${s.description ? " · " + esc(s.description) : ""}</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-1.5 flex-wrap">
+                        ${smallBtn("🗂️ টপিক", `AD.topicFilter.subject=${jsq(s.id)};switchAdminTab('topics')`)}
+                        ${smallBtn("✏️ এডিট", `subjectForm(${jsq(s.id)})`)}
+                        ${smallBtn("🗑️", `deleteSubject(${jsq(s.id)})`, "danger")}
+                    </div>
+                </div>`);
+        }).join("") || card(`<div class="p-8 text-center text-sm text-slate-500">কোনো বিষয় নেই। “নতুন বিষয়” চাপুন।</div>`)}
+        </div>`;
+}
+
+function subjectForm(id) {
+    const s = id ? AD.data.subjects.find((x) => x.id === id) : null;
+    formModal({
+        title: s ? "বিষয় এডিট করুন" : "নতুন বিষয় যোগ করুন",
+        values: s ? s : { color: "indigo", active: true },
+        fields: [
+            { name: "title", label: "বিষয়ের নাম", required: true, placeholder: "যেমন: বাংলা ১ম পত্র" },
+            { name: "id", label: "বিষয়ের id (ইংরেজিতে)", required: true, readonly: !!s, mono: true, half: true, placeholder: "যেমন: bangla-1", hint: s ? "id পরিবর্তন করা যায় না" : "ছোট হাতের ইংরেজি, সংখ্যা ও - ব্যবহার করুন" },
+            { name: "color", label: "রং", type: "select", half: true, options: Object.keys(COLORS).map((k) => ({ value: k, label: COLORS[k].label + " (" + k + ")" })) },
+            { name: "description", label: "সংক্ষিপ্ত বিবরণ (ঐচ্ছিক)", placeholder: "যেমন: গদ্য ও পদ্য" },
+            { name: "active", label: "সক্রিয় (শিক্ষার্থীরা দেখতে পাবে)", type: "checkbox" }
+        ],
+        onSubmit: async (v) => {
+            await adminApi("saveSubject", { data: v, isNew: !s });
+            await adminReload(true);
+            showToast(s ? "✅ বিষয় হালনাগাদ হয়েছে" : "✅ নতুন বিষয় যুক্ত হয়েছে");
+        }
+    });
+}
+
+async function deleteSubject(id) {
+    if (!(await confirmBox(`"${subjTitle(id)}" বিষয়টি মুছে ফেলবেন?`, { okText: "মুছুন", danger: true }))) return;
+    run(async () => { await adminApi("deleteSubject", { id }); await adminReload(true); }, "🗑️ বিষয় মুছে ফেলা হয়েছে");
+}
+
+/* ---------- টপিক ---------- */
+function statusSelect(t) {
+    return `<select onchange="quickStatus(${jsq(t.id)}, this.value)" class="inp !py-1.5 !text-xs !w-auto">
+        ${STATUS_OPTS.map((o) => `<option value="${o.value}" ${t.status === o.value ? "selected" : ""}>${o.label}</option>`).join("")}
+    </select>`;
+}
+
+function adTopics() {
+    const { subjects, topics } = AD.data;
+    const f = AD.topicFilter;
+    const list = topics.filter((t) =>
+        (!f.subject || t.subjectId === f.subject) &&
+        (!f.status || t.mode === f.status) &&
+        (!f.q || (t.title + " " + t.id + " " + t.section).toLowerCase().includes(f.q.toLowerCase())));
+    $("admin-body").innerHTML = `
+        ${card(`
+            <div class="p-3 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <select class="inp" onchange="AD.topicFilter.subject=this.value;adTopics()">
+                    <option value="">সব বিষয়</option>
+                    ${subjects.map((s) => `<option value="${esc(s.id)}" ${f.subject === s.id ? "selected" : ""}>${esc(s.title)}</option>`).join("")}
+                </select>
+                <select class="inp" onchange="AD.topicFilter.status=this.value;adTopics()">
+                    <option value="">সব অবস্থা</option>
+                    ${["live", "archive", "coming", "hidden"].map((m) => `<option value="${m}" ${f.status === m ? "selected" : ""}>${MODE[m].label}</option>`).join("")}
+                </select>
+                <input class="inp" placeholder="🔍 খুঁজুন..." value="${esc(f.q)}" oninput="AD.topicFilter.q=this.value;clearTimeout(window._tq);window._tq=setTimeout(()=>{adTopics();const i=document.querySelector('#admin-body input');i.focus();i.setSelectionRange(i.value.length,i.value.length)},350)">
+                <button type="button" onclick="topicForm()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold cursor-pointer">＋ নতুন টপিক</button>
+            </div>`, "mb-3")}
+        <p class="text-xs text-slate-500 mb-2.5 px-1">${list.length}টি টপিক দেখানো হচ্ছে · status বদলাতে ড্রপডাউন থেকে বাছাই করুন (সঙ্গে সঙ্গে সংরক্ষিত হবে)</p>
+        <div class="space-y-2">
+        ${list.map((t) => card(`
+            <div class="p-3 flex flex-col lg:flex-row lg:items-center gap-2.5">
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="font-sans text-[10px] font-bold px-2 py-0.5 rounded-md ${MODE[t.mode].pill}">${MODE[t.mode].label}</span>
+                        <span class="${hasBn(t.title) ? "" : "font-sans"} font-bold text-sm text-slate-900">${esc(t.title)}</span>
+                    </div>
+                    <div class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                        <span class="px-1.5 py-0.5 rounded border ${color((AD.data.subjects.find((s) => s.id === t.subjectId) || {}).color).chip}">${esc(subjTitle(t.subjectId))}</span>
+                        ${t.section ? ` · ${esc(t.section)}` : ""} · <span class="font-sans">${esc(t.id)}</span> ·
+                        <b class="${t.qCount ? "text-slate-700" : "text-rose-600"}">${t.qCount}টি প্রশ্ন</b> · ⏱ ${t.durationSec ? durLabel(t.durationSec) + (t.durationMin ? "" : " (অটো)") : "—"}
+                        ${t.date ? ` · 📅 <span class="font-sans">${esc(t.date)}</span>` : ""}
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    ${statusSelect(t)}
+                    ${smallBtn("❓ প্রশ্ন", `AD.qTopic=${jsq(t.id)};switchAdminTab('questions')`, "amber")}
+                    ${smallBtn("✏️", `topicForm(${jsq(t.id)})`)}
+                    ${smallBtn("🗑️", `deleteTopic(${jsq(t.id)})`, "danger")}
+                </div>
+            </div>`)).join("") || card(`<div class="p-8 text-center text-sm text-slate-500">কোনো টপিক পাওয়া যায়নি।</div>`)}
+        </div>`;
+}
+
+function suggestTopicId(subjectId) {
+    const base = (subjectId || "topic").replace(/[^A-Za-z0-9_-]/g, "");
+    const ids = new Set(AD.data.topics.map((t) => t.id));
+    let n = AD.data.topics.filter((t) => t.subjectId === subjectId).length + 1, id;
+    do { id = `${base}-${String(n).padStart(2, "0")}`; n++; } while (ids.has(id));
+    return id;
+}
+
+function topicForm(id) {
+    const t = id ? AD.data.topics.find((x) => x.id === id) : null;
+    const sid = t ? t.subjectId : (AD.topicFilter.subject || (AD.data.subjects[0] || {}).id || "");
+    if (!AD.data.subjects.length) return showToast("⚠️ আগে অন্তত একটি বিষয় যোগ করুন।");
+    const secs = [...new Set(AD.data.topics.filter((x) => x.section).map((x) => x.section))];
+    formModal({
+        title: t ? "টপিক এডিট করুন" : "নতুন টপিক যোগ করুন",
+        values: t ? Object.assign({}, t, { durationMin: t.durationMin || "", examDate: t.date || "" }) : { subjectId: sid, id: suggestTopicId(sid), status: "coming" },
+        note: `সময় খালি রাখলে: প্রশ্নসংখ্যা × ${AD.data.settings.secondsPerQuestion} সেকেন্ড। ${secs.length ? "বিদ্যমান সেকশন: " + secs.map(esc).join(", ") : ""}`,
+        fields: [
+            { name: "subjectId", label: "বিষয়", type: "select", half: true, options: AD.data.subjects.map((s) => ({ value: s.id, label: s.title })) },
+            { name: "id", label: "টপিক id", required: true, readonly: !!t, mono: true, half: true, hint: t ? "id পরিবর্তন করা যায় না" : "ইংরেজি অক্ষর/সংখ্যা/- (স্বয়ংক্রিয় প্রস্তাবিত)" },
+            { name: "title", label: "টপিকের নাম", required: true, placeholder: "যেমন: অপরিচিতা" },
+            { name: "section", label: "সেকশন / গ্রুপ (ঐচ্ছিক)", half: true, placeholder: "যেমন: গদ্য, পদ্য, Grammar" },
+            { name: "status", label: "অবস্থা", type: "select", half: true, options: STATUS_OPTS },
+            { name: "examDate", label: "পরীক্ষার তারিখ (ঐচ্ছিক)", type: "date", half: true, hint: "Auto/Coming হলে এই তারিখ দেখাবে" },
+            { name: "durationMin", label: "মোট সময় (মিনিট, ঐচ্ছিক)", type: "number", step: "0.5", half: true, placeholder: "খালি = অটো" }
+        ],
+        onSubmit: async (v) => {
+            await adminApi("saveTopic", { data: v, isNew: !t });
+            await adminReload(true);
+            showToast(t ? "✅ টপিক হালনাগাদ হয়েছে" : "✅ নতুন টপিক যুক্ত হয়েছে");
+        }
+    });
+    if (!t) {
+        let touched = false;
+        $("f_id").addEventListener("input", () => { touched = true; });
+        $("f_subjectId").addEventListener("change", (e) => { if (!touched) $("f_id").value = suggestTopicId(e.target.value); });
+    }
+}
+
+function quickStatus(id, status) {
+    run(async () => { await adminApi("saveTopic", { data: { id, status }, isNew: false }); await adminReload(true); }, "✅ অবস্থা হালনাগাদ হয়েছে");
+}
+
+async function deleteTopic(id) {
+    const t = AD.data.topics.find((x) => x.id === id);
+    if (!(await confirmBox(`"${t ? t.title : id}" টপিকটি মুছে ফেলবেন? (এর প্রশ্নগুলো শিটে থেকে যাবে, পরে একই id দিয়ে টপিক বানালে আবার পাওয়া যাবে)`, { okText: "মুছুন", danger: true }))) return;
+    run(async () => { await adminApi("deleteTopic", { id }); await adminReload(true); }, "🗑️ টপিক মুছে ফেলা হয়েছে");
+}
+
+/* ---------- প্রশ্ন ---------- */
+function topicOptions(selected, withEmpty = true) {
+    return (withEmpty ? `<option value="">— টপিক বাছাই করুন —</option>` : "") + AD.data.subjects.map((s) => {
+        const ts = AD.data.topics.filter((t) => t.subjectId === s.id);
+        if (!ts.length) return "";
+        return `<optgroup label="${esc(s.title)}">${ts.map((t) => `<option value="${esc(t.id)}" ${selected === t.id ? "selected" : ""}>${esc(t.title)} (${t.qCount})</option>`).join("")}</optgroup>`;
+    }).join("");
+}
+
+function adQuestions() {
+    $("admin-body").innerHTML = `
+        ${card(`
+            <div class="p-3 flex flex-col sm:flex-row gap-2">
+                <select id="q-topic" class="inp flex-1" onchange="AD.qTopic=this.value;loadQuestions()">${topicOptions(AD.qTopic)}</select>
+                <div class="flex gap-2">
+                    <button type="button" onclick="questionForm()" class="flex-1 sm:flex-none px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold cursor-pointer whitespace-nowrap">＋ নতুন প্রশ্ন</button>
+                    <button type="button" onclick="bulkQuestionsModal()" class="flex-1 sm:flex-none px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 text-sm font-bold cursor-pointer whitespace-nowrap">📋 Bulk পেস্ট</button>
+                </div>
+            </div>`, "mb-3")}
+        <div id="q-list"></div>`;
+    if (AD.qTopic) loadQuestions();
+    else $("q-list").innerHTML = card(`<div class="p-8 text-center text-sm text-slate-500">উপরের তালিকা থেকে একটি টপিক বাছাই করুন।</div>`);
+}
+
+async function loadQuestions() {
+    const box = $("q-list");
+    if (!AD.qTopic) return adQuestions();
+    box.innerHTML = card(`<div class="p-8 text-center text-sm text-slate-500">প্রশ্ন লোড হচ্ছে...</div>`);
+    try {
+        AD.questions = (await adminApi("questions", { topicId: AD.qTopic })).questions;
+        renderQuestionList();
+    } catch (e) {
+        box.innerHTML = card(`<div class="p-6 text-sm text-rose-700">⚠️ ${esc(e.message)}</div>`);
+    }
+}
+
+function renderQuestionList() {
+    const t = AD.data.topics.find((x) => x.id === AD.qTopic);
+    const qs = AD.questions;
+    $("q-list").innerHTML = `
+        <p class="text-xs text-slate-500 mb-2.5 px-1"><b>${esc(t ? t.title : AD.qTopic)}</b> — মোট ${qs.length}টি প্রশ্ন${t ? ` · ⏱ ${durLabel(t.durationMin ? t.durationMin * 60 : qs.length * AD.data.settings.secondsPerQuestion)}` : ""}</p>
+        <div class="space-y-2.5">
+        ${qs.map((q, i) => {
+            const L = letters(q), en = !hasBn(q.q + q.o.join(""));
+            return card(`
+                <div class="p-3.5">
+                    <div class="flex justify-between gap-3">
+                        <div class="${en ? "font-sans" : ""} text-sm font-bold text-slate-900 leading-relaxed">${i + 1}. ${fmt(q.q)}</div>
+                        <div class="flex gap-1.5 shrink-0 items-start">
+                            ${smallBtn("✏️", `questionForm(${i})`)}
+                            ${smallBtn("🗑️", `deleteQuestion(${i})`, "danger")}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-2.5">
+                        ${q.o.map((o, oi) => `<div class="text-xs px-2.5 py-1.5 rounded-lg border ${oi === q.a ? "bg-emerald-50 border-emerald-300 text-emerald-900 font-bold" : "border-slate-200 text-slate-700"} ${en ? "font-sans" : ""}"><b class="font-sans">${L[oi]}.</b> ${fmt(o)}${oi === q.a ? " ✔" : ""}</div>`).join("")}
+                    </div>
+                    ${q.a < 0 ? `<div class="mt-2 text-xs font-bold text-rose-600">⚠️ সঠিক উত্তর (answer) সেট করা নেই বা বোঝা যাচ্ছে না!</div>` : ""}
+                    ${q.e ? `<div class="mt-2 text-xs text-slate-600 bg-slate-50 border-l-4 border-emerald-500 px-2.5 py-1.5 rounded">💡 ${fmt(q.e)}</div>` : ""}
+                    <div class="mt-1.5 text-[10px] font-sans text-slate-400">শিট: ${esc(q.ref.s)} · সারি ${q.ref.r}</div>
+                </div>`);
+        }).join("") || card(`<div class="p-8 text-center text-sm text-slate-500">এই টপিকে এখনো কোনো প্রশ্ন নেই।</div>`)}
+        </div>`;
+}
+
+function questionForm(i) {
+    if (!AD.qTopic) return showToast("⚠️ আগে একটি টপিক বাছাই করুন।");
+    const q = i !== undefined ? AD.questions[i] : null;
+    const v = q ? { question: q.q, optA: q.o[0] || "", optB: q.o[1] || "", optC: q.o[2] || "", optD: q.o[3] || "", answer: "ABCD".charAt(Math.max(0, q.a)), explanation: q.e } : { answer: "A" };
+    formModal({
+        title: q ? `প্রশ্ন ${i + 1} এডিট করুন` : "নতুন প্রশ্ন যোগ করুন",
+        wide: true,
+        values: v,
+        fields: [
+            { name: "question", label: "প্রশ্ন", type: "textarea", required: true, rows: 3 },
+            { name: "optA", label: "অপশন A / ক", required: true, half: true },
+            { name: "optB", label: "অপশন B / খ", required: true, half: true },
+            { name: "optC", label: "অপশন C / গ", half: true },
+            { name: "optD", label: "অপশন D / ঘ", half: true },
+            { name: "answer", label: "সঠিক উত্তর", type: "select", options: [{ value: "A", label: "A / ক" }, { value: "B", label: "B / খ" }, { value: "C", label: "C / গ" }, { value: "D", label: "D / ঘ" }] },
+            { name: "explanation", label: "ব্যাখ্যা (ঐচ্ছিক)", type: "textarea", rows: 2 }
+        ],
+        submitText: q ? "হালনাগাদ করুন" : "যোগ করুন",
+        onSubmit: async (vals) => {
+            await adminApi("saveQuestion", { data: Object.assign({ topicId: AD.qTopic }, vals), ref: q ? q.ref : null });
+            await loadQuestions();
+            refreshCountsQuietly();
+            showToast(q ? "✅ প্রশ্ন হালনাগাদ হয়েছে" : "✅ প্রশ্ন যুক্ত হয়েছে");
+        }
+    });
+}
+
+async function deleteQuestion(i) {
+    const q = AD.questions[i];
+    if (!(await confirmBox(`প্রশ্ন ${i + 1} মুছে ফেলবেন?\n“${q.q.slice(0, 80)}”`, { okText: "মুছুন", danger: true }))) return;
+    run(async () => { await adminApi("deleteQuestion", { ref: q.ref }); await loadQuestions(); refreshCountsQuietly(); }, "🗑️ প্রশ্ন মুছে ফেলা হয়েছে");
+}
+
+async function refreshCountsQuietly() {
+    try {
+        AD.data = await adminApi("overview");
+        const sel = $("q-topic");
+        if (sel && AD.tab === "questions") sel.innerHTML = topicOptions(AD.qTopic);
+    } catch (e) {}
+}
+
+function ansIdx(v, opts) {
+    const k = String(v || "").trim().replace(/[\s.)(]/g, "").toLowerCase();
+    const map = { "ক": 0, "খ": 1, "গ": 2, "ঘ": 3, a: 0, b: 1, c: 2, d: 3, 1: 0, 2: 1, 3: 2, 4: 3, "১": 0, "২": 1, "৩": 2, "৪": 3 };
+    if (map[k] !== undefined) return map[k];
+    const i = opts.findIndex((o) => o && o.toLowerCase() === String(v).trim().toLowerCase());
+    return i;
+}
+
+function parseBulkQuestions(text) {
+    const rows = [], errors = [];
+    text.split(/\r?\n/).forEach((line, n) => {
+        if (!line.trim()) return;
+        const sep = line.includes("\t") ? "\t" : "|";
+        const c = line.split(sep).map((x) => x.trim());
+        if (n === 0 && /^(question|প্রশ্ন|topicid)$/i.test(c[0])) return;
+        if (c.length < 6) { errors.push(`লাইন ${n + 1}: কমপক্ষে ৬টি ঘর দরকার (প্রশ্ন, A, B, C, D, উত্তর)`); return; }
+        const [question, optA, optB, optC, optD, answer, ...rest] = c;
+        const opts = [optA, optB, optC, optD];
+        while (opts.length && !opts[opts.length - 1]) opts.pop();
+        const ai = ansIdx(answer, opts);
+        if (!question) { errors.push(`লাইন ${n + 1}: প্রশ্ন খালি`); return; }
+        if (ai < 0 || !opts[ai]) { errors.push(`লাইন ${n + 1}: উত্তর "${answer}" বোঝা যায়নি`); return; }
+        rows.push({ question, optA, optB, optC, optD, answer, explanation: rest.join(" ").trim() });
+    });
+    return { rows, errors };
+}
+
+function bulkQuestionsModal() {
+    if (!AD.qTopic) return showToast("⚠️ আগে একটি টপিক বাছাই করুন।");
+    const t = AD.data.topics.find((x) => x.id === AD.qTopic);
+    openModal(`
+        <div class="p-5 sm:p-6">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <h3 class="text-base sm:text-lg font-bold">📋 একসাথে অনেক প্রশ্ন যোগ — ${esc(t ? t.title : "")}</h3>
+                <button type="button" onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-slate-100 text-slate-500 cursor-pointer">✕</button>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed mb-3">
+                Excel/Google Sheet থেকে নিচের ক্রমে কলামগুলো কপি করে পেস্ট করুন (প্রতি লাইনে একটি প্রশ্ন):<br>
+                <b>প্রশ্ন ⇥ A ⇥ B ⇥ C ⇥ D ⇥ উত্তর ⇥ ব্যাখ্যা</b><br>
+                অথবা হাতে লিখলে <b>|</b> দিয়ে আলাদা করুন:<br>
+                <code class="font-sans text-[11px] bg-white px-1.5 py-0.5 rounded border">বাংলাদেশের রাজধানী কোথায়? | ঢাকা | চট্টগ্রাম | খুলনা | রাজশাহী | ক | ব্যাখ্যা...</code><br>
+                উত্তর: ক/খ/গ/ঘ, A/B/C/D বা 1–4।
+            </div>
+            <textarea id="bulk-q" rows="9" class="inp font-sans text-xs" placeholder="এখানে পেস্ট করুন..." oninput="previewBulkQ()"></textarea>
+            <div id="bulk-q-preview" class="mt-2 text-xs text-slate-600"></div>
+            <div class="mt-4 flex gap-2 justify-end">
+                <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 font-semibold text-sm cursor-pointer">বাতিল</button>
+                <button type="button" id="bulk-q-btn" onclick="submitBulkQ()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm cursor-pointer">যোগ করুন</button>
+            </div>
+        </div>`, true);
+}
+
+function previewBulkQ() {
+    const { rows, errors } = parseBulkQuestions($("bulk-q").value);
+    $("bulk-q-preview").innerHTML = `✅ <b>${rows.length}</b>টি প্রশ্ন প্রস্তুত${errors.length ? ` · <span class="text-rose-600">⚠️ ${errors.length}টি লাইনে সমস্যা:</span><ul class="list-disc pl-5 text-rose-600 mt-1 max-h-28 overflow-auto">${errors.slice(0, 20).map((e) => `<li>${esc(e)}</li>`).join("")}</ul>` : ""}`;
+}
+
+async function submitBulkQ() {
+    const { rows, errors } = parseBulkQuestions($("bulk-q").value);
+    if (!rows.length) return previewBulkQ();
+    if (errors.length && !window.confirm(`${errors.length}টি লাইনে সমস্যা আছে, সেগুলো বাদ দিয়ে ${rows.length}টি প্রশ্ন যোগ করবেন?`)) return;
+    const btn = $("bulk-q-btn");
+    btn.disabled = true; btn.textContent = "যোগ হচ্ছে..."; modalLocked = true;
+    try {
+        const d = await adminApi("bulkQuestions", { topicId: AD.qTopic, rows });
+        modalLocked = false;
+        closeModal();
+        showToast(`✅ ${d.added}টি প্রশ্ন যুক্ত হয়েছে${d.errors && d.errors.length ? `, ${d.errors.length}টি বাদ পড়েছে` : ""}`, 5000);
+        await loadQuestions();
+        refreshCountsQuietly();
+    } catch (e) {
+        modalLocked = false;
+        btn.disabled = false; btn.textContent = "যোগ করুন";
+        showToast("⚠️ " + e.message, 5000);
+    }
+}
+
+/* ---------- শিক্ষার্থী (Users) ---------- */
+function adUsers() {
+    const q = AD.userQ.toLowerCase();
+    const list = AD.data.users.filter((u) => !q || (u.username + " " + u.name).toLowerCase().includes(q));
+    $("admin-body").innerHTML = `
+        ${card(`
+            <div class="p-3 flex flex-col sm:flex-row gap-2">
+                <input class="inp flex-1" placeholder="🔍 নাম বা ইউজারনেইম দিয়ে খুঁজুন..." value="${esc(AD.userQ)}" oninput="AD.userQ=this.value;clearTimeout(window._uq);window._uq=setTimeout(()=>{adUsers();const i=document.querySelector('#admin-body input');i.focus();i.setSelectionRange(i.value.length,i.value.length)},300)">
+                <div class="flex gap-2">
+                    <button type="button" onclick="userForm()" class="flex-1 sm:flex-none px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold cursor-pointer whitespace-nowrap">＋ নতুন শিক্ষার্থী</button>
+                    <button type="button" onclick="bulkUsersModal()" class="flex-1 sm:flex-none px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 text-sm font-bold cursor-pointer whitespace-nowrap">📋 Bulk যোগ</button>
+                </div>
+            </div>`, "mb-3")}
+        <p class="text-xs text-slate-500 mb-2.5 px-1">${list.length}টি অ্যাকাউন্ট · প্রথমটি (শিটের ২য় সারি) অ্যাডমিন</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        ${list.map((u) => card(`
+            <div class="p-3 flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl ${u.isAdmin ? "bg-amber-400 text-slate-900" : "bg-slate-900 text-amber-400"} grid place-items-center font-sans font-bold shrink-0">${esc((u.name || "?").charAt(0).toUpperCase())}</div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-bold text-slate-900 truncate font-sans">${esc(u.name)}
+                        ${u.isAdmin ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">অ্যাডমিন</span>' : ""}
+                        ${u.active ? "" : '<span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-100 text-rose-700">নিষ্ক্রিয়</span>'}
+                    </div>
+                    <div class="text-[11px] font-sans text-slate-500 truncate">${esc(u.username)} · <span class="cursor-pointer select-all" title="দেখতে ক্লিক করুন" onclick="this.textContent=this.dataset.p" data-p="${esc(u.password)}">••••••</span></div>
+                </div>
+                <div class="flex gap-1.5 shrink-0">
+                    ${smallBtn("✏️", `userForm(${jsq(u.username)})`)}
+                    ${u.isAdmin ? "" : smallBtn("🗑️", `deleteUser(${jsq(u.username)})`, "danger")}
+                </div>
+            </div>`)).join("") || card(`<div class="md:col-span-2 p-8 text-center text-sm text-slate-500">কাউকে পাওয়া যায়নি।</div>`)}
+        </div>`;
+}
+
+function userForm(username) {
+    const u = username ? AD.data.users.find((x) => x.username === username) : null;
+    formModal({
+        title: u ? (u.isAdmin ? "অ্যাডমিন অ্যাকাউন্ট এডিট" : "শিক্ষার্থী এডিট করুন") : "নতুন শিক্ষার্থী যোগ করুন",
+        values: u ? u : { active: true },
+        note: u && u.isAdmin ? "পাসওয়ার্ড বদলালে আপনাকে আবার লগইন করতে হবে।" : "",
+        fields: [
+            { name: "name", label: "পূর্ণ নাম", required: true },
+            { name: "username", label: "ইউজারনেইম", required: true, readonly: !!u, mono: true, half: true, hint: u ? "ইউজারনেইম বদলানো যায় না" : "স্পেস ছাড়া, যেমন 21_Abdullah" },
+            { name: "password", label: "পাসওয়ার্ড", required: true, mono: true, half: true },
+            ...(u && u.isAdmin ? [] : [{ name: "active", label: "সক্রিয় (লগইন করতে পারবে)", type: "checkbox" }])
+        ],
+        onSubmit: async (v) => {
+            await adminApi("saveUser", { data: v, isNew: !u });
+            if (u && u.isAdmin && v.password !== u.password) { closeModal(); return authExpired("পাসওয়ার্ড বদলানো হয়েছে, নতুন পাসওয়ার্ড দিয়ে লগইন করুন।"); }
+            await adminReload(true);
+            showToast(u ? "✅ হালনাগাদ হয়েছে" : "✅ নতুন শিক্ষার্থী যুক্ত হয়েছে");
+        }
+    });
+}
+
+async function deleteUser(username) {
+    if (!(await confirmBox(`"${username}" অ্যাকাউন্টটি মুছে ফেলবেন? (তার আগের ফলাফল Results ট্যাবে থেকে যাবে)`, { okText: "মুছুন", danger: true }))) return;
+    run(async () => { await adminApi("deleteUser", { id: username }); await adminReload(true); }, "🗑️ অ্যাকাউন্ট মুছে ফেলা হয়েছে");
+}
+
+function bulkUsersModal() {
+    openModal(`
+        <div class="p-5 sm:p-6">
+            <div class="flex items-start justify-between gap-3 mb-3">
+                <h3 class="text-base sm:text-lg font-bold">📋 একসাথে অনেক শিক্ষার্থী যোগ</h3>
+                <button type="button" onclick="closeModal()" class="w-8 h-8 rounded-lg hover:bg-slate-100 text-slate-500 cursor-pointer">✕</button>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed mb-3">
+                প্রতি লাইনে একজন: <b>ইউজারনেইম ⇥ পাসওয়ার্ড ⇥ নাম</b> (শিট থেকে কপি) অথবা কমা/<b>|</b> দিয়ে:<br>
+                <code class="font-sans text-[11px] bg-white px-1.5 py-0.5 rounded border">21_Rahim, 45821, Abdur Rahim</code><br>
+                আগে থেকে থাকা ইউজারনেইম বাদ পড়বে।
+            </div>
+            <textarea id="bulk-u" rows="9" class="inp font-sans text-xs" placeholder="এখানে পেস্ট করুন..."></textarea>
+            <div class="mt-4 flex gap-2 justify-end">
+                <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 font-semibold text-sm cursor-pointer">বাতিল</button>
+                <button type="button" id="bulk-u-btn" onclick="submitBulkUsers()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm cursor-pointer">যোগ করুন</button>
+            </div>
+        </div>`, true);
+}
+
+async function submitBulkUsers() {
+    const rows = $("bulk-u").value.split(/\r?\n/).map((l) => l.trim()).filter(Boolean).map((l) => {
+        const c = l.split(l.includes("\t") ? "\t" : l.includes("|") ? "|" : ",").map((x) => x.trim());
+        return { username: c[0], password: c[1], name: c.slice(2).join(" ").trim() };
+    }).filter((r) => r.username && !/^(username|ইউজারনেইম)$/i.test(r.username));
+    if (!rows.length) return showToast("⚠️ কোনো তথ্য পাওয়া যায়নি।");
+    const btn = $("bulk-u-btn");
+    btn.disabled = true; btn.textContent = "যোগ হচ্ছে..."; modalLocked = true;
+    try {
+        const d = await adminApi("bulkUsers", { rows });
+        modalLocked = false;
+        closeModal();
+        showToast(`✅ ${d.added}জন যুক্ত হয়েছে${d.skipped ? `, ${d.skipped}টি বাদ (ডুপ্লিকেট/অসম্পূর্ণ)` : ""}`, 5000);
+        await adminReload(true);
+    } catch (e) {
+        modalLocked = false;
+        btn.disabled = false; btn.textContent = "যোগ করুন";
+        showToast("⚠️ " + e.message, 5000);
+    }
+}
+
+/* ---------- ফলাফল ---------- */
+function adResults() {
+    const f = AD.resFilter;
+    $("admin-body").innerHTML = `
+        ${card(`
+            <div class="p-3 grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-2">
+                <select id="r-topic" class="inp"><option value="">সব টপিক</option>${topicOptions(f.topicId, false)}</select>
+                <input id="r-user" class="inp" placeholder="নাম/ইউজারনেইম (ঐচ্ছিক)" value="${esc(f.username)}">
+                <button type="button" onclick="loadResults()" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold cursor-pointer">🔍 দেখুন</button>
+            </div>`, "mb-3")}
+        <div id="r-list"></div>`;
+    $("r-user").addEventListener("keydown", (e) => { if (e.key === "Enter") loadResults(); });
+    if (AD.results) renderResults(); else loadResults();
+}
+
+async function loadResults() {
+    AD.resFilter = { topicId: $("r-topic").value, username: $("r-user").value.trim() };
+    $("r-list").innerHTML = card(`<div class="p-8 text-center text-sm text-slate-500">ফলাফল লোড হচ্ছে...</div>`);
+    try {
+        AD.results = (await adminApi("results", Object.assign({ limit: 500 }, AD.resFilter))).results;
+        renderResults();
+    } catch (e) {
+        $("r-list").innerHTML = card(`<div class="p-6 text-sm text-rose-700">⚠️ ${esc(e.message)}</div>`);
+    }
+}
+
+function renderResults() {
+    const r = AD.results || [];
+    if (!r.length) { $("r-list").innerHTML = card(`<div class="p-8 text-center text-sm text-slate-500">কোনো ফলাফল পাওয়া যায়নি।</div>`); return; }
+    const avg = r.reduce((s, x) => s + x.score, 0) / r.length;
+    const pass = r.filter((x) => /pass/i.test(x.status)).length;
+    const users = new Set(r.map((x) => x.username)).size;
+    $("r-list").innerHTML = `
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-3">
+            ${[["মোট জমা", r.length], ["ভিন্ন শিক্ষার্থী", users], ["গড় স্কোর", num2(avg)], ["পাসের হার", Math.round((pass / r.length) * 100) + "%"]].map(([k, v]) => card(`<div class="p-3"><div class="text-[11px] text-slate-500">${k}</div><div class="font-sans text-lg font-extrabold">${v}</div></div>`)).join("")}
+        </div>
+        ${card(`
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs sm:text-sm min-w-[720px]">
+                    <thead class="bg-slate-50 text-slate-600 text-left">
+                        <tr>${["সময়", "শিক্ষার্থী", "টপিক", "স্কোর", "✔ / ✘ / –", "ফল", "মোড"].map((h) => `<th class="px-3 py-2.5 font-semibold">${h}</th>`).join("")}</tr>
+                    </thead>
+                    <tbody>
+                        ${r.map((x) => `
+                        <tr class="border-t border-slate-100 hover:bg-slate-50/60">
+                            <td class="px-3 py-2 font-sans text-slate-500 whitespace-nowrap">${esc(x.time)}</td>
+                            <td class="px-3 py-2"><div class="font-sans font-semibold">${esc(x.name)}</div><div class="font-sans text-[11px] text-slate-500">${esc(x.username)}</div></td>
+                            <td class="px-3 py-2">${esc(x.topicTitle || x.topicId)}</td>
+                            <td class="px-3 py-2 font-sans font-bold whitespace-nowrap">${num2(x.score)} / ${x.total}</td>
+                            <td class="px-3 py-2 font-sans whitespace-nowrap"><span class="text-emerald-700">${x.correct}</span> / <span class="text-rose-700">${x.wrong}</span> / <span class="text-slate-500">${x.skipped}</span></td>
+                            <td class="px-3 py-2"><span class="font-sans text-[11px] font-bold px-2 py-0.5 rounded ${/pass/i.test(x.status) ? "bg-emerald-100 text-emerald-800" : "bg-rose-100 text-rose-800"}">${esc(x.status)}</span></td>
+                            <td class="px-3 py-2 font-sans text-[11px] text-slate-500">${esc(x.mode)}</td>
+                        </tr>`).join("")}
+                    </tbody>
+                </table>
+            </div>`)}
+        <p class="text-[11px] text-slate-500 mt-2 px-1">সর্বশেষ ${r.length}টি দেখানো হচ্ছে। পূর্ণ তালিকা Google Sheet-এর Results ট্যাবে।</p>`;
+}
+
+/* --------------------------- চালু --------------------------- */
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("modal").classList.contains("hidden") && !modalLocked) closeModal(); });
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+else init();
+</script>
+</body>
+</html>
